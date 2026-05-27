@@ -1,10 +1,10 @@
 <p align="center">
   <a href="CONTRIBUTING.md"><strong>English</strong></a> |
-  <a href="CONTRIBUTING.zh-CN.md">简体中文</a> |
-  <a href="CONTRIBUTING.ja-JP.md">日本語</a> |
-  <a href="CONTRIBUTING.ko-KR.md">한국어</a> |
-  <a href="CONTRIBUTING.vi-VN.md">Tiếng Việt</a> |
-  <a href="CONTRIBUTING.pt-BR.md">Portugues</a>
+  <a href="docs/i18n/CONTRIBUTING.zh-CN.md">简体中文</a> |
+  <a href="docs/i18n/CONTRIBUTING.ja-JP.md">日本語</a> |
+  <a href="docs/i18n/CONTRIBUTING.ko-KR.md">한국어</a> |
+  <a href="docs/i18n/CONTRIBUTING.vi-VN.md">Tiếng Việt</a> |
+  <a href="docs/i18n/CONTRIBUTING.pt-BR.md">Portugues</a>
 </p>
 
 # Contributing to vibecode-pro-max-kit

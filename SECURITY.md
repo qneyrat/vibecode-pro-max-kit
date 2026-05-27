@@ -1,10 +1,10 @@
 <p align="center">
   <a href="SECURITY.md"><strong>English</strong></a> |
-  <a href="SECURITY.zh-CN.md">简体中文</a> |
-  <a href="SECURITY.ja-JP.md">日本語</a> |
-  <a href="SECURITY.ko-KR.md">한국어</a> |
-  <a href="SECURITY.vi-VN.md">Tiếng Việt</a> |
-  <a href="SECURITY.pt-BR.md">Portugues</a>
+  <a href="docs/i18n/SECURITY.zh-CN.md">简体中文</a> |
+  <a href="docs/i18n/SECURITY.ja-JP.md">日本語</a> |
+  <a href="docs/i18n/SECURITY.ko-KR.md">한국어</a> |
+  <a href="docs/i18n/SECURITY.vi-VN.md">Tiếng Việt</a> |
+  <a href="docs/i18n/SECURITY.pt-BR.md">Portugues</a>
 </p>
 
 # Security Policy

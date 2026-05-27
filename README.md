@@ -1,10 +1,10 @@
 <p align="center">
   <strong>English</strong> |
-  <a href="README.zh-CN.md">简体中文</a> |
-  <a href="README.ja-JP.md">日本語</a> |
-  <a href="README.ko-KR.md">한국어</a> |
-  <a href="README.vi-VN.md">Tiếng Việt</a> |
-  <a href="README.pt-BR.md">Portugues</a>
+  <a href="docs/i18n/README.zh-CN.md">简体中文</a> |
+  <a href="docs/i18n/README.ja-JP.md">日本語</a> |
+  <a href="docs/i18n/README.ko-KR.md">한국어</a> |
+  <a href="docs/i18n/README.vi-VN.md">Tiếng Việt</a> |
+  <a href="docs/i18n/README.pt-BR.md">Portugues</a>
 </p>
 
 <div align="center">

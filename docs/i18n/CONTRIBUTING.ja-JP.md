@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="CONTRIBUTING.md">English</a> |
+  <a href="../../CONTRIBUTING.md">English</a> |
   <a href="CONTRIBUTING.zh-CN.md">简体中文</a> |
   <strong>日本語</strong> |
   <a href="CONTRIBUTING.ko-KR.md">한국어</a> |
@@ -11,7 +11,7 @@
 
 vibecode-pro-max-kitに興味を持っていただきありがとうございます！このプロジェクトはClaude CodeとCodex向けのすぐに使えるエージェントハーネスを提供しており、どなたからのコントリビューションも歓迎しています。
 
-このプロジェクトに参加することで、[行動規範](CODE_OF_CONDUCT.md)に同意したものとみなされます。
+このプロジェクトに参加することで、[行動規範](../../CODE_OF_CONDUCT.md)に同意したものとみなされます。
 
 ---
 

@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="CONTRIBUTING.md">English</a> |
+  <a href="../../CONTRIBUTING.md">English</a> |
   <a href="CONTRIBUTING.zh-CN.md">简体中文</a> |
   <a href="CONTRIBUTING.ja-JP.md">日本語</a> |
   <a href="CONTRIBUTING.ko-KR.md">한국어</a> |
@@ -11,7 +11,7 @@
 
 Cảm ơn bạn đã quan tâm đến việc đóng góp cho vibecode-pro-max-kit! Project này cung cấp một agent harness sẵn dùng cho Claude Code và Codex, và chúng tôi hoan nghênh contributions từ mọi người.
 
-Khi tham gia project này, bạn đồng ý tuân thủ [Code of Conduct](CODE_OF_CONDUCT.md) của chúng tôi.
+Khi tham gia project này, bạn đồng ý tuân thủ [Code of Conduct](../../CODE_OF_CONDUCT.md) của chúng tôi.
 
 ---
 

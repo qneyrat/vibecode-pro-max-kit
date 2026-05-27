@@ -23,59 +23,18 @@ CLAUDE.md and AGENTS.md are managed protocol files (orchestrator, RIPER-5 method
 
 Read `references/vc-setup.md` for detailed phase instructions, detection heuristics, parallel subagent delegation strategy, and validation checks.
 
-### Phase 0: BOOTSTRAP
+### Phase 0: BOOTSTRAP (handled by install.sh)
 
-Fetch harness files and install them safely into the project. This phase is automatic — it runs first whenever the harness files are not yet present.
+The `install.sh` script handles fetching and installing harness files before vc-setup runs. It performs a full safe merge: copies missing files, preserves existing configs, backs up CLAUDE.md/AGENTS.md.
 
-**Skip condition:** If `.claude/agents/` and `.claude/skills/` already exist with the expected file counts (12+ agents, 20+ skills), skip Phase 0 entirely and proceed to Phase 1 DETECT.
+**If harness files are already present** (`.claude/agents/` and `.claude/skills/` exist with 12+ agents and 20+ skills), skip Phase 0 and proceed directly to Phase 1 DETECT.
 
-1. **Clone the kit repo:**
-   ```bash
-   TMPDIR="/tmp/vc-setup-$(date +%s)"
-   git clone --depth 1 https://github.com/withkynam/vibecode-pro-max-kit.git "$TMPDIR"
-   ```
-   If clone fails: print error, suggest checking network/auth, stop.
+**If harness files are NOT present**, tell the user to run the installer first:
+```
+curl -fsSL https://raw.githubusercontent.com/withkynam/vibecode-pro-max-kit/main/install.sh | bash
+```
 
-2. **Scan for existing harness files** in the current project. Classify each target:
-
-   | Target | If missing | If exists |
-   |--------|-----------|-----------|
-   | `.claude/agents/` | Copy from kit | **Merge**: copy only missing agent files, skip existing |
-   | `.claude/skills/` | Copy from kit | **Merge**: copy only missing skill dirs, skip existing |
-   | `.claude/hooks/` | Copy from kit | **Merge**: copy only missing hooks, skip existing |
-   | `.claude/settings.json` | Copy from kit | **Preserve existing** (user has custom hook config) |
-   | `.codex/agents/` | Copy from kit | **Merge**: copy only missing files |
-   | `.codex/hooks/` | Copy from kit | **Merge**: copy only missing files |
-   | `.codex/hooks.json` | Copy from kit | **Preserve existing** |
-   | `.codex/config.toml` | Copy from kit | **Preserve existing** |
-   | `CLAUDE.md` | Copy from kit | **Backup** to `CLAUDE.md.pre-vibecode`, then install kit version. Tell user: "Your original CLAUDE.md was backed up. Move any custom instructions to process/context/all-context.md." |
-   | `AGENTS.md` | Copy from kit | **Backup** to `AGENTS.md.pre-vibecode`, then install kit version |
-   | `process/_seeds/` | Copy from kit | **Overwrite** (seeds are managed reference) |
-   | `process/development-protocols/` | Copy from kit | **Overwrite** (managed system files) |
-   | `process/context/` | Skip (created in SCAFFOLD) | **Preserve** (user content) |
-   | `process/features/` | Skip (created in SCAFFOLD) | **Preserve** (user content) |
-   | `process/general-plans/` | Skip (created in SCAFFOLD) | **Preserve** (user content) |
-
-3. **Create symlinks:**
-   - `.agents/skills -> ../.claude/skills` (create `.agents/` dir if missing)
-   - If symlink already exists and points correctly: skip
-
-4. **Copy vc-manifest.json** from kit (needed for future vc-update).
-
-5. **Write `.vc-version`** with the kit's manifest version.
-
-6. **Clean up:** Remove `$TMPDIR`.
-
-7. **Print bootstrap summary:**
-   ```
-   vc-setup bootstrap complete:
-     Installed: 12 agents, 32 skills, 7 hooks, 6 protocols, 17 seeds
-     Preserved: .claude/settings.json (existing), 3 custom hooks
-     Backed up: CLAUDE.md → CLAUDE.md.pre-vibecode
-     Symlink: .agents/skills → ../.claude/skills
-
-   Proceeding to DETECT...
-   ```
+Then re-run vc-setup.
 
 ### Phase 1: DETECT
 

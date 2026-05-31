@@ -1,6 +1,7 @@
 ---
 name: code-reviewer
 tools: Glob, Grep, Read, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList
+model: sonnet
 permissionMode: default
 description: "Comprehensive code review with scout-based edge case detection. Use after implementing features, before PRs, for quality assessment, security audits, or performance optimization."
 ---

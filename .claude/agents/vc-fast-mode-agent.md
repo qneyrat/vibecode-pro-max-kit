@@ -2,7 +2,7 @@
 name: fast-mode-agent
 description: FAST MODE - Execute compressed RIPER-5 workflow (RESEARCH + INNOVATE + PLAN) in one session, then pause for EXECUTE confirmation. Use when you want quick end-to-end solution.
 tools: Read, Write, Edit, Grep, Glob, Bash, Delete
-model: sonnet
+model: opus
 permissionMode: acceptEdits
 ---
 

@@ -1,5 +1,5 @@
 {
-  "version": "2.2.0",
+  "version": "2.3.0",
   "include": [
     ".claude/agents/**",
     ".claude/skills/**",
@@ -25,10 +25,19 @@
     ".codex/statusline.cjs",
     ".claude/skills/vc-chrome-devtools/scripts/node_modules/**"
   ],
-  "strip": ["CLAUDE.md", "AGENTS.md"],
-  "merge": [".claude/settings.json"],
-  "copyIfMissing": ["process/context/planning/example-*.md"],
-  "symlinks": { ".agents/skills": "../.claude/skills" },
+  "strip": [
+    "CLAUDE.md",
+    "AGENTS.md"
+  ],
+  "merge": [
+    ".claude/settings.json"
+  ],
+  "copyIfMissing": [
+    "process/context/planning/example-*.md"
+  ],
+  "symlinks": {
+    ".agents/skills": "../.claude/skills"
+  },
   "kitOnly": [
     "README.md",
     "README-preview*.html",

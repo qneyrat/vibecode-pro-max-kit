@@ -116,25 +116,80 @@ Version bump semantics:
          - MCP server instructions (project-specific config)
          - Project-specific routing rules
          - Absolute paths (`/Users/...`)
-         - Product name references ("Flowser", "flowser-turborepo")
+         - Product name references (the project's product name and repo/directory name)
       5. Verify the result is harness-only methodology with no project leaks.
     - Update `vc-manifest.json`: bump `version` field per the chosen bump type. **No other manifest changes needed** -- glob patterns are stable, new files are automatically included.
     - Create symlinks if missing (`.agents/skills -> ../.claude/skills`).
 
 ### Step 8: Leak Detection
 
-13. Verify no project-specific content leaked into the kit repo:
+13. Verify no project-specific content leaked into the kit repo. This is a
+    **resolved-set, two-check** gate that scans the full shipped TEXT surface, not
+    just `CLAUDE.md`/`AGENTS.md`.
 
-```bash
-# Must return empty -- any matches indicate leaked content
-grep -ri "flowser\|tRPC\|Prisma\|Supabase\|CloakBrowser\|OpenClaw" CLAUDE.md AGENTS.md
+    **Resolve the shipped set** via the kit's resolver, then restrict to TEXT
+    surfaces:
 
-# Must return empty -- no absolute paths
-grep -r "/Users/" .
-```
+    ```bash
+    node <kitRepoPath>/resolve-manifest.mjs --root <kitRepoPath> --json
+    ```
+
+    Take the resolved `files` and keep only TEXT surfaces:
+    - `.claude/skills/**` matching `*.md`, `*.cjs`, `*.mjs`, `*.py`, `*.js`, `*.json`
+    - `.claude/agents/**` matching `*.md`
+    - `.codex/**`
+    - `process/development-protocols/**`
+    - plus `CLAUDE.md`, `AGENTS.md`
+
+    Exclude binaries and `**/node_modules/**`.
+
+    **Check (a) -- product-name grep over the resolved text set.** Scan for the
+    product names in the grep below ONLY. `tRPC`/`Prisma` are DROPPED from this
+    skill-prose scan to avoid false positives in legitimate generic test guidance;
+    the hosted-database product name is KEPT (see the pattern):
+
+    ```bash
+    grep -rIin "flowser\|CloakBrowser\|OpenClaw\|Supabase" <resolved-text-files>
+    ```
+
+    Allowlist the Bucket-4 lines that MUST keep the literal to function (otherwise
+    the gate flags itself): `author: flowser` frontmatter; the `isFlowserActivePlanPath`
+    identifier; this skill's OWN scrub-grep pattern lines below; the new validator's
+    own pattern strings; and the one internal plan-generation validation comment in
+    `session-init.cjs`.
+
+    **Check (b) -- non-portable context-path grep:** any concrete backticked
+    `process/context/...` file reference in the resolved text set, MINUS the
+    shipped/seeded survivors, is a dangling-link leak → FAIL with file:line.
+    Survivors (allowed): `process/context/all-context.md`,
+    `process/context/tests/all-tests.md`,
+    `process/context/planning/example-simple-prd.md`,
+    `process/context/planning/example-complex-prd.md`, and any
+    `process/context/planning/example-*` glob. Portable directory refs (e.g.
+    `process/context/tests/`) and the `process/context/...` placeholder are fine.
+
+    **Keep the existing narrow `CLAUDE.md`/`AGENTS.md` grep** (this stays as-is on
+    just those two files; `tRPC`/`Prisma` plus the hosted-database product name all
+    REMAIN here, as shown in the pattern below):
+
+    ```bash
+    # Must return empty -- any matches indicate leaked content
+    grep -ri "flowser\|tRPC\|Prisma\|Supabase\|CloakBrowser\|OpenClaw" CLAUDE.md AGENTS.md
+
+    # Must return empty -- no absolute paths
+    grep -r "/Users/" .
+    ```
+
+    NOTE: the brand grep matches product names ONLY. It does NOT match
+    `.ck.json`/`.ckignore` -- those Phase-2 legacy-fallback literals are intentional
+    and must NOT be flagged. Do not add `ck`/`ckignore` to any leak grep.
+
+    The standing `validate-kit-portability.mjs` validator (run by `vc-audit-vc`)
+    mirrors checks (a) and (b) for between-release drift; this Step-8 gate is the
+    publish-time enforcement.
 
 14. If leak detection fails:
-    - Print the offending lines.
+    - Print the offending lines (file:line).
     - Revert the changes in the kit repo (`git -C <kitRepoPath> checkout .`).
     - STOP and report the leak. Do NOT commit or push.
 

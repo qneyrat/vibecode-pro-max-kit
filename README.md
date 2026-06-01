@@ -4,7 +4,11 @@
   <a href="docs/i18n/README.ja-JP.md">日本語</a> |
   <a href="docs/i18n/README.ko-KR.md">한국어</a> |
   <a href="docs/i18n/README.vi-VN.md">Tiếng Việt</a> |
-  <a href="docs/i18n/README.pt-BR.md">Portugues</a>
+  <a href="docs/i18n/README.pt-BR.md">Português</a> |
+  <a href="docs/i18n/README.es.md">Español</a> |
+  <a href="docs/i18n/README.de.md">Deutsch</a> |
+  <a href="docs/i18n/README.fr.md">Français</a> |
+  <a href="docs/i18n/README.hi.md">हिंदी</a>
 </p>
 
 <div align="center">

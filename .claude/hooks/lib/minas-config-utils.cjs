@@ -851,7 +851,7 @@ function resolveNamingPattern(planConfig, gitBranch) {
   if (!validation.valid) {
     // Log warning but return pattern anyway (fail-safe)
     if (process.env.CK_DEBUG) {
-      console.error(`[vc-config] Warning: ${validation.error}`);
+      console.error(`[minas-config] Warning: ${validation.error}`);
     }
   }
 

@@ -140,11 +140,11 @@ your-project/
 │   │   ├── minas-security/
 │   │   ├── minas-scout/
 │   │   └── ...
-│   ├── hooks/               # 🪝 7 lifecycle hooks
-│   │   ├── privacy-block.cjs
-│   │   ├── scout-block.cjs
+│   ├── hooks/               # 🪝 5 lifecycle hooks
+│   │   ├── session-init.cjs
+│   │   ├── subagent-init.cjs
 │   │   └── ...
-│   └── settings.json        # ⚙️ merged with yours, never overwritten
+│   └── settings.json        # ⚙️ permissions.deny + hooks (merged with yours)
 ├── .agents/
 │   └── skills -> ../.claude/skills   # 🔗 symlink for other agents
 └── .minas/
@@ -1116,17 +1116,17 @@ When a topic accumulates 5+ artifacts, it gets its own **feature folder** — a 
 
 <br>
 
-### 🪝 7 Hooks
+### 🪝 5 Hooks
 
 | Hook | What it does |
 |------|-------------|
-| 🔐 **Privacy guardrails** | Blocks `.env`, credentials, SSH keys. Requires explicit approval |
-| 🚫 **Scout blocker** | Prevents agent from wandering into `node_modules/`, `dist/`. Gitignore-syntax `.ckignore` |
 | 🧠 **Session init** | Detects stack, injects env vars, recovers approval gates after compaction |
 | 💉 **Subagent context** | Injects ~200 token compact context block into every subagent |
 | ✨ **Edit quality** | After 5+ edits, nudges to run code-simplifier (non-blocking, throttled) |
 | 📛 **Descriptive naming** | Language-aware file naming conventions on every Write |
 | 📊 **Usage tracking** | Session metrics and token awareness |
+
+> 🔐 **Privacy & path guardrails** are no longer hooks — they use Claude Code's native [`permissions.deny`](https://code.claude.com/docs/en/settings) in `settings.json` to block reads of `.env`, credentials, SSH keys, and noise dirs (`node_modules/`, `dist/`, …). Native rules mean zero per-command overhead and no false positives on Bash strings.
 
 <br>
 

@@ -84,7 +84,7 @@ function rotateIfNeeded() {
 
 /**
  * Log a hook event
- * @param {string} hookName - Hook filename (e.g., 'scout-block')
+ * @param {string} hookName - Hook filename (e.g., 'session-init')
  * @param {object} data - Log data { event?, tool?, target?, note?, dur?, status, exit?, error? }
  */
 function logHook(hookName, data) {

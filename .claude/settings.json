@@ -1,5 +1,35 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(**/node_modules/**)",
+      "Read(**/dist/**)",
+      "Read(**/build/**)",
+      "Read(**/.next/**)",
+      "Read(**/.nuxt/**)",
+      "Read(**/__pycache__/**)",
+      "Read(**/.venv/**)",
+      "Read(**/venv/**)",
+      "Read(**/vendor/**)",
+      "Read(**/target/**)",
+      "Read(**/.git/**)",
+      "Read(**/coverage/**)",
+      "Read(**/.env)",
+      "Read(**/.env.local)",
+      "Read(**/.env.*.local)",
+      "Read(**/.env.development)",
+      "Read(**/.env.production)",
+      "Read(**/.env.staging)",
+      "Read(**/.env.test)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/id_rsa)",
+      "Read(**/id_ed25519)",
+      "Read(**/*credentials*)",
+      "Read(**/secret*.yaml)",
+      "Read(**/secret*.yml)"
+    ]
+  },
   "hooks": {
     "SessionStart": [
       {
@@ -29,19 +59,6 @@
           {
             "type": "command",
             "command": "node .claude/hooks/descriptive-name.cjs"
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Glob|Grep|Read|Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/scout-block.cjs"
-          },
-          {
-            "type": "command",
-            "command": "node .claude/hooks/privacy-block.cjs"
           }
         ]
       }

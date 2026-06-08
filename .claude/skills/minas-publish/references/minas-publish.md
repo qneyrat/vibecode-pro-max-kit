@@ -12,7 +12,7 @@ Create this file in the project root to tell minas-publish where the kit repo ch
 }
 ```
 
-- The path must point to a git checkout of `github.com/withkynam/minas-kit.git`
+- The path must point to a git checkout of `github.com/qneyrat/vibecode-pro-max-kit.git`
 - The checkout must have `minas-manifest.json` at its root
 - If missing, the skill asks the user for the path interactively
 - Add `.minas-publish-config` to `.gitignore` -- it contains a local machine path
@@ -205,7 +205,7 @@ Publish v2.2.0? (patch/minor/major to change, abort to cancel)
 ```
 minas-publish complete: v2.1.0 -> v2.2.0
 
-Published to: github.com/withkynam/minas-kit.git
+Published to: github.com/qneyrat/vibecode-pro-max-kit.git
 Tag: v2.2.0
 Commit: abc1234
 

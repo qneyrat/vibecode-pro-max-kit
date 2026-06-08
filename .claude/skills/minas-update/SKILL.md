@@ -38,7 +38,7 @@ Read the file `.minas-version` in the project root.
 
 ```bash
 TMPDIR="/tmp/minas-update-$(date +%s)"
-git clone --depth 1 https://github.com/withkynam/minas-kit.git "$TMPDIR"
+git clone --depth 1 https://github.com/qneyrat/vibecode-pro-max-kit.git "$TMPDIR"
 ```
 
 If the clone fails (network error, auth error, repo not found):

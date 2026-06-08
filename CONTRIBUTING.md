@@ -88,8 +88,8 @@ Fixes for validation scripts, install logic, seed templates, or any other existi
 2. **Clone** your fork locally:
 
    ```bash
-   git clone https://github.com/<your-username>/minas-kit.git
-   cd minas-kit
+   git clone https://github.com/<your-username>/vibecode-pro-max-kit.git
+   cd vibecode-pro-max-kit
    ```
 
 3. **Install** the harness into a test project to verify everything works:

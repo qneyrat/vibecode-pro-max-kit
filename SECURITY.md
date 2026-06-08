@@ -22,7 +22,7 @@
 
 Instead, use GitHub Security Advisories to report vulnerabilities privately:
 
-[Report a vulnerability](https://github.com/withkynam/minas-kit/security/advisories/new)
+[Report a vulnerability](https://github.com/qneyrat/vibecode-pro-max-kit/security/advisories/new)
 
 > **Note:** Private Vulnerability Reporting must be enabled in repository settings for the "Report a vulnerability" button to appear.
 

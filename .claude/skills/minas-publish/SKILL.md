@@ -15,7 +15,7 @@ Push harness improvements from the current development repo to the remote kit re
 
 ## Prerequisites
 
-- Local checkout of the kit repo (`git clone git@github.com:withkynam/minas-kit.git`)
+- Local checkout of the kit repo (`git clone git@github.com:qneyrat/vibecode-pro-max-kit.git`)
 - `.minas-publish-config` file in the current repo root (see Configuration below)
 - Git push access to the remote kit repo
 
@@ -235,7 +235,7 @@ minas-publish complete
 ===================
 Version:       v2.2.0 (was v2.1.0)
 Files changed: 4
-Remote:        git@github.com:withkynam/minas-kit.git
+Remote:        git@github.com:qneyrat/vibecode-pro-max-kit.git
 Tag:           v2.2.0
 Release:       https://github.com/<owner>/<repo>/releases/tag/v2.2.0
 ```

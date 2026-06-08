@@ -35,7 +35,7 @@ The `install.sh` script handles fetching and installing harness files before min
 
 **If harness files are NOT present**, tell the user to run the installer first:
 ```
-curl -fsSL https://raw.githubusercontent.com/withkynam/minas-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/qneyrat/vibecode-pro-max-kit/main/install.sh | bash
 ```
 
 Then re-run minas-setup.

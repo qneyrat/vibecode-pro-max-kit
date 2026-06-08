@@ -6,9 +6,7 @@
     ".claude/skills/**/.??*",
     ".claude/hooks/**",
     ".claude/settings.json",
-    ".codex/**",
-    "CLAUDE.md",
-    "AGENTS.md",
+    ".minas/CLAUDE.md",
     ".minas/process/development-protocols/**",
     ".minas/process/context/planning/example-*.md",
     ".minas/process/_seeds/**",
@@ -22,8 +20,7 @@
     ".minas/process/general-plans/**",
     "**/.git/**",
     "**/.logs/**",
-    ".codex/statusline.cjs",
-    ".claude/skills/vc-chrome-devtools/scripts/node_modules/**"
+    ".claude/skills/minas-chrome-devtools/scripts/node_modules/**"
   ],
   "strip": [],
   "merge": [

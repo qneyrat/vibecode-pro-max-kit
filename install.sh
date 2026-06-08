@@ -3,13 +3,13 @@ set -euo pipefail
 
 # minas-kit installer
 # Clean install with backup for both new and existing projects.
-# Replaces .claude/, .codex/, .agents/, CLAUDE.md, AGENTS.md with kit versions.
-# Preserves: process/ (user content), .claude/settings.json (user config).
-# After this script, run Claude Code and say "Run vc-setup" to
-# auto-detect your project, scaffold process/, and populate context.
+# Replaces .claude/, .agents/ with kit versions.
+# Preserves: .minas/process/ (user content), .claude/settings.json (user config).
+# After this script, run Claude Code and say "Run minas-setup" to
+# auto-detect your project, scaffold .minas/process/, and populate context.
 
-REPO="https://github.com/withkynam/minas-kit.git"
-TMPDIR="/tmp/vc-kit-install-$$"
+REPO="https://github.com/qneyrat/vibecode-pro-max-kit.git"  # tolerated: external repo URL, not branding
+TMPDIR="/tmp/minas-kit-install-$$"
 BACKUP_DIR=".minas-backup"
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -38,7 +38,7 @@ echo "  Fetching kit..."
 git clone --depth 1 --quiet "$REPO" "$TMPDIR"
 
 # Read version from manifest
-VERSION=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/vc-manifest.json','utf8')).version)" 2>/dev/null || echo "unknown")
+VERSION=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/minas-manifest.json','utf8')).version)" 2>/dev/null || echo "unknown")
 echo "  Kit version: $VERSION"
 echo ""
 
@@ -73,26 +73,20 @@ SYMLINKS_JSON=$(echo "$MANIFEST_JSON" | node -e "
 # Backup existing setup (if any)
 # ══════════════════════════════════════════════════════
 HAS_EXISTING=false
-if [ -d ".claude" ] || [ -d ".codex" ] || [ -d ".agents" ] || [ -f "CLAUDE.md" ] || [ -f "AGENTS.md" ]; then
+if [ -d ".claude" ] || [ -d ".agents" ]; then
   HAS_EXISTING=true
   echo -e "  ${YELLOW}Existing setup detected.${NC} Backing up..."
   mkdir -p "$BACKUP_DIR"
 
   # Back up directories
   [ -d ".claude" ] && cp -R .claude "$BACKUP_DIR/.claude" && echo -e "    ${YELLOW}Backed up${NC} .claude/"
-  [ -d ".codex" ] && cp -R .codex "$BACKUP_DIR/.codex" && echo -e "    ${YELLOW}Backed up${NC} .codex/"
   [ -d ".agents" ] && cp -R .agents "$BACKUP_DIR/.agents" && echo -e "    ${YELLOW}Backed up${NC} .agents/"
-
-  # Back up root protocol files
-  [ -f "CLAUDE.md" ] && cp CLAUDE.md "$BACKUP_DIR/CLAUDE.md" && echo -e "    ${YELLOW}Backed up${NC} CLAUDE.md"
-  [ -f "AGENTS.md" ] && cp AGENTS.md "$BACKUP_DIR/AGENTS.md" && echo -e "    ${YELLOW}Backed up${NC} AGENTS.md"
-  [ -f "GUIDE.md" ] && cp GUIDE.md "$BACKUP_DIR/GUIDE.md" && echo -e "    ${YELLOW}Backed up${NC} GUIDE.md"
 
   echo -e "    Backup at: ${CYAN}$BACKUP_DIR/${NC}"
   echo ""
 
   # Clean slate — remove old agent tooling dirs
-  rm -rf .claude .codex .agents
+  rm -rf .claude .agents
 fi
 
 # ══════════════════════════════════════════════════════
@@ -152,8 +146,8 @@ done <<< "$SYMLINKS_JSON"
 # ══════════════════════════════════════════════════════
 # Write snapshot + version
 # ══════════════════════════════════════════════════════
-echo "$FILES" | sort > .vc-installed-files
-echo "$VERSION" > .vc-version
+echo "$FILES" | sort > .minas-installed-files
+echo "$VERSION" > .minas-version
 
 cleanup
 
@@ -167,7 +161,7 @@ HOOK_COUNT=$(ls .claude/hooks/*.cjs 2>/dev/null | wc -l | tr -d ' ')
 echo ""
 echo -e "  ${GREEN}Install complete.${NC} (v$VERSION)"
 echo ""
-echo -e "    ${CYAN}Agents${NC}:     $AGENT_COUNT (Claude Code + Codex)"
+echo -e "    ${CYAN}Agents${NC}:     $AGENT_COUNT (Claude Code)"
 echo -e "    ${CYAN}Skills${NC}:     $SKILL_COUNT"
 echo -e "    ${CYAN}Hooks${NC}:      $HOOK_COUNT"
 echo -e "    ${CYAN}Files${NC}:      $INSTALLED_COUNT installed"
@@ -181,15 +175,15 @@ fi
 if [ "$HAS_EXISTING" = true ]; then
   echo ""
   echo -e "  ${YELLOW}Previous setup backed up to ${CYAN}$BACKUP_DIR/${NC}"
-  echo -e "  ${YELLOW}Your process/ directory was preserved (plans, context, features).${NC}"
+  echo -e "  ${YELLOW}Your .minas/process/ directory was preserved (plans, context, features).${NC}"
 fi
 
 echo ""
 echo "  Next:"
 echo "    1. Run: claude"
-echo '    2. Say: "Run vc-setup"'
+echo '    2. Say: "Run minas-setup"'
 echo ""
-echo "  vc-setup will auto-detect your project, scaffold the process/"
+echo "  minas-setup will auto-detect your project, scaffold the .minas/process/"
 echo "  directory, deep-scan your codebase, and populate context with"
 echo "  your real architecture, patterns, test commands, and conventions."
 echo ""

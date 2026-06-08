@@ -90,9 +90,6 @@ const DEFAULT_CONFIG = {
     'dev-rules-reminder': true,
     'usage-context-awareness': true,
     'context-tracking': true,
-    'post-edit-simplify-reminder': true,
-    'task-completed-handler': true,
-    'teammate-idle-handler': true,
     'session-state': true
   }
 };

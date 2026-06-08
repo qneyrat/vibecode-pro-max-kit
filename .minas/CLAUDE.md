@@ -82,6 +82,7 @@ Decision: existing feature folder or named multi-phase project → use/create a 
 - **YAGNI / KISS / DRY.** Don't add features, abstractions, error handling, or backward-compat shims beyond what the task requires. Three similar lines beat a premature abstraction.
 - **Comments**: default to none; only explain a non-obvious *why*. Don't narrate what the code does.
 - **Path discipline**: plans/docs go under `.minas/process/` per the routing above. Don't scatter ad-hoc docs.
+- **File names**: follow the language's ecosystem convention — kebab-case for JS/TS/Python/shell, PascalCase for C#/Java/Kotlin/Swift, snake_case for Go/Rust.
 - Match the user's language in conversation. Keep responses concise.
 - RIPER-5 mode discipline is documented here, not enforced by hooks. Use native Plan Mode for the PLAN leg.
 

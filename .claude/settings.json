@@ -52,17 +52,6 @@
         ]
       }
     ],
-    "PreToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node .claude/hooks/descriptive-name.cjs"
-          }
-        ]
-      }
-    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write|MultiEdit",
@@ -70,10 +59,6 @@
           {
             "type": "command",
             "command": "node .claude/hooks/session-state.cjs"
-          },
-          {
-            "type": "command",
-            "command": "node .claude/hooks/post-edit-simplify-reminder.cjs"
           }
         ]
       }

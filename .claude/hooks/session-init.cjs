@@ -28,7 +28,7 @@ try {
     isHookEnabled
   } = require('./lib/minas-config-utils.cjs');
   const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
-  const { loadState, refreshStatuslineSnapshot } = require('./lib/session-state-manager.cjs');
+  const { refreshStatuslineSnapshot } = require('./lib/session-state-manager.cjs');
   const { createEmptyActivitySnapshot } = require('./lib/statusline-session-cache.cjs');
 
   // Early exit if hook disabled in config
@@ -312,24 +312,6 @@ async function main() {
       if (shadowedCleanup.kept.length > 0) {
         console.log(`[!] Kept ${shadowedCleanup.kept.length} skill(s) for manual review (content differs): ${shadowedCleanup.kept.join(', ')}`);
         console.log(`    Review .claude/skills/.shadowed/ and merge changes manually.`);
-      }
-    }
-
-    if (sessionStateEnabled && (source === 'startup' || source === 'compact')) {
-      const previousState = loadState(process.cwd());
-      if (previousState) {
-        if (source === 'compact') {
-          console.log('\n--- Session State (Post-Compaction Recovery) ---');
-          console.log(previousState);
-          console.log('--- End Session State ---\n');
-          console.log('Context was compacted. Above is your last saved progress. Resume from where you left off.');
-          console.log('IMPORTANT: Re-read active plan files and todo list. Do NOT re-do completed work.');
-        } else {
-          console.log('\n--- Previous Session State ---');
-          console.log(previousState);
-          console.log('--- End Session State ---\n');
-          console.log('Review above state from your last session. Continue where you left off or start fresh.');
-        }
       }
     }
 

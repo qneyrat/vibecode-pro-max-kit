@@ -5,16 +5,14 @@ try {
   const fs = require('fs');
   const { isHookEnabled } = require('./lib/minas-config-utils.cjs');
   const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
-  const { persistState, refreshStatuslineSnapshot } = require('./lib/session-state-manager.cjs');
+  const { refreshStatuslineSnapshot } = require('./lib/session-state-manager.cjs');
 
-  const PERSIST_EVENTS = new Set(['Stop', 'SubagentStop']);
   const REFRESH_EVENTS = new Set(['PostToolUse', 'Stop', 'SubagentStop']);
 
   async function handleSessionStateEvent(payload = {}, deps = {}) {
     const {
       enabled = isHookEnabled('session-state'),
-      refresh = refreshStatuslineSnapshot,
-      persist = persistState
+      refresh = refreshStatuslineSnapshot
     } = deps;
 
     if (!enabled) {
@@ -27,13 +25,7 @@ try {
     }
 
     const eventType = payload.hook_event_name || payload.event || 'unknown';
-    let persisted = false;
     let refreshed = false;
-
-    if (PERSIST_EVENTS.has(eventType)) {
-      const result = persist(payload, { eventType });
-      persisted = Boolean(result && result.success);
-    }
 
     if (REFRESH_EVENTS.has(eventType)) {
       const result = await refresh(payload);
@@ -42,9 +34,8 @@ try {
 
     return {
       ok: true,
-      action: persisted || refreshed ? 'handled' : 'noop',
+      action: refreshed ? 'handled' : 'noop',
       eventType,
-      persisted,
       refreshed
     };
   }

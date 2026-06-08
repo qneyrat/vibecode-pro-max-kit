@@ -7,6 +7,14 @@ set -euo pipefail
 # Preserves: .minas/process/ (user content), .claude/settings.json (user config).
 # After this script, run Claude Code and say "Run minas-setup" to
 # auto-detect your project, scaffold .minas/process/, and populate context.
+#
+# Source resolution (where the kit files are copied FROM):
+#   Remote (default):  curl -fsSL .../install.sh | bash   # clones the repo
+#   Local checkout:    /path/to/kit/install.sh            # auto-detects local source
+#                      /path/to/kit/install.sh --local    # force local source
+#                      ./install.sh --source /path/to/kit # explicit source dir
+# It always installs INTO the current directory, so cd into the target
+# project first.
 
 REPO="https://github.com/qneyrat/vibecode-pro-max-kit.git"  # tolerated: external repo URL, not branding
 TMPDIR="/tmp/minas-kit-install-$$"
@@ -18,6 +26,33 @@ NC='\033[0m'
 
 cleanup() { rm -rf "$TMPDIR" 2>/dev/null; }
 trap cleanup EXIT
+
+# Resolve this script's own directory, so a local checkout can install from
+# itself without cloning. When piped via `curl | bash`, BASH_SOURCE is not a
+# real file on disk, so SCRIPT_DIR stays empty and we fall back to cloning.
+SCRIPT_DIR=""
+if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]:-}" ]; then
+  SCRIPT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
+fi
+
+# Parse args: --local (use this checkout) / --source <dir> (explicit kit dir).
+SRC_DIR=""
+FORCE_LOCAL=false
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --local) FORCE_LOCAL=true; shift ;;
+    --source) SRC_DIR="${2:-}"; shift 2 ;;
+    --source=*) SRC_DIR="${1#--source=}"; shift ;;
+    -h|--help)
+      echo "Usage: install.sh [--local | --source <kit-dir>]"
+      echo "  (no args)            clone the kit from GitHub and install"
+      echo "  --local              install from this checkout (auto when run locally)"
+      echo "  --source <kit-dir>   install from an explicit kit directory"
+      echo "Installs into the current directory. cd into your target project first."
+      exit 0 ;;
+    *) echo "  Unknown argument: $1 (try --help)"; exit 1 ;;
+  esac
+done
 
 echo ""
 echo "  minas-kit installer"
@@ -33,19 +68,42 @@ if ! command -v node &>/dev/null; then
   exit 1
 fi
 
-# Clone kit to temp
-echo "  Fetching kit..."
-git clone --depth 1 --quiet "$REPO" "$TMPDIR"
+# ══════════════════════════════════════════════════════
+# Resolve source: local checkout or fresh clone
+# ══════════════════════════════════════════════════════
+if [ -z "$SRC_DIR" ] && [ "$FORCE_LOCAL" = true ]; then
+  SRC_DIR="$SCRIPT_DIR"
+elif [ -z "$SRC_DIR" ] && [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/minas-manifest.json" ]; then
+  # Auto-detect: install.sh was run from inside a kit checkout.
+  SRC_DIR="$SCRIPT_DIR"
+fi
+
+if [ -n "$SRC_DIR" ]; then
+  if [ ! -f "$SRC_DIR/minas-manifest.json" ] || [ ! -f "$SRC_DIR/resolve-manifest.mjs" ]; then
+    echo "  Error: '$SRC_DIR' is not a minas-kit checkout (manifest not found)."
+    exit 1
+  fi
+  SRC_DIR="$(cd -P "$SRC_DIR" && pwd)"
+  if [ "$SRC_DIR" = "$(pwd -P)" ]; then
+    echo "  Error: target is the kit source itself. cd into your project first."
+    exit 1
+  fi
+  echo -e "  Source: local checkout ${CYAN}$SRC_DIR${NC}"
+else
+  echo "  Fetching kit..."
+  git clone --depth 1 --quiet "$REPO" "$TMPDIR"
+  SRC_DIR="$TMPDIR"
+fi
 
 # Read version from manifest
-VERSION=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/minas-manifest.json','utf8')).version)" 2>/dev/null || echo "unknown")
+VERSION=$(node -e "console.log(JSON.parse(require('fs').readFileSync('$SRC_DIR/minas-manifest.json','utf8')).version)" 2>/dev/null || echo "unknown")
 echo "  Kit version: $VERSION"
 echo ""
 
 # ══════════════════════════════════════════════════════
 # Resolve manifest to get file list + metadata
 # ══════════════════════════════════════════════════════
-MANIFEST_JSON=$(node "$TMPDIR/resolve-manifest.mjs" --root "$TMPDIR" --json 2>/dev/null)
+MANIFEST_JSON=$(node "$SRC_DIR/resolve-manifest.mjs" --root "$SRC_DIR" --json 2>/dev/null)
 if [ -z "$MANIFEST_JSON" ]; then
   echo "  Error: Failed to resolve manifest. Check Node.js version (>= 22 required)."
   exit 1
@@ -125,7 +183,7 @@ while IFS= read -r file; do
 
   # Create parent directory and copy
   mkdir -p "$(dirname "$file")"
-  cp "$TMPDIR/$file" "$file"
+  cp "$SRC_DIR/$file" "$file"
   INSTALLED_COUNT=$((INSTALLED_COUNT + 1))
 done <<< "$FILES"
 

@@ -42,12 +42,12 @@
 🤝 Plans and specs are shareable — devs, PMs, and stakeholders review the same artifacts
 
 <p>
-  <a href="https://github.com/withkynam/minas-kit/stargazers"><img src="https://img.shields.io/github/stars/withkynam/minas-kit" alt="Stars"></a>
-  <a href="https://github.com/withkynam/minas-kit/network/members"><img src="https://img.shields.io/github/forks/withkynam/minas-kit" alt="Forks"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/withkynam/minas-kit" alt="License"></a>
-  <a href="https://github.com/withkynam/minas-kit/graphs/contributors"><img src="https://img.shields.io/github/contributors/withkynam/minas-kit" alt="Contributors"></a>
-  <a href="https://github.com/withkynam/minas-kit/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/withkynam/minas-kit/validate.yml" alt="CI"></a>
-  <a href="https://github.com/withkynam/minas-kit/commits/main"><img src="https://img.shields.io/github/last-commit/withkynam/minas-kit" alt="Last Commit"></a>
+  <a href="https://github.com/qneyrat/vibecode-pro-max-kit/stargazers"><img src="https://img.shields.io/github/stars/qneyrat/vibecode-pro-max-kit" alt="Stars"></a>
+  <a href="https://github.com/qneyrat/vibecode-pro-max-kit/network/members"><img src="https://img.shields.io/github/forks/qneyrat/vibecode-pro-max-kit" alt="Forks"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/qneyrat/vibecode-pro-max-kit" alt="License"></a>
+  <a href="https://github.com/qneyrat/vibecode-pro-max-kit/graphs/contributors"><img src="https://img.shields.io/github/contributors/qneyrat/vibecode-pro-max-kit" alt="Contributors"></a>
+  <a href="https://github.com/qneyrat/vibecode-pro-max-kit/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/qneyrat/vibecode-pro-max-kit/validate.yml" alt="CI"></a>
+  <a href="https://github.com/qneyrat/vibecode-pro-max-kit/commits/main"><img src="https://img.shields.io/github/last-commit/qneyrat/vibecode-pro-max-kit" alt="Last Commit"></a>
   <img src="https://img.shields.io/badge/agents-12-orange" alt="Agents">
   <img src="https://img.shields.io/badge/skills-32-purple" alt="Skills">
   <img src="https://img.shields.io/badge/tools-7_%E2%9C%93-38BDF8" alt="7 Tools">
@@ -98,11 +98,20 @@
 
 > **Run this inside your project folder.** Open a terminal and `cd` into the project you want the harness installed into *before* running the command — it installs into the current directory.
 >
-> Prefer to drive it from your agent? Open Claude Code or Codex **with that project folder as the working directory**, then paste the [full setup prompt](#-full-agent-setup-prompt) below.
+> Prefer to drive it from your agent? Open Claude Code **with that project folder as the working directory**, then paste the [full setup prompt](#-full-agent-setup-prompt) below.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/withkynam/minas-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/qneyrat/vibecode-pro-max-kit/main/install.sh | bash
 ```
+
+**Already have the kit cloned locally?** Install into any project from your local checkout — no network, no re-clone:
+
+```bash
+cd /path/to/your-project
+/path/to/vibecode-pro-max-kit/install.sh   # auto-detects the local kit as source
+```
+
+Running the checkout's own `install.sh` auto-detects its directory as the source. You can also force it with `--local`, or point at an explicit kit dir with `--source /path/to/kit`. It always installs into the current directory, so `cd` into the target project first.
 
 Then open Claude Code and say:
 
@@ -131,22 +140,23 @@ your-project/
 │   │   ├── minas-security/
 │   │   ├── minas-scout/
 │   │   └── ...
-│   └── hooks/               # 🪝 7 lifecycle hooks
-│       ├── privacy-block.cjs
-│       ├── scout-block.cjs
-│       └── ...
-├── .codex/
-│   └── agents/              # 🔄 Mirrored agents for Codex
-├── CLAUDE.md                # 📋 Orchestrator + routing rules
-├── AGENTS.md                # 📖 Agent registry
-└── .minas/process/                 # 🧠 Created by minas-setup (not install)
-    └── ...
+│   ├── hooks/               # 🪝 7 lifecycle hooks
+│   │   ├── privacy-block.cjs
+│   │   ├── scout-block.cjs
+│   │   └── ...
+│   └── settings.json        # ⚙️ merged with yours, never overwritten
+├── .agents/
+│   └── skills -> ../.claude/skills   # 🔗 symlink for other agents
+└── .minas/
+    ├── CLAUDE.md            # 📋 Orchestrator + protocol (loaded via SessionStart hook)
+    └── process/             # 🧠 protocols + seeds now; your plans & context added by minas-setup
+        └── ...
 ```
 
 - **Fresh project?** Installs the full harness, then `minas-setup` studies your codebase
 - **Existing `.claude/` config?** Backs up to `.minas-backup/`, installs fresh, restores your `settings.json`
-- **Existing `.minas/process/` directory?** Never touched by install — `minas-setup` handles migration intelligently
-- **Existing `CLAUDE.md`?** Backed up as `CLAUDE.md.pre-minas`, harness version installed
+- **Existing `.minas/process/` content?** Your plans, features, and context are never touched — `minas-setup` handles migration intelligently
+- **Your root `CLAUDE.md`?** Never touched — the harness ships its protocol in `.minas/CLAUDE.md`, injected each session by a SessionStart hook
 
 </details>
 
@@ -155,12 +165,12 @@ your-project/
 <details>
 <summary><strong>🤖 Full agent setup prompt</strong> (copy-paste this into Claude Code for maximum control)</summary>
 
-> **First, open Claude Code or Codex with your project folder as the working directory** (launch it from inside the project, or `cd` there first). The harness installs into the current directory, so this must be your project — then paste the prompt below.
+> **First, open Claude Code with your project folder as the working directory** (launch it from inside the project, or `cd` there first). The harness installs into the current directory, so this must be your project — then paste the prompt below.
 
 ```
 First, install the minas-kit agent harness by running this command:
 
-curl -fsSL https://raw.githubusercontent.com/withkynam/minas-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/qneyrat/vibecode-pro-max-kit/main/install.sh | bash
 
 After the install completes, run minas-setup to configure everything for this project.
 
@@ -1127,18 +1137,17 @@ your-project/
 ├── .claude/
 │   ├── agents/              # 🤖 12 agent definitions (.md)
 │   ├── skills/              # ⚡ 31 skill modules (each a directory with SKILL.md)
-│   └── hooks/               # 🪝 7 lifecycle hooks (.cjs)
-├── .codex/
-│   └── agents/              # 🔄 Mirrored for Codex compatibility
+│   ├── hooks/               # 🪝 7 lifecycle hooks (.cjs)
+│   └── settings.json        # ⚙️ Merged with yours, never overwritten
 ├── .agents/
-│   └── skills -> ../.claude/skills   # 🔗 Symlink for Codex discovery
-├── CLAUDE.md                # 📋 Orchestrator config + routing rules
-├── AGENTS.md                # 📖 Agent + skill registry
-└── .minas/process/
-    ├── context/             # 🧠 Auto-routed knowledge domains
-    ├── general-plans/       # 📋 Cross-cutting plans + reports
-    ├── features/            # 🏷️ Feature-scoped lifecycle folders
-    └── development-protocols/  # 📜 Shared workflow rules
+│   └── skills -> ../.claude/skills   # 🔗 Symlink for other agent runtimes
+└── .minas/
+    ├── CLAUDE.md            # 📋 Orchestrator config + routing rules (loaded via SessionStart hook)
+    └── process/
+        ├── context/             # 🧠 Auto-routed knowledge domains
+        ├── general-plans/       # 📋 Cross-cutting plans + reports
+        ├── features/            # 🏷️ Feature-scoped lifecycle folders
+        └── development-protocols/  # 📜 Shared workflow rules
 ```
 
 ---
@@ -1163,15 +1172,15 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 **Quick links:**
 
-- 🐛 [Report a bug](https://github.com/withkynam/minas-kit/issues/new?template=1.bug_report.yml)
-- 💡 [Request a feature](https://github.com/withkynam/minas-kit/issues/new?template=2.feature_request.yml)
-- ⚡ [Submit a skill](https://github.com/withkynam/minas-kit/issues/new?template=3.skill_submission.yml)
-- 🌐 [Add a translation](https://github.com/withkynam/minas-kit/issues/new?template=5.translation.yml)
+- 🐛 [Report a bug](https://github.com/qneyrat/vibecode-pro-max-kit/issues/new?template=1.bug_report.yml)
+- 💡 [Request a feature](https://github.com/qneyrat/vibecode-pro-max-kit/issues/new?template=2.feature_request.yml)
+- ⚡ [Submit a skill](https://github.com/qneyrat/vibecode-pro-max-kit/issues/new?template=3.skill_submission.yml)
+- 🌐 [Add a translation](https://github.com/qneyrat/vibecode-pro-max-kit/issues/new?template=5.translation.yml)
 
 <br>
 
-<a href="https://github.com/withkynam/minas-kit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=withkynam/minas-kit" alt="Contributors" />
+<a href="https://github.com/qneyrat/vibecode-pro-max-kit/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=qneyrat/vibecode-pro-max-kit" alt="Contributors" />
 </a>
 
 <br>
@@ -1186,11 +1195,11 @@ The difference: minas-kit focuses on the spec-driven development framework and s
 
 ## ⭐ Star History
 
-<a href="https://star-history.com/#withkynam/minas-kit&Date">
+<a href="https://star-history.com/#qneyrat/vibecode-pro-max-kit&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=withkynam/minas-kit&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=withkynam/minas-kit&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=withkynam/minas-kit&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=qneyrat/vibecode-pro-max-kit&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=qneyrat/vibecode-pro-max-kit&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=qneyrat/vibecode-pro-max-kit&type=Date" />
  </picture>
 </a>
 

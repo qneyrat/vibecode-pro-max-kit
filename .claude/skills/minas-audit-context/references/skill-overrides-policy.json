@@ -1,0 +1,11 @@
+{
+  "expectedValue": "name-only",
+  "fullDescriptionSkills": {
+    "minas-predict": "Opaque name (5-persona debate): keep the full description so the model can auto-select it by intent instead of relying on an explicit /predict call.",
+    "minas-repomix": "Opaque name (repo packing for LLM context): full description needed for the model to know when to reach for it by intent.",
+    "minas-scenario": "Opaque name (12-dimension edge-case generation): full description preserves intent-based auto-selection.",
+    "minas-tech-graph": "Opaque name (codebase tech/dependency graph): full description needed for intent-based discovery.",
+    "minas-watzup": "Opaque name (session handoff/state summary): full description preserves model auto-selection by intent.",
+    "minas-xia": "Opaque name (cross-repo comparison): full description needed for the model to select it by intent."
+  }
+}

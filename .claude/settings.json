@@ -30,6 +30,33 @@
       "Read(**/secret*.yml)"
     ]
   },
+  "skillOverrides": {
+    "minas:agent-browser": "name-only",
+    "minas:audit-context": "name-only",
+    "minas:audit-plans": "name-only",
+    "minas:audit-vc": "name-only",
+    "minas:autoresearch": "name-only",
+    "minas:chrome-devtools": "name-only",
+    "minas:context-engineering": "name-only",
+    "minas:debug": "name-only",
+    "minas:docs": "name-only",
+    "minas:docs-seeker": "name-only",
+    "minas:frontend-design": "name-only",
+    "minas:generate-context": "name-only",
+    "minas:generate-plan": "name-only",
+    "minas:mcp-management": "name-only",
+    "minas:merge-worktree": "name-only",
+    "minas:preview": "name-only",
+    "minas:problem-solving": "name-only",
+    "minas:publish": "name-only",
+    "minas:scout": "name-only",
+    "minas:security": "name-only",
+    "minas:sequential-thinking": "name-only",
+    "minas:setup": "name-only",
+    "minas:team": "name-only",
+    "minas:update": "name-only",
+    "minas:web-testing": "name-only"
+  },
   "hooks": {
     "SessionStart": [
       {

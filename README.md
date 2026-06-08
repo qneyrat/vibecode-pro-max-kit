@@ -1114,6 +1114,8 @@ When a topic accumulates 5+ artifacts, it gets its own **feature folder** — a 
 
 > 💡 Some skills (like `minas-xia`) were inspired by [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) by [@mrgoonie](https://github.com/mrgoonie). We focused on fewer, deeper skills instead of 80+.
 
+> ⚡ **Startup-context trim** — 25 self-explanatory skills are set to [`name-only`](https://code.claude.com/docs/en/settings) in `settings.json` (`skillOverrides`): their **name stays visible for routing and Claude can still invoke them**, but the description is dropped from startup context (~1k tokens saved). Six opaque-named skills keep full descriptions so the model can still auto-select them by intent: `minas-predict`, `minas-repomix`, `minas-scenario`, `minas-tech-graph`, `minas-watzup`, `minas-xia`. Needs Claude Code **v2.1.129+** — older versions ignore the key gracefully.
+
 <br>
 
 ### 🪝 2 Hooks

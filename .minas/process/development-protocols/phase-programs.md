@@ -43,8 +43,8 @@ Goal:
 - [state the real end goal in one or two sentences]
 
 Scope:
-- Start by reading `process/context/all-context.md`
-- Use `process/development-protocols/phase-programs.md`
+- Start by reading `.minas/process/context/all-context.md`
+- Use `.minas/process/development-protocols/phase-programs.md`
 - Treat this as a large multi-phase program, not a normal single-plan task
 - First do the necessary research to understand the whole problem space
 - First recommend:
@@ -68,14 +68,14 @@ Execution rule:
   research -> approval -> execute -> validate -> regression check -> durable capture -> commit -> inter-phase UPDATE PROCESS -> move-on
 - Re-research at the start of every phase before implementation
 - After validation, run regression checks against previously verified surfaces that overlap with this phase's blast radius
-- Commit execution changes via vc-git-manager before moving to the next phase
+- Commit execution changes via minas-git-manager before moving to the next phase
 - Run inter-phase UPDATE PROCESS to archive the completed phase and capture learnings
 - Do not mark a phase `✅ VERIFIED` without both phase evidence and regression evidence
 - If blocked, document the blocker, safest next action, and update later phase plans/reports so the work survives compaction
 
 Deliverables:
 - initial recommendation on plan shape, sequencing, and next actions
-- feature folder under `process/features/{feature}/`
+- feature folder under `.minas/process/features/{feature}/`
 - umbrella/orchestration plan
 - phase plans
 - durable reports and references as phases execute
@@ -96,7 +96,7 @@ boundary, and safety constraints.
 Shorter version for day-to-day reuse when the full template is overkill:
 
 ```text
-Build [NAME] as a phase program per process/development-protocols/phase-programs.md.
+Build [NAME] as a phase program per .minas/process/development-protocols/phase-programs.md.
 
 Goal: [1-2 sentences]
 
@@ -132,7 +132,7 @@ Before creating any plan files for a new large program, present a short recommen
 
    ```text
    SESSION GOAL: [PROGRAM NAME]
-   Charter + umbrella plan: process/features/{feature}/active/{umbrella-plan}.md
+   Charter + umbrella plan: .minas/process/features/{feature}/active/{umbrella-plan}.md
    Autonomy: Run autonomously under this persistent goal. Execute phases on your own
    recommendation via the 10-step loop in phase-programs.md; report conflicts, errors, and
    learnings in the phase report (the report is the communication channel, not a question).
@@ -141,7 +141,7 @@ Before creating any plan files for a new large program, present a short recommen
    Hard stop conditions / safety constraints:
    - [hard safety constraint 1 from the charter]
    - [hard safety constraint 2 from the charter]
-   Next phase: process/features/{feature}/active/{next-phase-plan}.md
+   Next phase: .minas/process/features/{feature}/active/{next-phase-plan}.md
    ```
 
    - the block must name the charter/umbrella plan path, state the autonomy rule (citing
@@ -167,7 +167,7 @@ When the user sets a persistent autonomous session-goal:
 - the safety boundary REPLACES the approval gate: never take irreversible or costful actions
   (deploys, live/costful provider gates, billing, destructive schema/data ops). These are DEFERRED
   AND REPORTED — never executed and never paused-on.
-- every step must stay rollback-able: commit each phase before the next, keep process/plan commits
+- every step must stay rollback-able: commit each phase before the next, keep .minas/process/plan commits
   separate from execution commits, and prefer disposable targets.
 - all other loop steps still apply unchanged: re-research at phase entry, validate, regression check,
   durable capture, commit, inter-phase UPDATE PROCESS, and honest phase status.
@@ -219,7 +219,7 @@ a time.
 
 For a phase program, create or confirm:
 
-1. a feature folder under `process/features/{feature}/`
+1. a feature folder under `.minas/process/features/{feature}/`
 2. one umbrella orchestration plan in that feature's `active/` folder, which **must include a
    Program Goal Charter** (see "Program Goal Charter" above)
 3. one plan file per phase in that feature's `active/` folder
@@ -229,7 +229,7 @@ For a phase program, create or confirm:
 Recommended folder layout:
 
 ```text
-process/features/{feature}/
+.minas/process/features/{feature}/
   active/
     phase-00-..._PLAN_...
     phase-01-..._PLAN_...
@@ -282,7 +282,7 @@ honest phase status) is already governed by this protocol's existing sections. D
 prose into the charter — the charter is program-specific intent and safety only, not workflow rules.
 
 A blank template plus a filled-in reference example live at
-`process/development-protocols/references/program-goal-charter-template.md`.
+`.minas/process/development-protocols/references/program-goal-charter-template.md`.
 
 ## Program Setup Sequence
 
@@ -347,8 +347,8 @@ For every phase, run this loop:
    - keep the parent or umbrella plan in sync when follow-up routing or phase sequencing changes
 
 8. **Commit checkpoint**
-   - if the phase produced implementation changes, recommend `vc-git-manager` for a logical execution commit before continuing
-   - keep process/plan/context artifact commits separate from execution commits
+   - if the phase produced implementation changes, recommend `minas-git-manager` for a logical execution commit before continuing
+   - keep .minas/process/plan/context artifact commits separate from execution commits
    - do not defer the commit to a later phase -- stale worktrees make regression checking unreliable
 
 9. **Inter-phase UPDATE PROCESS**
@@ -400,7 +400,7 @@ Minimum re-research inputs:
 - selected phase plan
 - latest phase report for the same phase, if any
 - latest upstream phase reports that this phase depends on
-- relevant `process/context/` docs
+- relevant `.minas/process/context/` docs
 - recent git diff or commit history if the program spans many turns
 
 ## Durable Knowledge Rule
@@ -411,7 +411,7 @@ Write durable findings to:
 
 - `reports/` for execution facts, commands, results, blockers, and decisions
 - `references/` for research that should inform future phases
-- `process/context/` for stable operational knowledge that all future agents should know
+- `.minas/process/context/` for stable operational knowledge that all future agents should know
 
 ## Default Closeout Shape For Phase Programs
 
@@ -484,7 +484,7 @@ When a regression is detected in step 5:
 |---|---|---|
 | product breakage | previously working product behavior is broken | API endpoint returns 500, container fails to start |
 | test breakage | previously passing test now fails | Vitest suite red, Playwright spec timeout |
-| harness drift | process/agent/skill artifacts are inconsistent | context doc references a deleted file |
+| harness drift | .minas/process/agent/skill artifacts are inconsistent | context doc references a deleted file |
 | stale command drift | a previously recorded command no longer works | pnpm script renamed, env var removed |
 
 **Decision tree:**

@@ -65,14 +65,14 @@ function listFiles(relPath, extension) {
 }
 
 function getGroupEntrypoint(group) {
-  const canonical = `process/context/${group}/all-${group}.md`;
+  const canonical = `.minas/process/context/${group}/all-${group}.md`;
   return exists(canonical) ? canonical : null;
 }
 
 const legacyEntrypoints = [
-  "process/context/README.md",
-  "process/context/tests.md",
-  ...walk("process/context", (rel) => /\/README\.md$/.test(rel) || /\/[^/]+-README\.md$/.test(rel)),
+  ".minas/process/context/README.md",
+  ".minas/process/context/tests.md",
+  ...walk(".minas/process/context", (rel) => /\/README\.md$/.test(rel) || /\/[^/]+-README\.md$/.test(rel)),
 ];
 
 function parseFrontmatter(file) {
@@ -145,11 +145,11 @@ for (const agent of codexAgents) {
   if (!claudeAgents.includes(agent)) fail(`.claude/agents/${agent}.md missing`);
 }
 
-const router = "process/context/all-context.md";
+const router = ".minas/process/context/all-context.md";
 if (!exists(router)) fail(`${router} missing`);
 const routerText = exists(router) ? read(router) : "";
 
-const contextDocs = walk("process/context", (rel) => rel.endsWith(".md")).sort();
+const contextDocs = walk(".minas/process/context", (rel) => rel.endsWith(".md")).sort();
 for (const doc of contextDocs) {
   if (doc === router) continue;
   const relFromContext = doc.replace(/^process\/context\//, "");
@@ -162,13 +162,13 @@ for (const doc of contextDocs) {
     fail(`context group ${group} is missing all-${group}.md`);
   }
   if (!indexedByRouter && !indexedByGroup) {
-    fail(`${doc} is not indexed by process/context/all-context.md or its group entrypoint`);
+    fail(`${doc} is not indexed by .minas/process/context/all-context.md or its group entrypoint`);
   }
 }
 
-for (const dir of fs.readdirSync(path.join(root, "process/context"), { withFileTypes: true })) {
+for (const dir of fs.readdirSync(path.join(root, ".minas/process/context"), { withFileTypes: true })) {
   if (dir.isDirectory() && !getGroupEntrypoint(dir.name)) {
-    fail(`process/context/${dir.name}/ is missing all-${dir.name}.md`);
+    fail(`.minas/process/context/${dir.name}/ is missing all-${dir.name}.md`);
   }
 }
 
@@ -188,7 +188,7 @@ for (const file of [
   ".claude/skills/vc-generate-context/SKILL.md",
   ".claude/skills/vc-generate-context/references/generate-context.md",
 ]) {
-  assertContains(file, "process/context/all-context.md");
+  assertContains(file, ".minas/process/context/all-context.md");
 }
 
 const criticalHookParityPairs = [
@@ -208,10 +208,10 @@ for (const [claudeFile, codexFile] of criticalHookParityPairs) {
 const staleWorkflowPatterns = [
   { pattern: "docs-manager", reason: "use update-process-agent for project context/process docs" },
   { pattern: "project-manager", reason: "use update-process-agent for plan/process sync" },
-  { pattern: "docs/codebase-summary", reason: "use process/context/all-context.md routing" },
-  { pattern: "docs/design-guidelines", reason: "use process/context/uxui/uiux.md or feature references" },
+  { pattern: "docs/codebase-summary", reason: "use .minas/process/context/all-context.md routing" },
+  { pattern: "docs/design-guidelines", reason: "use .minas/process/context/uxui/uiux.md or feature references" },
   { pattern: "validate-docs", reason: "use audit-context validator" },
-  { pattern: "process/context/<group>", reason: "placeholder should not look like a concrete ref" },
+  { pattern: ".minas/process/context/<group>", reason: "placeholder should not look like a concrete ref" },
   { pattern: ".claude/commands/", reason: "Claude command aliases are retired from the active shared workflow surface" },
   { pattern: "vc:plan", reason: "planning ownership was absorbed into vc-generate-plan + plan-agent" },
   { pattern: "vc:research", reason: "research ownership was absorbed into research-agent" },
@@ -228,7 +228,7 @@ const staleWorkflowFiles = [
   ...walk(".claude/skills", (rel) => rel.endsWith(".md") && !rel.includes("/scripts/")),
   ...walk(".claude/hooks", (rel) => rel.endsWith(".cjs") || rel.endsWith(".json")),
   ...walk(".codex/hooks", (rel) => rel.endsWith(".cjs") || rel.endsWith(".json")),
-  ...walk("process/context", (rel) => rel.endsWith(".md")),
+  ...walk(".minas/process/context", (rel) => rel.endsWith(".md")),
 ];
 
 for (const file of staleWorkflowFiles) {
@@ -252,7 +252,7 @@ for (const file of staleWorkflowFiles) {
       fail(`${file}:${index + 1} contains stale ${pattern} reference (${reason})`);
     }
     if (line.includes("`./docs`") && !line.includes("not `./docs`")) {
-      fail(`${file}:${index + 1} references legacy ./docs path (use process/context/all-context.md)`);
+      fail(`${file}:${index + 1} references legacy ./docs path (use .minas/process/context/all-context.md)`);
     }
   }
 }
@@ -261,7 +261,7 @@ const filesWithRefs = [
   "AGENTS.md",
   ...walk(".claude", (rel) => rel.endsWith(".md") || rel.endsWith(".json")),
   ...walk(".codex", (rel) => rel.endsWith(".toml") || rel.endsWith(".json")),
-  ...walk("process/context", (rel) => rel.endsWith(".md")),
+  ...walk(".minas/process/context", (rel) => rel.endsWith(".md")),
 ];
 
 const concreteRefs = [];

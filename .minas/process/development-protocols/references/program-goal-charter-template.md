@@ -8,7 +8,7 @@ Read this after your project's planning context entrypoint when:
 - you need the durable "north star" the user would otherwise hand-paste every run
 - you need the compressed session-goal block that launches an unattended long-running session
 
-The charter is governed by `process/development-protocols/phase-programs.md` ("Program Goal Charter").
+The charter is governed by `.minas/process/development-protocols/phase-programs.md` ("Program Goal Charter").
 
 ## What the charter is for
 
@@ -21,7 +21,7 @@ safety constraints on every run.
 
 Do NOT re-paste execution discipline into the charter. The required 10-step per-phase loop,
 re-research at phase entry, regression checkpoints, and honest phase status are already defined in
-`process/development-protocols/phase-programs.md`. The charter references that protocol; it does not
+`.minas/process/development-protocols/phase-programs.md`. The charter references that protocol; it does not
 duplicate it. Keep the charter to program-specific intent and safety only.
 
 ## Blank Charter Template
@@ -63,7 +63,7 @@ for the full detail rather than inlining everything.
 
 ```text
 SESSION GOAL: [PROGRAM NAME]
-Charter + umbrella plan: process/features/{feature}/active/{umbrella-plan}.md
+Charter + umbrella plan: .minas/process/features/{feature}/active/{umbrella-plan}.md
 Autonomy: Run autonomously under this persistent goal. Execute phases on your own
 recommendation via the 10-step loop in phase-programs.md; report conflicts, errors, and
 learnings in the phase report (the report is the communication channel, not a question).
@@ -72,13 +72,13 @@ Only pause for outward-facing / irreversible / costful / destructive actions
 Hard stop conditions / safety constraints:
 - [hard safety constraint 1 from the charter]
 - [hard safety constraint 2 from the charter]
-Next phase: process/features/{feature}/active/{next-phase-plan}.md
+Next phase: .minas/process/features/{feature}/active/{next-phase-plan}.md
 ```
 
 ## Filled-In Reference Example
 
 Real charter from the duma.so "Full Product E2E" program. Note: execution-discipline prose is
-intentionally absent — it lives in `process/development-protocols/phase-programs.md`.
+intentionally absent — it lives in `.minas/process/development-protocols/phase-programs.md`.
 
 The charter example below and the session-goal example further down both use duma.so as the
 sample program; they illustrate different aspects (charter structure vs compressed launch block)
@@ -138,7 +138,7 @@ Hard safety constraints (non-negotiable, per phase):
   token in playwright/.auth/user.json).
 - Never run live Stream/costful gates without explicit per-run approval.
 - Leave unrelated dirty files / other agents' work untouched.
-- Keep process/plan/context commits separate from execution commits; commit each phase before
+- Keep .minas/process/plan/context commits separate from execution commits; commit each phase before
   moving on.
 ```
 
@@ -147,7 +147,7 @@ Hard safety constraints (non-negotiable, per phase):
 A compressed launch packet for the duma.so "Full Product E2E" program. This is the autonomous
 session-goal variant: per-phase approval is standing-granted, and irreversible/costful actions are
 deferred-and-reported rather than executed or paused-on (see
-`process/development-protocols/phase-programs.md`, "Autonomous Session-Goal Variant"). It stays under
+`.minas/process/development-protocols/phase-programs.md`, "Autonomous Session-Goal Variant"). It stays under
 the ~4000-char `/goal` ceiling.
 
 ```text
@@ -180,7 +180,7 @@ Hard safety (every phase): interact freely with the shared E2E container per you
 test docs — exec, read logs, rebuild image, recreate/restart via the managed script, create/remove
 E2E-owned disposable targets. NEVER wipe named volumes, mutate prod data/storage, push production
 images/deploy, or run live/costful gates without per-lane approval — defer-and-report those. Keep
-process/plan commits separate from execution commits; commit each phase before moving on.
+.minas/process/plan commits separate from execution commits; commit each phase before moving on.
 
 Discipline: fully autonomous — proceed phase-to-phase via the 10-step loop WITHOUT pausing for
 approval. Self-decide; if something breaks, diagnose, write a new plan/fix, and continue. Done when

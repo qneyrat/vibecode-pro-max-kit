@@ -1,5 +1,5 @@
 ---
-name: vc:scout
+name: minas:scout
 description: "Fast codebase scouting using shell search and optional parallel research agents. Use for file discovery, task context gathering, and quick scoped searches across directories."
 argument-hint: "[search-target] [ext]"
 metadata:

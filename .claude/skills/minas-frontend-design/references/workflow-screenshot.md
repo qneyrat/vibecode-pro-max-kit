@@ -49,7 +49,7 @@ Use Claude's built-in multimodal vision:
 
 ### 6. Document
 If approved and the pattern should become durable project knowledge, update
-the project's UI/UX context doc (if present) through `process/context/all-context.md`.
+the project's UI/UX context doc (if present) through `.minas/process/context/all-context.md`.
 
 ## Quality Standards
 - Match screenshot at pixel level where possible

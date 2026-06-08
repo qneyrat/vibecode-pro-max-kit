@@ -62,8 +62,8 @@ for (const agent of claudeAgents) {
   const claude = parseClaudeAgent(claudeFile);
 
   if (!claude.description) fail(`${claudeFile} description missing`);
-  if (!claude.body.includes("process/context/all-context.md") && !["git-manager", "innovate-agent"].includes(agent)) {
-    warn(`${claudeFile} does not mention process/context/all-context.md`);
+  if (!claude.body.includes(".minas/process/context/all-context.md") && !["git-manager", "innovate-agent"].includes(agent)) {
+    warn(`${claudeFile} does not mention .minas/process/context/all-context.md`);
   }
 
   checked.push(agent);

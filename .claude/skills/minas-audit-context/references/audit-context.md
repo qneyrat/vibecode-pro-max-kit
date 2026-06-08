@@ -1,28 +1,28 @@
 # Audit Context Reference
 
-This audit verifies the `process/context/` durable knowledge layer.
+This audit verifies the `.minas/process/context/` durable knowledge layer.
 
 ## Audit Scope
 
 Check:
 
-- Root router: `process/context/all-context.md`
-- Group entrypoints: `process/context/*/all-*.md`
-- Current context docs: `process/context/**/*.md`
+- Root router: `.minas/process/context/all-context.md`
+- Group entrypoints: `.minas/process/context/*/all-*.md`
+- Current context docs: `.minas/process/context/**/*.md`
 - Claude agents: `.claude/agents/*.md`
 - Shared skills: `.claude/skills/*/SKILL.md`
 - Skill discovery path: `.agents/skills`
-- Context validator scripts under `.claude/skills/vc-audit-context/scripts/`
+- Context validator scripts under `.claude/skills/minas-audit-context/scripts/`
 
 ## Classification
 
 Classify findings as:
 
-- **Broken reference**: Concrete `process/context/...` path does not exist.
+- **Broken reference**: Concrete `.minas/process/context/...` path does not exist.
 - **Unindexed context**: Context file exists but is not listed by the root router or its owning `all-*.md` entrypoint.
-- **Missing group entrypoint**: Directory under `process/context/` lacks `all-{group}.md`.
+- **Missing group entrypoint**: Directory under `.minas/process/context/` lacks `all-{group}.md`.
 - **Legacy entrypoint drift**: old root or group README-style context entrypoints still exist.
-- **Agent routing gap**: Critical agent still bypasses `process/context/all-context.md`.
+- **Agent routing gap**: Critical agent still bypasses `.minas/process/context/all-context.md`.
 - **Skill discovery gap**: Skill exists in `.claude/skills` but is not reachable through `.agents/skills`.
 - **Skill routing gap**: Skill exists but is neither routed from canonical surfaces nor explicitly allowlisted.
 - **Skill schema warning**: Skill frontmatter contains unexpected system keys or discovery metadata drift.
@@ -36,15 +36,15 @@ Classify findings as:
 
 1. Confirm `.agents/skills` resolves to `.claude/skills`.
 2. Confirm `audit-context` exists at both:
-   - `.claude/skills/vc-audit-context/SKILL.md`
-   - `.agents/skills/vc-audit-context/SKILL.md`
-3. Confirm `process/context/all-context.md` indexes every current context `.md` file.
+   - `.claude/skills/minas-audit-context/SKILL.md`
+   - `.agents/skills/minas-audit-context/SKILL.md`
+3. Confirm `.minas/process/context/all-context.md` indexes every current context `.md` file.
 4. Confirm each context group directory has a canonical `all-{group}.md` entrypoint.
-5. Confirm critical Claude surfaces mention `process/context/all-context.md`:
+5. Confirm critical Claude surfaces mention `.minas/process/context/all-context.md`:
    - `.minas/CLAUDE.md`
-   - `.claude/agents/vc-update-process-agent.md`
-   - `.claude/agents/vc-research-agent.md`
-6. Confirm concrete backticked `process/context/...` references exist.
+   - `.claude/agents/minas-update-process-agent.md`
+   - `.claude/agents/minas-research-agent.md`
+6. Confirm concrete backticked `.minas/process/context/...` references exist.
 7. Confirm every skill folder is reachable through `.agents/skills`.
 8. Confirm active workflow instructions do not route to stale documentation-manager, plan-manager, root-docs, or legacy docs-validation flows.
 9. Confirm every kept shared skill is either routed from the canonical surfaces in `skill-routing-policy.json` or explicitly allowlisted there with a reason.
@@ -54,21 +54,21 @@ Classify findings as:
 Run the full validator suite during a context/skill-quality audit:
 
 ```bash
-node .claude/skills/vc-audit-context/scripts/validate-context-discovery.mjs
-node .claude/skills/vc-audit-context/scripts/validate-skill-routing.mjs
-node .claude/skills/vc-audit-context/scripts/validate-skill-cross-refs.mjs
-node .claude/skills/vc-audit-context/scripts/validate-skill-dependencies.mjs
-node .claude/skills/vc-audit-context/scripts/validate-confusable-skills.mjs
-node .claude/skills/vc-audit-context/scripts/generate-skills-catalog.mjs --check
+node .claude/skills/minas-audit-context/scripts/validate-context-discovery.mjs
+node .claude/skills/minas-audit-context/scripts/validate-skill-routing.mjs
+node .claude/skills/minas-audit-context/scripts/validate-skill-cross-refs.mjs
+node .claude/skills/minas-audit-context/scripts/validate-skill-dependencies.mjs
+node .claude/skills/minas-audit-context/scripts/validate-confusable-skills.mjs
+node .claude/skills/minas-audit-context/scripts/generate-skills-catalog.mjs --check
 ```
 
 For agent/skill harness validators (agent definition consistency, skill frontmatter, README.md sync, protocol wiring), see the `audit-vc` skill:
 
 ```bash
-node .claude/skills/vc-audit-vc/scripts/validate-agent-parity.mjs
-node .claude/skills/vc-audit-vc/scripts/validate-skills.mjs
-node .claude/skills/vc-audit-vc/scripts/validate-guide-sync.mjs
-node .claude/skills/vc-audit-vc/scripts/validate-protocol-wiring.mjs
+node .claude/skills/minas-audit-vc/scripts/validate-agent-parity.mjs
+node .claude/skills/minas-audit-vc/scripts/validate-skills.mjs
+node .claude/skills/minas-audit-vc/scripts/validate-guide-sync.mjs
+node .claude/skills/minas-audit-vc/scripts/validate-protocol-wiring.mjs
 ```
 
 Interpret `failures` as required fixes. Interpret `warnings` as audit findings that may be
@@ -76,7 +76,7 @@ acceptable for legacy or upstream-style skills unless the user asks for strict c
 
 The generated catalog lives at:
 
-- process/context/generated-skills-catalog.json
+- .minas/process/context/generated-skills-catalog.json
 
 It is deterministic and should be regenerated whenever shared skill inventory, routing, or allowlist policy changes.
 

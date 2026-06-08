@@ -7,12 +7,12 @@
 //
 //   Check (a) -- product-name leak: flowser|CloakBrowser|OpenClaw|Supabase
 //   Check (b) -- dangling context-path leak: a concrete backticked
-//                process/context/<file> ref that is NOT a shipped/seeded survivor.
+//                .minas/process/context/<file> ref that is NOT a shipped/seeded survivor.
 //
 // CRITICAL DESIGN POINT: check (b) is validated against the shipped-SURVIVOR
 // allowlist (what ships/seeds), NOT against local disk existence. In the publish
 // source repo the leaked refs (uxui/uiux.md, tests/browser-automation.md,
-// generated-skills-catalog.json under process/context) exist on disk, so a naive
+// generated-skills-catalog.json under .minas/process/context) exist on disk, so a naive
 // disk-existence check would never catch the leak in the publish source.
 //
 // Brand scan is product-names ONLY. It intentionally does NOT scan for
@@ -55,7 +55,7 @@ const textFiles = [
   ".minas/CLAUDE.md",
   ...walk(".claude/skills", (rel) => /\.(md|cjs|mjs|py|js|json)$/.test(rel)),
   ...walk(".claude/agents", (rel) => rel.endsWith(".md")),
-  ...walk("process/development-protocols", (rel) => rel.endsWith(".md")),
+  ...walk(".minas/process/development-protocols", (rel) => rel.endsWith(".md")),
 ].filter((rel) => fs.existsSync(path.join(root, rel)));
 
 // ---------------------------------------------------------------------------
@@ -106,7 +106,7 @@ for (const file of textFiles) {
 // Check (b) -- dangling concrete context-path leak.
 //
 // Mirror validate-context-discovery.mjs ref extraction:
-//   - match backticked `process/context/<ref>` tokens
+//   - match backticked `.minas/process/context/<ref>` tokens
 //   - strip trailing punctuation
 //   - skip glob/placeholder refs ( { } [ * ] )
 // Then, instead of a disk check, classify CONCRETE FILE refs (a real filename
@@ -114,13 +114,13 @@ for (const file of textFiles) {
 // are not in the shipped-SURVIVOR allowlist.
 // ---------------------------------------------------------------------------
 const CONTEXT_SURVIVORS = new Set([
-  "process/context/all-context.md",
-  "process/context/tests/all-tests.md",
+  ".minas/process/context/all-context.md",
+  ".minas/process/context/tests/all-tests.md",
 ]);
 
 function isConcreteContextFileRef(ref) {
   if (/[{}[*\]]/.test(ref)) return false; // glob / placeholder
-  if (ref.includes("..")) return false; // ellipsis placeholder (process/context/...)
+  if (ref.includes("..")) return false; // ellipsis placeholder (.minas/process/context/...)
   if (ref.endsWith("/")) return false; // directory reference
   // last path segment must look like a real filename with an extension
   if (!/\/[^/]*\.[A-Za-z0-9]+$/.test(ref)) return false;

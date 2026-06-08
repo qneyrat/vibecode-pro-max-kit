@@ -27,10 +27,10 @@ YOU MUST follow structured thinking process internally and include ALL steps in 
 ### [RESEARCH]
 
 1. Gather context and understand requirements
-2. Read `process/context/all-context.md` first and use it to choose only the smallest relevant grouped context docs
-3. When planning verification, test, or runtime checks, read `process/context/tests/all-tests.md` before deeper testing docs
-4. If docs or API lookup is part of the task, surface `vc-docs-seeker`; if plan creation or update is required, use `vc-generate-plan` as the authoritative plan contract
-5. Treat `vc-generate-context` or `vc-audit-context` as conditional helpers only when the request or repo truth indicates context drift
+2. Read `.minas/process/context/all-context.md` first and use it to choose only the smallest relevant grouped context docs
+3. When planning verification, test, or runtime checks, read `.minas/process/context/tests/all-tests.md` before deeper testing docs
+4. If docs or API lookup is part of the task, surface `minas-docs-seeker`; if plan creation or update is required, use `minas-generate-plan` as the authoritative plan contract
+5. Treat `minas-generate-context` or `minas-audit-context` as conditional helpers only when the request or repo truth indicates context drift
 6. Examine existing patterns
 7. Present findings concisely (not exhaustively)
 
@@ -45,14 +45,14 @@ YOU MUST follow structured thinking process internally and include ALL steps in 
 
 1. Run `date +%d-%m-%y` to get current date
 2. Scan active-plan inventory before creating anything:
-   - `process/general-plans/active/`
-   - `process/features/*/active/`
+   - `.minas/process/general-plans/active/`
+   - `.minas/process/features/*/active/`
    Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` plan shapes as valid compatibility inputs
 3. Reuse or resume an existing relevant plan when one already exists instead of duplicating it
-4. If the work belongs to an existing feature, or clearly requires feature-scoped storage, use `process/features/{feature}/active/` and the matching feature `reports/` surface
-5. Create or update the implementation plan using the `vc-generate-plan` skill contract only after plan-location choice is explicit
+4. If the work belongs to an existing feature, or clearly requires feature-scoped storage, use `.minas/process/features/{feature}/active/` and the matching feature `reports/` surface
+5. Create or update the implementation plan using the `minas-generate-plan` skill contract only after plan-location choice is explicit
 6. For large multi-phase efforts, be recommendation-first: recommend whether this should stay a normal complex plan or become a phase program, name the proposed feature folder and phase sequence, and stop for approval before pretending FAST mode can execute the whole program
-7. Reference `process/development-protocols/phase-programs.md` for true phase programs and do not collapse them into one giant FAST execution pass
+7. Reference `.minas/process/development-protocols/phase-programs.md` for true phase programs and do not collapse them into one giant FAST execution pass
 8. Generate checklist with specific file paths
 9. Surface one exact selected plan file path back to the user before the pause
 10. Ensure new/touched direct plans include `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`
@@ -92,7 +92,7 @@ Only after user says "ENTER EXECUTE MODE":
 
 Even in FAST mode:
 - Planning creates plan file only
-- Planning should follow the `vc-generate-plan` skill's artifact rules
+- Planning should follow the `minas-generate-plan` skill's artifact rules
 - Implementation requires explicit "ENTER EXECUTE MODE" confirmation
 - Cannot skip the approval checkpoint
 - If plan needs changes, return to planning
@@ -128,7 +128,7 @@ Begin with [MODE: FAST], then show all phases with clear separators:
 **[PLAN]**
 [Creating plan...]
 
-Selected plan: [exact plan path in process/general-plans/active/ or process/features/{feature}/active/]
+Selected plan: [exact plan path in .minas/process/general-plans/active/ or .minas/process/features/{feature}/active/]
 
 IMPLEMENTATION CHECKLIST:
 1. [Item]
@@ -167,7 +167,7 @@ Recommended: This approach for MVP
 **[PLAN]**
 Running date command: 01-12-25
 
-Creating plan: process/general-plans/active/dark-mode-toggle_PLAN_01-12-25.md
+Creating plan: .minas/process/general-plans/active/dark-mode-toggle_PLAN_01-12-25.md
 
 [Writes complete plan file]
 
@@ -229,7 +229,7 @@ Implementing dark mode now...
 - All phases use appropriate tools
 - RESEARCH: Read, Grep, Glob, Bash
 - INNOVATE: Read, Grep, Glob
-- PLAN: Read, Write (process/general-plans/active/ or process/features/*/active/), Bash (date command)
+- PLAN: Read, Write (.minas/process/general-plans/active/ or .minas/process/features/*/active/), Bash (date command)
 - EXECUTE: Full access (only after approval)
 
 Use feature-scoped `Reports:` and `Plans:` handoff paths when `Feature:` is present, and do not rely on ambient active-plan state when multiple compatible plan files exist.

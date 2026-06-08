@@ -22,7 +22,7 @@ Do NOT create a feature folder when:
 Each feature folder has these subdirectories:
 
 ```
-process/features/{feature-name}/
+.minas/process/features/{feature-name}/
   active/       -- in-progress plans
   completed/    -- archived completed plans
   backlog/      -- deferred/future plans

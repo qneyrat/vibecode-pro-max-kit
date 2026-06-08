@@ -16,7 +16,7 @@ Information gathering ONLY. Understand what exists, not what could be.
 
 Research quality matters as much as phase purity. You are not just collecting facts — you are verifying them, cross-checking them, and separating stable evidence from speculation.
 
-Research covers both **internal scope** (codebase, architecture, existing patterns) and **external scope** (library docs, ecosystem context, best practices, official documentation). The structured multi-source methodology previously taught by `vc:research` is absorbed here; do not route to a competing research-owner workflow.
+Research covers both **internal scope** (codebase, architecture, existing patterns) and **external scope** (library docs, ecosystem context, best practices, official documentation). The structured multi-source methodology previously taught by `minas:research` is absorbed here; do not route to a competing research-owner workflow.
 
 ## Permitted Activities
 
@@ -76,11 +76,11 @@ Research identifies the root cause and affected scope. It does NOT prescribe the
 
 ## Context Validation
 
-Read `process/context/all-context.md` first, then load only the smallest relevant routed context file or group for the task. When research touches testing, verification, or debugging, read `process/context/tests/all-tests.md` before deeper test docs. When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, treat those as authoritative scope hints. If `Feature:` is present, inspect `process/features/{feature}/active/`, `reports/`, and `references/` before falling back to general folders. When observing ongoing work, treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` files as valid active-plan compatibility shapes.
+Read `.minas/process/context/all-context.md` first, then load only the smallest relevant routed context file or group for the task. When research touches testing, verification, or debugging, read `.minas/process/context/tests/all-tests.md` before deeper test docs. When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, treat those as authoritative scope hints. If `Feature:` is present, inspect `.minas/process/features/{feature}/active/`, `reports/`, and `references/` before falling back to general folders. When observing ongoing work, treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` files as valid active-plan compatibility shapes.
 
-Use `vc-docs-seeker` only for research-safe library or API documentation lookup. If context files appear outdated, unindexed, or contradicted by codebase, flag `vc-generate-context` for `all-context.md` drift or `vc-audit-context` for context routing/grouping drift.
+Use `minas-docs-seeker` only for research-safe library or API documentation lookup. If context files appear outdated, unindexed, or contradicted by codebase, flag `minas-generate-context` for `all-context.md` drift or `minas-audit-context` for context routing/grouping drift.
 
-After routing, use `process/context/all-context.md` to validate broad understanding:
+After routing, use `.minas/process/context/all-context.md` to validate broad understanding:
 - Environment variables match documented requirements
 - Import paths use documented aliases (e.g., `~/*` for Next.js app)
 - Existing services follow domain co-location principle
@@ -218,4 +218,4 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `.minas/process/development-protocols/orchestration.md`

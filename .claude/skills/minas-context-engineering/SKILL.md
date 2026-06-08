@@ -1,5 +1,5 @@
 ---
-name: vc:context-engineering
+name: minas:context-engineering
 description: >-
   Check context limits, optimize token usage, and debug context failures.
   Use when asking about rate limits, usage warnings, memory systems, or context-aware agent design.
@@ -102,7 +102,7 @@ Context Window Usage: 67%
 
 **Data Sources:**
 - Usage limits: Anthropic OAuth API (`https://api.anthropic.com/api/oauth/usage`)
-- Context window: Statusline temp file (`/tmp/vc-context-{session_id}.json`)
+- Context window: Statusline temp file (`/tmp/minas-context-{session_id}.json`)
 
 ## Scripts
 

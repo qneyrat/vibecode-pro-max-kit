@@ -1,5 +1,5 @@
 ---
-name: vc:xia
+name: minas:xia
 description: "Use when you need to compare a local or remote repository, extract a feature idea, or prepare an adaptation study without planning or implementing it yet."
 license: MIT
 argument-hint: "<github-url|owner/repo|local-path> [feature-description] [--compare|--adapt] [--feature <name>] [--report]"
@@ -56,14 +56,14 @@ Hard gate:
 Default output destination:
 
 - durable research:
-  - `process/general-plans/references/`
-  - `process/features/{feature}/references/`
+  - `.minas/process/general-plans/references/`
+  - `.minas/process/features/{feature}/references/`
 
 Optional `--report` destination:
 
 - assessment or one-off study output:
-  - `process/general-plans/reports/`
-  - `process/features/{feature}/reports/`
+  - `.minas/process/general-plans/reports/`
+  - `.minas/process/features/{feature}/reports/`
 
 Use `references/` by default unless the user explicitly wants a report-style artifact.
 

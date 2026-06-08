@@ -1,5 +1,5 @@
 ---
-name: vc:preview
+name: minas:preview
 description: "Use when you need to inspect files or generate visual explanations, slides, diagrams, or HTML recaps."
 argument-hint: "[path] OR [--html] --explain|--slides|--diagram|--ascii [topic] OR --html --diff|--plan-review|--recap"
 metadata:
@@ -16,7 +16,7 @@ Universal viewer + visual generator. View existing content OR generate new visua
 Use `preview` as the companion and review surface.
 
 - Use `preview --diagram` or `preview --html --diagram` for explanation-first visuals, Mermaid-oriented flows, and review-friendly diagram pages.
-- Use `tech-graph` first when the task needs a durable publish-grade SVG or PNG artifact under `process/general-plans/references/`, `process/general-plans/reports/visuals/`, or the matching feature-scoped equivalents.
+- Use `tech-graph` first when the task needs a durable publish-grade SVG or PNG artifact under `.minas/process/general-plans/references/`, `.minas/process/general-plans/reports/visuals/`, or the matching feature-scoped equivalents.
 - After `tech-graph` generation, `preview` is still the right place for explanation, comparison, HTML framing, or self-review of the generated artifact.
 
 ## Default (No Arguments)
@@ -43,23 +43,23 @@ Present as options via `AskUserQuestion` with header "Preview Operation", questi
 ## Usage
 
 ### View Mode
-- `/vc:preview <file.md>` - View markdown file in novel-reader UI
-- `/vc:preview <directory/>` - Browse directory contents
-- `/vc:preview --stop` - Stop running server
+- `/minas:preview <file.md>` - View markdown file in novel-reader UI
+- `/minas:preview <directory/>` - Browse directory contents
+- `/minas:preview --stop` - Stop running server
 
 ### Generation Mode (Markdown)
-- `/vc:preview --explain <topic>` - Generate visual explanation (ASCII + Mermaid + prose)
-- `/vc:preview --slides <topic>` - Generate presentation slides (one concept per slide)
-- `/vc:preview --diagram <topic>` - Generate focused diagram (ASCII + Mermaid)
-- `/vc:preview --ascii <topic>` - Generate ASCII-only diagram (terminal-friendly)
+- `/minas:preview --explain <topic>` - Generate visual explanation (ASCII + Mermaid + prose)
+- `/minas:preview --slides <topic>` - Generate presentation slides (one concept per slide)
+- `/minas:preview --diagram <topic>` - Generate focused diagram (ASCII + Mermaid)
+- `/minas:preview --ascii <topic>` - Generate ASCII-only diagram (terminal-friendly)
 
 ### Generation Mode (HTML)
-- `/vc:preview --html --explain <topic>` - Self-contained HTML explanation
-- `/vc:preview --html --slides <topic>` - Magazine-quality HTML slide deck
-- `/vc:preview --html --diagram <topic>` - HTML diagram with zoom controls
-- `/vc:preview --html --diff [ref]` - Visual diff review
-- `/vc:preview --html --plan-review [plan-file]` - Plan vs codebase comparison
-- `/vc:preview --html --recap [timeframe]` - Project context snapshot
+- `/minas:preview --html --explain <topic>` - Self-contained HTML explanation
+- `/minas:preview --html --slides <topic>` - Magazine-quality HTML slide deck
+- `/minas:preview --html --diagram <topic>` - HTML diagram with zoom controls
+- `/minas:preview --html --diff [ref]` - Visual diff review
+- `/minas:preview --html --plan-review [plan-file]` - Plan vs codebase comparison
+- `/minas:preview --html --recap [timeframe]` - Project context snapshot
 
 ## Argument Resolution
 
@@ -92,10 +92,10 @@ When processing arguments, follow this priority order:
 | Error | Action |
 |-------|--------|
 | Invalid topic (empty) | Ask user to provide a topic |
-| Flag without topic | Ask user: "Please provide a topic: `/vc:preview --explain <topic>`" |
+| Flag without topic | Ask user: "Please provide a topic: `/minas:preview --explain <topic>`" |
 | Topic becomes empty after sanitization | Ask for topic with alphanumeric characters |
 | File write failure | Report error, suggest checking disk space and permissions |
-| Server startup failure | Check if port in use, try `/vc:preview --stop` first |
+| Server startup failure | Check if port in use, try `/minas:preview --stop` first |
 | No generation flag + unresolvable reference | Ask user to clarify which file they meant |
 | Existing file at output path | Overwrite with new content (no prompt) |
 | Server already running | Reuse existing server instance, just open new URL |
@@ -111,7 +111,7 @@ When processing arguments, follow this priority order:
 Adding `--html` to any generation flag switches output from Markdown to a self-contained HTML file.
 
 **Output:** Single `.html` file with all CSS/JS inline. Opens directly in browser — no server needed.
-**Location:** If an explicit plan file path is provided, write to its sibling `visuals/` directory. Otherwise write to `process/general-plans/reports/visuals/` or the current feature's `process/features/{feature}/reports/visuals/` when feature scope is explicit.
+**Location:** If an explicit plan file path is provided, write to its sibling `visuals/` directory. Otherwise write to `.minas/process/general-plans/reports/visuals/` or the current feature's `.minas/process/features/{feature}/reports/visuals/` when feature scope is explicit.
 **Browser open:** `open` (macOS) / `xdg-open` (Linux) / `start` (Windows)
 **MANDATORY — Theme Toggle:** Every HTML page MUST include a light/dark theme toggle button. See `html-css-patterns.md` → "Theme Toggle Button" for the exact CSS, HTML, and JS to include. Pages without the toggle are considered incomplete.
 

@@ -35,13 +35,13 @@ function hasDateStamp(name) {
   return /(\d{2}-\d{2}-\d{2}|\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})/.test(name);
 }
 
-for (const dir of ["process/general-plans/active", "process/general-plans/completed", "process/features"]) {
+for (const dir of [".minas/process/general-plans/active", ".minas/process/general-plans/completed", ".minas/process/features"]) {
   if (!fs.existsSync(path.join(root, dir))) fail(`${dir} missing`);
 }
 
 const allPlans = [
-  ...walk("process/general-plans", (rel) => rel.endsWith(".md")),
-  ...walk("process/features", (rel) => rel.endsWith(".md")),
+  ...walk(".minas/process/general-plans", (rel) => rel.endsWith(".md")),
+  ...walk(".minas/process/features", (rel) => rel.endsWith(".md")),
 ].sort();
 
 const activePlans = allPlans.filter((file) => file.includes("/active/"));

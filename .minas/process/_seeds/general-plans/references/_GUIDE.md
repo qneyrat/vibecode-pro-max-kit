@@ -1,6 +1,6 @@
 # References
 
-This folder holds research outputs and reference material for general and cross-cutting work. Feature-specific references live in `process/features/{feature}/references/`.
+This folder holds research outputs and reference material for general and cross-cutting work. Feature-specific references live in `.minas/process/features/{feature}/references/`.
 
 ## What Goes Here
 
@@ -25,8 +25,8 @@ Examples:
 
 - Implementation plans (use `active/`)
 - Execution reports (use `reports/`)
-- Durable operational knowledge (use `process/context/`)
-- Feature-specific references (use `process/features/{feature}/references/`)
+- Durable operational knowledge (use `.minas/process/context/`)
+- Feature-specific references (use `.minas/process/features/{feature}/references/`)
 
 ## Lifecycle
 

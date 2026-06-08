@@ -16,7 +16,7 @@ Brainstorming potential approaches. Explore possibilities without committing to 
 
 Challenge assumptions before converging. Your job is to surface genuinely different paths, highlight second-order effects, and identify the simplest viable option that still satisfies the requirements.
 
-For substantial work, start by reading `process/context/all-context.md`, then load only the smallest relevant routed context file or group. When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or relevant shared skills, treat those as authoritative scope hints for brainstorming and downstream PLAN handoff.
+For substantial work, start by reading `.minas/process/context/all-context.md`, then load only the smallest relevant routed context file or group. When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or relevant shared skills, treat those as authoritative scope hints for brainstorming and downstream PLAN handoff.
 
 ## Permitted Activities
 
@@ -30,7 +30,7 @@ For substantial work, start by reading `process/context/all-context.md`, then lo
 - Seeking user feedback on approaches
 - Reading files for additional context
 - Surfacing relevant helper or contract skills when the brainstormed work clearly matches them, without replacing the innovate-agent as the INNOVATE workflow owner
-- Checking feature-scoped conventions when the work belongs to an existing `process/features/{feature}/` folder
+- Checking feature-scoped conventions when the work belongs to an existing `.minas/process/features/{feature}/` folder
 - Noting whether downstream PLAN work must account for mixed active-plan shapes such as direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, or `phase-*`
 
 ## Strictly Forbidden
@@ -141,7 +141,7 @@ This summary must exist before PLAN phase begins.
 When handing off to PLAN, keep the summary repo-aware:
 
 - Mention the exact feature scope when `Feature:` is present or the work clearly belongs to an existing feature folder.
-- Call out any relevant shared skills the orchestrator should surface for the chosen direction, such as `vc-generate-plan`, `vc-docs-seeker`, `vc-frontend-design`, `vc-scout`, `vc-scenario`, or `vc-security`.
+- Call out any relevant shared skills the orchestrator should surface for the chosen direction, such as `minas-generate-plan`, `minas-docs-seeker`, `minas-frontend-design`, `minas-scout`, `minas-scenario`, or `minas-security`.
 - If the work references existing active plans, acknowledge that the inventory may use direct `*_PLAN_*.md` files or legacy `PLAN.md`, `plan.md`, and `phase-*` compatibility shapes.
 
 When ideation is complete and user has selected an approach, tell user:
@@ -152,7 +152,7 @@ Do NOT automatically transition. Wait for explicit command.
 
 ## Tool Usage
 
-**Read**: Start with `process/context/all-context.md`, then load only the smallest relevant files for the approaches under discussion
+**Read**: Start with `.minas/process/context/all-context.md`, then load only the smallest relevant files for the approaches under discussion
 **Grep**: Search for existing patterns or similar implementations
 **Glob**: Find related files to understand current architecture, feature folders, and active-plan shapes
 **NO Bash**: Prevents accidental command execution during brainstorming
@@ -262,7 +262,7 @@ Or if architecture validation needed:
 - Wait for "ENTER PLAN MODE" or "go" — do not auto-transition
 - Then move to PLAN mode
 
-If the orchestrator supplied `Feature:`, preserve that feature-scoped handoff and let PLAN continue from the matching `process/features/{feature}/active/` surface instead of assuming general-plan paths.
+If the orchestrator supplied `Feature:`, preserve that feature-scoped handoff and let PLAN continue from the matching `.minas/process/features/{feature}/active/` surface instead of assuming general-plan paths.
 
 Never auto-transition. Always wait for explicit command.
 
@@ -276,4 +276,4 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `.minas/process/development-protocols/orchestration.md`

@@ -57,7 +57,7 @@ These conditions force Tier 0 regardless of the ambiguity score:
 - Pure information questions ("What is X?", "How does Y work?") that map to a single obvious routing target
 
 When an auto-skip condition matches, the orchestrator routes immediately per the
-existing routing protocol in `CLAUDE.md` and `process/development-protocols/orchestration.md`.
+existing routing protocol in `CLAUDE.md` and `.minas/process/development-protocols/orchestration.md`.
 
 ## Tier 0: Silent Auto-Route
 
@@ -149,8 +149,8 @@ Budget: 3-5 file reads max. Should complete in under 30 seconds.
 
 What it checks:
 
-1. Active plan inventory scan (`process/general-plans/active/` and `process/features/*/active/`)
-2. Context routing table in `process/context/all-context.md` (match keywords to domain)
+1. Active plan inventory scan (`.minas/process/general-plans/active/` and `.minas/process/features/*/active/`)
+2. Context routing table in `.minas/process/context/all-context.md` (match keywords to domain)
 3. Recent git status (are there uncommitted changes related to the request?)
 4. If a specific package or file is named, one quick read of that file
 

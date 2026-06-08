@@ -48,10 +48,10 @@ gh run view <run-id> --log > /tmp/ci-logs.txt
 ```
 
 **For codebase understanding:**
-- Read `process/context/all-context.md` first, then the relevant `process/context/` file selected by the router
-- Otherwise use `vc:scout` to generate fresh codebase overview
-- Use `/vc:scout` or `/vc:scout ext` to find relevant files
-- Use `vc:docs-seeker` skill for package/plugin documentation
+- Read `.minas/process/context/all-context.md` first, then the relevant `.minas/process/context/` file selected by the router
+- Otherwise use `minas:scout` to generate fresh codebase overview
+- Use `/minas:scout` or `/minas:scout ext` to find relevant files
+- Use `minas:docs-seeker` skill for package/plugin documentation
 
 ## Step 3: Analysis Process
 

@@ -73,7 +73,7 @@ List anything that remains unclear:
 
 Use naming pattern from `## Naming` section injected by hooks. Pattern includes full path and computed date.
 
-**Examples:** `process/general-plans/reports/debugger-260205-2215-api-500-investigation.md` or `process/features/{feature}/reports/debugger-260205-2215-api-500-investigation.md`
+**Examples:** `.minas/process/general-plans/reports/debugger-260205-2215-api-500-investigation.md` or `.minas/process/features/{feature}/reports/debugger-260205-2215-api-500-investigation.md`
 
 ## Writing Guidelines
 

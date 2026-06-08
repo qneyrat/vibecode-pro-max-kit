@@ -84,7 +84,7 @@ TECH_GRAPH_TEST_OUTPUT_DIR=/absolute/output/path bash .claude/skills/tech-graph/
 
 Default output location:
 
-- `process/general-plans/reports/visuals/tech-graph-test-output/`
+- `.minas/process/general-plans/reports/visuals/tech-graph-test-output/`
 
 The script:
 
@@ -97,10 +97,10 @@ The script:
 
 For durable artifacts, prefer:
 
-- `process/general-plans/references/`
-- `process/general-plans/reports/visuals/`
-- `process/features/{feature}/references/`
-- `process/features/{feature}/reports/visuals/`
+- `.minas/process/general-plans/references/`
+- `.minas/process/general-plans/reports/visuals/`
+- `.minas/process/features/{feature}/references/`
+- `.minas/process/features/{feature}/reports/visuals/`
 
 Do not treat skill-local scratch folders, `~/Desktop`, or `/tmp` as the canonical destination for final outputs.
 

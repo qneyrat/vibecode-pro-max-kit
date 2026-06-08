@@ -1,5 +1,5 @@
 ---
-name: vc:docs
+name: minas:docs
 description: "Use when you need to analyze a codebase and initialize, update, or summarize project documentation."
 argument-hint: "init|update|summarize"
 metadata:
@@ -27,9 +27,9 @@ Present as options via `AskUserQuestion` with header "Documentation Operation", 
 
 | Subcommand | Reference | Purpose |
 |------------|-----------|---------|
-| `/vc:docs init` | `references/init-workflow.md` | Analyze codebase and create initial documentation |
-| `/vc:docs update` | `references/update-workflow.md` | Analyze codebase and update existing documentation |
-| `/vc:docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary |
+| `/minas:docs init` | `references/init-workflow.md` | Analyze codebase and create initial documentation |
+| `/minas:docs update` | `references/update-workflow.md` | Analyze codebase and update existing documentation |
+| `/minas:docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary |
 
 ## Routing
 
@@ -41,8 +41,8 @@ Parse `$ARGUMENTS` first word:
 
 ## Shared Context
 
-For this repo, durable agent-facing documentation lives in `process/context/`, not `./docs`.
-Read `process/context/all-context.md` first to choose the relevant root file or context group.
+For this repo, durable agent-facing documentation lives in `.minas/process/context/`, not `./docs`.
+Read `.minas/process/context/all-context.md` first to choose the relevant root file or context group.
 Use `audit-context` after adding, moving, splitting, or grouping context files.
 
 **IMPORTANT**: **Do not** start implementing code.

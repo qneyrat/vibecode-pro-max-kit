@@ -38,11 +38,11 @@ Use the imported asset pack intentionally:
 ## Output Destinations
 
 - Cross-cutting:
-  - `process/general-plans/references/`
-  - `process/general-plans/reports/visuals/`
+  - `.minas/process/general-plans/references/`
+  - `.minas/process/general-plans/reports/visuals/`
 - Feature-scoped:
-  - `process/features/{feature}/references/`
-  - `process/features/{feature}/reports/visuals/`
+  - `.minas/process/features/{feature}/references/`
+  - `.minas/process/features/{feature}/reports/visuals/`
 
 Prefer `references/` for durable architecture/process artifacts and `reports/visuals/` for review snapshots tied to a specific execution or checkpoint.
 

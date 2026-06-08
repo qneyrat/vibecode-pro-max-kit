@@ -19,7 +19,7 @@ You MUST:
 - Split true phase programs into a plan set so each phase can be reattached, researched, executed, and validated independently across sessions
 - For direct `*_PLAN_*.md` plans, make execution trust explicit with first-class sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`
 
-IMPORTANT FOR COMPLEX MODE: Use `process/development-protocols/references/example-complex-prd.md` as a reference for the expected level of depth and structure. Mirror that level of specificity when generating the complex plan.
+IMPORTANT FOR COMPLEX MODE: Use `.minas/process/development-protocols/references/example-complex-prd.md` as a reference for the expected level of depth and structure. Mirror that level of specificity when generating the complex plan.
 
 IMPORTANT FOR LARGE PROGRAMS: If the work will actually execute as a sequence of separately
 validated phases, do not force everything into one giant plan file. Use the repo's phase-program
@@ -73,7 +73,7 @@ Use these precise status markers:
 
 **Every plan MUST include automated test stages** matching the framework used by each package being modified.
 
-Refer to `process/context/tests/all-tests.md` for framework-by-package mapping, run commands, and key conventions.
+Refer to `.minas/process/context/tests/all-tests.md` for framework-by-package mapping, run commands, and key conventions.
 
 ### How to Include Tests in Plans
 
@@ -101,9 +101,9 @@ In the Implementation Checklist, interleave test steps with code steps:
 - Provide a brief description of your idea/feature/project
 - Specify complexity: simple or complex (if omitted, you MUST ask)
 - The assistant will ask 3–5 questions per round (max 2–3 rounds) only if needed
-- Output is saved to `process/general-plans/active/[name]_PLAN_[dd-mm-yy].md` (general) or `process/features/{feature}/active/[name]_PLAN_[dd-mm-yy].md` (feature-scoped)
-- Read `process/context/all-context.md` first when it exists, then load only the relevant context docs or groups for the feature
-- For complex initiatives, review `process/development-protocols/references/example-complex-prd.md` for how detailed the output should be
+- Output is saved to `.minas/process/general-plans/active/[name]_PLAN_[dd-mm-yy].md` (general) or `.minas/process/features/{feature}/active/[name]_PLAN_[dd-mm-yy].md` (feature-scoped)
+- Read `.minas/process/context/all-context.md` first when it exists, then load only the relevant context docs or groups for the feature
+- For complex initiatives, review `.minas/process/development-protocols/references/example-complex-prd.md` for how detailed the output should be
 
 ## Complexity selection
 
@@ -159,7 +159,7 @@ For phase programs, ALWAYS produce:
 
 - one umbrella/orchestration plan
 - one direct phase plan file per phase
-- all files in the owning `process/features/{feature}/active/` folder
+- all files in the owning `.minas/process/features/{feature}/active/` folder
 
 Every generated file must still follow the same rigor below where applicable:
 
@@ -238,7 +238,7 @@ After each phase, document:
 
 ### If COMPLEX (multi-phase)
 
-Before generating, review `process/development-protocols/references/example-complex-prd.md` to calibrate the expected depth. Your output should be comparable in structure and specificity.
+Before generating, review `.minas/process/development-protocols/references/example-complex-prd.md` to calibrate the expected depth. Your output should be comparable in structure and specificity.
 
 1. Context and Goals
 2. **Phase Completion Rules** (copy from above - REQUIRED)
@@ -268,13 +268,13 @@ Before generating, review `process/development-protocols/references/example-comp
        ```
        User manually tests using the steps provided, confirms working, and approves to proceed.
    - **CRITICAL: Do NOT proceed to next phase until current phase is ✅ VERIFIED**
-   - Include example phase execution showing the complete workflow — the example MUST show the PAUSE between research and implementation (see `process/development-protocols/references/example-complex-prd.md` lines 132-166 for the pattern to match)
+   - Include example phase execution showing the complete workflow — the example MUST show the PAUSE between research and implementation (see `.minas/process/development-protocols/references/example-complex-prd.md` lines 132-166 for the pattern to match)
 
 ### If COMPLEX and also a phase program
 
 In addition to the normal complex-plan structure:
 
-1. Create or update a feature folder under `process/features/{feature}/`
+1. Create or update a feature folder under `.minas/process/features/{feature}/`
 2. Write one umbrella/orchestration plan for the whole program
 3. Write one direct phase plan file per phase
 4. Give each phase:
@@ -419,13 +419,13 @@ For legacy active structures such as `PLAN.md` plus `phase-*.md`:
 
 ### Deliverable
 
-- Create target directory if it doesn't exist (`process/general-plans/active/` or `process/features/{feature}/active/`)
-- Before naming the new plan, list existing completed plans to avoid duplicate feature names (check both `process/general-plans/completed/` and `process/features/*/completed/`)
-- Save to `process/general-plans/active/[name]_PLAN_[dd-mm-yy].md` (general) or `process/features/{feature}/active/[name]_PLAN_[dd-mm-yy].md` (feature-scoped)
-- Use `process/context/all-context.md` to pick context files. Do not bulk-load every context doc when a focused group or entrypoint is enough.
+- Create target directory if it doesn't exist (`.minas/process/general-plans/active/` or `.minas/process/features/{feature}/active/`)
+- Before naming the new plan, list existing completed plans to avoid duplicate feature names (check both `.minas/process/general-plans/completed/` and `.minas/process/features/*/completed/`)
+- Save to `.minas/process/general-plans/active/[name]_PLAN_[dd-mm-yy].md` (general) or `.minas/process/features/{feature}/active/[name]_PLAN_[dd-mm-yy].md` (feature-scoped)
+- Use `.minas/process/context/all-context.md` to pick context files. Do not bulk-load every context doc when a focused group or entrypoint is enough.
 - Validate the saved plan before reporting it as ready:
   ```bash
-  node .claude/skills/vc-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
+  node .claude/skills/minas-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
   ```
 - Use `--strict` only when intentionally enforcing warnings as blocking failures for a newly generated artifact.
 
@@ -435,7 +435,7 @@ For legacy active structures such as `PLAN.md` plus `phase-*.md`:
 2. Is this SIMPLE (one-session) or COMPLEX (multi-phase)?
 3. If information is missing, ask up to 3–5 questions, then proceed.
 4. Generate [feature or system's name]\_PLAN\_[dd-mm-yy].md per the selected mode.
-5. For COMPLEX, cross-check structure and depth against `process/development-protocols/references/example-complex-prd.md`.
+5. For COMPLEX, cross-check structure and depth against `.minas/process/development-protocols/references/example-complex-prd.md`.
 6. Run `validate-plan-artifact.mjs` against the generated plan and fix blocking failures.
 7. Conclude with a one-line next-step instruction for Cursor Plan mode.
 8. **Remind user: Each phase requires verification before proceeding to next.**

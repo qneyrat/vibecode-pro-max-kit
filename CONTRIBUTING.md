@@ -7,9 +7,9 @@
   <a href="docs/i18n/CONTRIBUTING.pt-BR.md">Portugues</a>
 </p>
 
-# Contributing to vibecode-pro-max-kit
+# Contributing to minas-kit
 
-Thank you for your interest in contributing to vibecode-pro-max-kit! This project provides a ready-to-use agent harness for Claude Code and Codex, and we welcome contributions from everyone.
+Thank you for your interest in contributing to minas-kit! This project provides a ready-to-use agent harness for Claude Code and Codex, and we welcome contributions from everyone.
 
 By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -48,7 +48,7 @@ Skills are reusable capability modules that live under `.claude/skills/`. Each s
 
 - Have its own directory (e.g., `.claude/skills/my-skill/`)
 - Contain a `SKILL.md` file with YAML frontmatter (name, description, triggers)
-- **Not** use the `vc-` prefix -- that prefix is reserved for official harness skills
+- **Not** use the `minas-` prefix -- that prefix is reserved for official harness skills
 - Include any helper scripts under a `scripts/` subdirectory if needed
 
 ### Agents
@@ -65,7 +65,7 @@ Pre- and post-execution hooks that live under `.claude/hooks/`. These run automa
 
 ### Protocols
 
-Development protocol documents under `process/development-protocols/` that define shared workflow rules and conventions.
+Development protocol documents under `.minas/process/development-protocols/` that define shared workflow rules and conventions.
 
 ### Translations
 
@@ -88,29 +88,29 @@ Fixes for validation scripts, install logic, seed templates, or any other existi
 2. **Clone** your fork locally:
 
    ```bash
-   git clone https://github.com/<your-username>/vibecode-pro-max-kit.git
-   cd vibecode-pro-max-kit
+   git clone https://github.com/<your-username>/minas-kit.git
+   cd minas-kit
    ```
 
 3. **Install** the harness into a test project to verify everything works:
 
    ```bash
    # From a test project directory
-   bash /path/to/vibecode-pro-max-kit/install.sh
+   bash /path/to/minas-kit/install.sh
    ```
 
 4. **Run the setup skill** to verify the installed harness:
 
    ```bash
    # Inside a Claude Code session in the test project
-   # Invoke the vc-setup skill
+   # Invoke the minas-setup skill
    ```
 
 5. **Run validation scripts** to confirm your environment is correct:
 
    ```bash
-   node .claude/skills/vc-audit-vc/scripts/validate-agent-parity.mjs
-   node .claude/skills/vc-audit-vc/scripts/validate-skills.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-agent-parity.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-skills.mjs
    ```
 
    All validations should pass before you start making changes.
@@ -128,7 +128,7 @@ The harness follows a dual-surface architecture for Claude Code and Codex compat
   hooks/           # Pre/post execution hooks
 .codex/
   agents/          # Codex agent definitions (mirrored from .claude/agents/)
-process/
+.minas/process/
   development-protocols/   # Shared workflow rules and conventions
   context/                 # Project knowledge and context docs
   _seeds/                  # Template seeds for new project scaffolding
@@ -167,7 +167,7 @@ Examples:
 ```
 feat: add code-coverage skill with lcov parsing
 fix: correct symlink detection in install.sh on WSL2
-docs: add examples to vc-generate-plan SKILL.md
+docs: add examples to minas-generate-plan SKILL.md
 chore: update validate-skills.mjs to check frontmatter
 ```
 
@@ -191,11 +191,11 @@ Include in your pull request description:
 
 ---
 
-## vc-manifest.json
+## minas-manifest.json
 
-The `vc-manifest.json` file at the repository root tracks all managed files in the harness. When you add new files (skills, agents, hooks, protocols, seeds), you must update this manifest.
+The `minas-manifest.json` file at the repository root tracks all managed files in the harness. When you add new files (skills, agents, hooks, protocols, seeds), you must update this manifest.
 
-The manifest is used by `install.sh` and `vc-update` to know which files to copy and sync. If your new file is not listed in the manifest, it will not be included when users install or update the harness.
+The manifest is used by `install.sh` and `minas-update` to know which files to copy and sync. If your new file is not listed in the manifest, it will not be included when users install or update the harness.
 
 When modifying the manifest:
 
@@ -211,13 +211,13 @@ Before submitting a new skill, verify:
 
 - [ ] Skill lives in its own directory under `.claude/skills/<skill-name>/`
 - [ ] `SKILL.md` exists with valid YAML frontmatter (name, description, at minimum)
-- [ ] Skill name does **not** use the `vc-` prefix (reserved for official skills)
+- [ ] Skill name does **not** use the `minas-` prefix (reserved for official skills)
 - [ ] Any helper scripts are under a `scripts/` subdirectory
-- [ ] `vc-manifest.json` is updated with all new file paths
+- [ ] `minas-manifest.json` is updated with all new file paths
 - [ ] Validation passes:
 
   ```bash
-  node .claude/skills/vc-audit-vc/scripts/validate-skills.mjs
+  node .claude/skills/minas-audit-vc/scripts/validate-skills.mjs
   ```
 
 ---
@@ -232,7 +232,7 @@ Before submitting a new agent, verify:
 - [ ] Agent parity validation passes:
 
   ```bash
-  node .claude/skills/vc-audit-vc/scripts/validate-agent-parity.mjs
+  node .claude/skills/minas-audit-vc/scripts/validate-agent-parity.mjs
   ```
 
 ---
@@ -279,4 +279,4 @@ Top contributors may be invited as maintainers.
 
 ---
 
-Thank you for helping make vibecode-pro-max-kit better for everyone!
+Thank you for helping make minas-kit better for everyone!

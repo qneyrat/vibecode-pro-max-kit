@@ -8,7 +8,7 @@ Batch process multiple repositories, local or remote, through `pnpm dlx repomix`
 
 ### Project-specific constraints
 
-- Default output directory: `process/general-plans/references/`
+- Default output directory: `.minas/process/general-plans/references/`
 - Output directory must resolve inside a `references/` folder
 - Security checks remain enabled unless `--no-security-check` is passed deliberately
 - The wrapper is for reference artifacts only, not plans or implementation ownership
@@ -44,7 +44,7 @@ With options:
 ```bash
 python3 .claude/skills/repomix/scripts/repomix_batch.py /repo1 /repo2 \
   --style markdown \
-  --output-dir process/general-plans/references \
+  --output-dir .minas/process/general-plans/references \
   --remove-comments \
   --include "src/**/*.ts" \
   --ignore "tests/**"
@@ -78,4 +78,4 @@ If `repomix` fails:
 
 - confirm `pnpm dlx repomix --version`
 - narrow `--include`
-- verify the output path is inside `process/general-plans/references/` or `process/features/*/references/`
+- verify the output path is inside `.minas/process/general-plans/references/` or `.minas/process/features/*/references/`

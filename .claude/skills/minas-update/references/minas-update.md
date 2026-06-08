@@ -1,8 +1,8 @@
-# vc-update Reference
+# minas-update Reference
 
-Detailed reference for the vc-update skill.
+Detailed reference for the minas-update skill.
 
-## vc-manifest.json Schema Reference (v2.1.0)
+## minas-manifest.json Schema Reference (v2.1.0)
 
 The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
 
@@ -16,19 +16,19 @@ The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
     ".claude/hooks/**",
     ".claude/settings.json",
     ".minas/CLAUDE.md",
-    "process/development-protocols/**",
-    "process/_seeds/**",
-    "process/_seeds/**/.gitkeep",
-    "process/_seeds/**/.gitignore",
-    "process/_seeds/**/.env.example"
+    ".minas/process/development-protocols/**",
+    ".minas/process/_seeds/**",
+    ".minas/process/_seeds/**/.gitkeep",
+    ".minas/process/_seeds/**/.gitignore",
+    ".minas/process/_seeds/**/.env.example"
   ],
   "exclude": [
-    "process/context/all-context.md",
-    "process/features/**",
-    "process/general-plans/**",
+    ".minas/process/context/all-context.md",
+    ".minas/process/features/**",
+    ".minas/process/general-plans/**",
     "**/.git/**",
     "**/.logs/**",
-    ".claude/skills/vc-chrome-devtools/scripts/node_modules/**"
+    ".claude/skills/minas-chrome-devtools/scripts/node_modules/**"
   ],
   "strip": [],
   "merge": [".claude/settings.json"],
@@ -49,7 +49,7 @@ The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
 | `version` | string | Semver version of this release. >= 2.1.0 means glob format. |
 | `include` | string[] | Glob patterns for files managed by the kit. Resolved against the kit repo root. |
 | `exclude` | string[] | Glob patterns to exclude from include matches. Post-filtered by the resolver. |
-| `strip` | string[] | Files needing project-specific content stripped at publish time. Informational for vc-update. |
+| `strip` | string[] | Files needing project-specific content stripped at publish time. Informational for minas-update. |
 | `merge` | string[] | Files where user customizations are preserved (not overwritten on update). |
 | `copyIfMissing` | string[] | Glob patterns for files only installed if they don't already exist locally. |
 | `symlinks` | object | Symlink path -> target mappings to create/verify. |
@@ -64,7 +64,7 @@ Old manifests use explicit file lists instead of glob patterns:
 | `version` | string | Semver version (< 2.1.0) |
 | `managed` | string[] | Individual files overwritten on update |
 | `managedDirs` | string[] | Directories synced entirely (rsync-style replace) |
-| `seedsDir` | string | Path to seeds directory (always `process/_seeds/`) |
+| `seedsDir` | string | Path to seeds directory (always `.minas/process/_seeds/`) |
 | `symlinks` | object | Symlink path -> target mappings |
 | `deletions` | string[] | Paths to delete (accumulated across versions) |
 
@@ -98,16 +98,16 @@ node "$TMPDIR/resolve-manifest.mjs" --root "$TMPDIR" --kit-only
 }
 ```
 
-## .vc-installed-files
+## .minas-installed-files
 
 A snapshot file written to the user project root after each install/update. Contains one relative file path per line, sorted alphabetically.
 
-**Purpose:** Enables automatic deletion detection. When vc-update runs, it compares the new resolved file list against this snapshot to find files that should be deleted (present in snapshot but absent from new resolution).
+**Purpose:** Enables automatic deletion detection. When minas-update runs, it compares the new resolved file list against this snapshot to find files that should be deleted (present in snapshot but absent from new resolution).
 
 **Example:**
 ```
-.claude/agents/vc-code-reviewer.md
-.claude/agents/vc-debugger.md
+.claude/agents/minas-code-reviewer.md
+.claude/agents/minas-debugger.md
 .claude/hooks/descriptive-name.cjs
 .claude/settings.json
 ...
@@ -124,10 +124,10 @@ A snapshot file written to the user project root after each install/update. Cont
 | Repo not found (404) | Step 3 | Print "remote repo not found, check URL in SKILL.md", clean up, stop |
 | Resolver script missing | Step 4 | Fall back to legacy manifest parsing (managed/managedDirs) |
 | Resolver script fails | Step 4 | Print error, suggest checking Node.js version (>= 22), clean up, stop |
-| Malformed vc-manifest.json | Step 4 | Print JSON parse error, clean up, stop |
-| Missing vc-manifest.json | Step 4 | Print "vc-manifest.json not found in remote", clean up, stop |
-| .vc-version missing | Step 2 | Not an error -- treat as `0.0.0` (first update) |
-| .vc-installed-files missing | Step 6 | Build synthetic snapshot from current filesystem, proceed |
+| Malformed minas-manifest.json | Step 4 | Print JSON parse error, clean up, stop |
+| Missing minas-manifest.json | Step 4 | Print "minas-manifest.json not found in remote", clean up, stop |
+| .minas-version missing | Step 2 | Not an error -- treat as `0.0.0` (first update) |
+| .minas-installed-files missing | Step 6 | Build synthetic snapshot from current filesystem, proceed |
 | Permission denied on copy | Step 10 | Print which file, suggest `chmod`, **continue** with remaining |
 | Permission denied on delete | Step 10 | Print which file, suggest `chmod`, **continue** |
 | Symlink creation fails | Step 10 | Print error, suggest checking if target exists, **continue** |
@@ -136,26 +136,26 @@ A snapshot file written to the user project root after each install/update. Cont
 
 ### User modified a managed file locally
 
-vc-update **overwrites** managed files without checking for local modifications (except `merge` and `copyIfMissing` files). This is by design -- managed files are owned by the harness. The dry-run shows exactly what will change, giving the user a chance to back out.
+minas-update **overwrites** managed files without checking for local modifications (except `merge` and `copyIfMissing` files). This is by design -- managed files are owned by the harness. The dry-run shows exactly what will change, giving the user a chance to back out.
 
 If the user has intentional local changes to a managed file:
-1. Copy their changes to a separate file before running vc-update
+1. Copy their changes to a separate file before running minas-update
 2. Re-apply after the update
-3. Or better: move customizations to `process/context/` where they belong
+3. Or better: move customizations to `.minas/process/context/` where they belong
 
 ### Merge files (.claude/settings.json)
 
 Files in the `merge` list are NEVER overwritten if they exist locally. The dry-run shows the diff so the user can manually reconcile. On fresh install (no existing file), the kit version is installed.
 
-`.minas/CLAUDE.md` is a harness-only file — overwritten freely on update like any other managed file. Project-specific content (context groups, tech stack, features) belongs in `process/context/all-context.md`, which vc-update never touches.
+`.minas/CLAUDE.md` is a harness-only file — overwritten freely on update like any other managed file. Project-specific content (context groups, tech stack, features) belongs in `.minas/process/context/all-context.md`, which minas-update never touches.
 
 ### Copy-if-missing files (example PRDs)
 
 Files in the `copyIfMissing` list are only installed if they don't already exist locally. This prevents overwriting user-customized planning examples while still providing them on fresh install.
 
-### First update with v2.1.0 (no .vc-installed-files)
+### First update with v2.1.0 (no .minas-installed-files)
 
-Users upgrading from v2.0.x have no `.vc-installed-files` snapshot. The algorithm:
+Users upgrading from v2.0.x have no `.minas-installed-files` snapshot. The algorithm:
 1. Builds a synthetic snapshot from the local filesystem (files matching the remote file list that exist locally).
 2. Applies legacy deletions from v2.0.4 (embedded in the resolver).
 3. Writes the synthetic snapshot.
@@ -171,7 +171,7 @@ Classified as **removals**. Deleted locally after confirmation.
 
 ### Already up to date
 
-If `.vc-version` matches the remote manifest version, report "Already up to date" and exit. No diff computed.
+If `.minas-version` matches the remote manifest version, report "Already up to date" and exit. No diff computed.
 
 ### Adding a new skill to the kit
 
@@ -180,11 +180,11 @@ With the glob-based manifest, adding a new skill directory to `.claude/skills/` 
 ## Dry-Run Output Format
 
 ```
-vc-update dry run: v2.0.4 -> v2.1.0
+minas-update dry run: v2.0.4 -> v2.1.0
 
 FILES:
   [modified]  .minas/CLAUDE.md  (+15 -8)
-  [modified]  .claude/agents/vc-execute-agent.md  (+3 -1)
+  [modified]  .claude/agents/minas-execute-agent.md  (+3 -1)
   [new]       .claude/hooks/lib/new-util.cjs
   [removed]   .claude/skills/deprecated-skill/SKILL.md
   [unchanged] .claude/settings.json
@@ -205,7 +205,7 @@ Summary: 5 modified, 2 new, 1 removal, 1 merge skipped, 85 unchanged
 ## Applied Changes Output Format
 
 ```
-vc-update complete: v2.0.4 -> v2.1.0
+minas-update complete: v2.0.4 -> v2.1.0
 
 Applied:
   3 files modified
@@ -214,8 +214,8 @@ Applied:
   0 symlinks fixed
   1 merge file preserved (review .claude/settings.json manually)
 
-Snapshot written to .vc-installed-files
-Version written to .vc-version: 2.1.0
+Snapshot written to .minas-installed-files
+Version written to .minas-version: 2.1.0
 Temp directory cleaned up.
 ```
 

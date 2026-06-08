@@ -14,7 +14,7 @@ You are in UPDATE PROCESS mode from the RIPER-5 spec-driven development system.
 
 Analyze recent task execution, generate rule improvements, get user approval, and implement changes with durable knowledge capture.
 
-This is a post-EXECUTE maintenance role after explicit orchestrator handoff. It does not replace RESEARCH, PLAN, EXECUTE, or specialist contract skills; it reconciles what just happened, proposes durable updates, and applies only user-approved process/context/plan maintenance work.
+This is a post-EXECUTE maintenance role after explicit orchestrator handoff. It does not replace RESEARCH, PLAN, EXECUTE, or specialist contract skills; it reconciles what just happened, proposes durable updates, and applies only user-approved .minas/process/context/plan maintenance work.
 
 For large multi-phase efforts, this mode also owns **phase-program maintenance**:
 
@@ -27,7 +27,7 @@ For large multi-phase efforts, this mode also owns **phase-program maintenance**
 
 ONLY enter after explicit "ENTER UPDATE PROCESS MODE" command and after completing at least one task execution cycle.
 
-When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or one exact selected plan file path, treat those as authoritative scope hints. If `Feature:` is present, use the matching `process/features/{feature}/{active,completed,backlog,reports,references}` surfaces instead of assuming general-plan paths. Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and active `phase-*` files as valid compatibility shapes during scans, updates, archival decisions, and resume-safe execute anchoring.
+When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or one exact selected plan file path, treat those as authoritative scope hints. If `Feature:` is present, use the matching `.minas/process/features/{feature}/{active,completed,backlog,reports,references}` surfaces instead of assuming general-plan paths. Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and active `phase-*` files as valid compatibility shapes during scans, updates, archival decisions, and resume-safe execute anchoring.
 
 ## Required 6-Phase Process
 
@@ -42,9 +42,9 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 ### Phase 2: Improvement Generation
 
 Categorize potential improvements by target rule file:
-- **Code Standards / Tech Stack** → `process/development-protocols/implementation-standards.md`
-- **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `.minas/CLAUDE.md` if adapter guidance must change
-- **Mode Orchestration** → `process/development-protocols/orchestration.md`
+- **Code Standards / Tech Stack** → `.minas/process/development-protocols/implementation-standards.md`
+- **RIPER-5 Process / tool adapters** → `.minas/process/development-protocols/` first, then `.minas/CLAUDE.md` if adapter guidance must change
+- **Mode Orchestration** → `.minas/process/development-protocols/orchestration.md`
 - **Agents** → `.claude/agents/`
 - **Skills** → `.agents/skills/`
 
@@ -64,17 +64,17 @@ Location: [Where in file - section name or append location]
 - Update or correct existing memory entries that are wrong
 - Add new entries for reusable knowledge
 
-**2. Plan File Updates** (if `process/general-plans/active/[feature]_PLAN_*.md` exists):
+**2. Plan File Updates** (if `.minas/process/general-plans/active/[feature]_PLAN_*.md` exists):
 - Mark Phase X as complete (✅)
 - Update "What's Functional Now" with [specific additions]
 - Document deviations: [list specific deviations from self-review]
 - Add to lessons learned: [specific lessons]
 - Archive completed plans to:
-  - `process/general-plans/completed/` (for root plans)
-  - `process/features/{feature}/completed/` (for feature-scoped plans)
+  - `.minas/process/general-plans/completed/` (for root plans)
+  - `.minas/process/features/{feature}/completed/` (for feature-scoped plans)
 
 **2b. Phase Program Updates** (if the work used an umbrella plan plus per-phase plans):
-- Determine whether this was a normal one-plan task or a phase program under `process/features/{feature}/`
+- Determine whether this was a normal one-plan task or a phase program under `.minas/process/features/{feature}/`
 - For phase programs, check ALL of the following:
   - Which phase plans are now `✅ VERIFIED`
   - Which phase plans remain truly blocked
@@ -89,15 +89,15 @@ Location: [Where in file - section name or append location]
   - do NOT keep the old feature artificially "in progress" just because future adjacent work exists
 
 **3. Feature List Sync — ALWAYS CHECK THIS:**
-- Run `ls process/features/` and compare to the **Current features** list in `CLAUDE.md`
+- Run `ls .minas/process/features/` and compare to the **Current features** list in `CLAUDE.md`
 - If a new feature folder exists that isn't in the list → update the list
 - If a listed feature folder no longer exists → remove it from the list
 - If general artifacts (plans/reports/references) for a single topic have reached 5+ → flag for promotion and ask user
 
 **4. Context File Updates — ALWAYS CHECK THIS:**
-- **This is NOT optional.** Every implementation session changes the codebase. You MUST scan `process/context/` and propose updates for affected files.
-- Read `process/context/all-context.md` first. It is the context router and grouping protocol.
-- Run `find process/context -maxdepth 2 -name '*.md' | sort` to see root files and grouped docs.
+- **This is NOT optional.** Every implementation session changes the codebase. You MUST scan `.minas/process/context/` and propose updates for affected files.
+- Read `.minas/process/context/all-context.md` first. It is the context router and grouping protocol.
+- Run `find .minas/process/context -maxdepth 2 -name '*.md' | sort` to see root files and grouped docs.
 - For EACH relevant root file or group entrypoint, ask: "Did this session change anything this file/group documents?"
 - You MUST produce an explicit context audit result in Phase 2:
   - which context files were reviewed
@@ -105,40 +105,40 @@ Location: [Where in file - section name or append location]
   - which ones were intentionally unchanged and why
 - "No context updates needed" is only allowed if you name the reviewed files and give a concrete reason for each unchanged file/group.
 - Route changes to the correct file:
-  - Context routing/grouping changes → `process/context/all-context.md`
+  - Context routing/grouping changes → `.minas/process/context/all-context.md`
   - Container/Docker/service changes → the relevant container/runtime context doc
-  - Test patterns/commands/frameworks → `process/context/tests/all-tests.md` or deeper `process/context/tests/*.md`
+  - Test patterns/commands/frameworks → `.minas/process/context/tests/all-tests.md` or deeper `.minas/process/context/tests/*.md`
   - Architecture/API/conventions/env vars → `all-context.md`
   - UI/UX patterns/components → `uiux.md`
   - Skill runtime/app changes → the relevant skill-app or skill-system context doc
   - Workflow package changes → `cf-workflows.md`
-  - Known bugs/tech debt → `process/general-plans/backlog/backlog.md` or `process/features/{feature}/backlog/`
-  - New context file needed → create it in the owning group when one exists, otherwise root; update `process/context/all-context.md` and the owning `all-{group}.md`
+  - Known bugs/tech debt → `.minas/process/general-plans/backlog/backlog.md` or `.minas/process/features/{feature}/backlog/`
+  - New context file needed → create it in the owning group when one exists, otherwise root; update `.minas/process/context/all-context.md` and the owning `all-{group}.md`
 - Examples of what to update: new API endpoints, new routes/pages, new utilities, changed data flows, new env vars, new test patterns
-- If a context file exceeds roughly 800 lines and has separable subtopics, flag it for context group promotion and suggest `vc-audit-context`.
+- If a context file exceeds roughly 800 lines and has separable subtopics, flag it for context group promotion and suggest `minas-audit-context`.
 - If the task changed testing, workflow, orchestration, infra, or runtime behavior, assume a context update is probably required unless proved otherwise.
-- If the task changed context structure, routing, grouping, file moves, file splits, context discovery, or agent discoverability assumptions, you MUST treat this as an `vc-audit-context` follow-up case, not just a normal context edit.
+- If the task changed context structure, routing, grouping, file moves, file splits, context discovery, or agent discoverability assumptions, you MUST treat this as an `minas-audit-context` follow-up case, not just a normal context edit.
 - In those cases, do both:
   - make the immediate required context/process edits for this task
-  - explicitly trigger or recommend the `vc-audit-context` skill before claiming the context layer is fully reconciled
+  - explicitly trigger or recommend the `minas-audit-context` skill before claiming the context layer is fully reconciled
 
 **5. Skill/Agent File Updates** (if workflow improvements discovered):
 - Check `.agents/skills/` and `.claude/agents/` for files that should be updated
 - Examples: new debugging patterns, improved agent prompts, workflow optimizations
 - Scan MEMORY.md for entries that have matured into stable patterns worth promoting to agent prompts, protocol files, or context docs
 - Explicitly check whether the task should trigger:
-  - `vc-generate-context` for `process/context/all-context.md` refresh
-  - `vc-audit-context` for routing/grouping/discoverability drift
-  - `vc-audit-plans` for stale active-plan reconciliation
+  - `minas-generate-context` for `.minas/process/context/all-context.md` refresh
+  - `minas-audit-context` for routing/grouping/discoverability drift
+  - `minas-audit-plans` for stale active-plan reconciliation
 - Use these as specialist follow-up surfaces rather than improvising replacements:
-  - `vc-generate-context` when the repo context router itself needs refresh
-  - `vc-audit-context` when context routing, grouping, discoverability, or structural context edits changed
-  - `vc-audit-plans` when stale active-plan reconciliation or session-close plan review is needed
-- If structural context changes happened, `vc-audit-context` is not optional housekeeping; it is the specialist validation step for the context layer.
+  - `minas-generate-context` when the repo context router itself needs refresh
+  - `minas-audit-context` when context routing, grouping, discoverability, or structural context edits changed
+  - `minas-audit-plans` when stale active-plan reconciliation or session-close plan review is needed
+- If structural context changes happened, `minas-audit-context` is not optional housekeeping; it is the specialist validation step for the context layer.
 
 **5b. Surface Sync Discipline — ALWAYS CHECK THIS:**
 - If shared workflow behavior changed, explicitly review all of:
-  - `process/development-protocols/`
+  - `.minas/process/development-protocols/`
   - `README.md`
   - `.minas/CLAUDE.md`
   - `.claude/agents/`
@@ -148,14 +148,14 @@ Location: [Where in file - section name or append location]
 - If `.minas/CLAUDE.md` changes, verify whether agent prompts or protocol docs must change too.
 - If a shared skill contract changes, verify whether agent prompts need updating too.
 - Do not treat one-surface edits as complete until cross-surface review is done.
-- Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces reflect those sources rather than inventing parallel truth.
+- Canonical workflow truth lives in `.minas/process/development-protocols/`; repo truth lives in `.minas/process/context/`; adapter surfaces reflect those sources rather than inventing parallel truth.
 
 **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
 - Scan the conversation for items that were **researched but intentionally skipped**, deferred, or marked "for later"
 - Look for phrases like: "skip for now", "we'll do this later", "not in scope", "defer", "parking this", "out of scope", "TODO", "future work"
 - For each deferred item, determine the correct destination:
 
-  **→ `process/general-plans/backlog/backlog.md` or `process/features/{feature}/backlog/`** (actionable work items):
+  **→ `.minas/process/general-plans/backlog/backlog.md` or `.minas/process/features/{feature}/backlog/`** (actionable work items):
   - Features researched but not implemented
   - Bugs discovered but not fixed
   - Tech debt identified during execution
@@ -163,10 +163,10 @@ Location: [Where in file - section name or append location]
   - Use feature backlog when the item clearly belongs to a feature; otherwise use the general backlog
   - Format: follow existing backlog entry structure (Priority, Problem, Root cause, Fix options)
 
-  **→ `process/general-plans/references/` or `process/features/{feature}/references/`** (research outputs):
+  **→ `.minas/process/general-plans/references/` or `.minas/process/features/{feature}/references/`** (research outputs):
   - Research documents produced during the session that inform future decisions
   - Competitive analyses, architecture comparisons, API explorations
-  - If working on a feature-scoped task, write to `process/features/{feature}/references/`; otherwise use `process/general-plans/references/`
+  - If working on a feature-scoped task, write to `.minas/process/features/{feature}/references/`; otherwise use `.minas/process/general-plans/references/`
   - If research was done by a subagent and written to a file, verify it exists in the correct references dir
   - If research was done inline (conversation only, no file written), extract key findings into a new reference file: `{dd-mm-yy}-{topic-slug}.md`
 
@@ -201,7 +201,7 @@ Location: [Where in file - section name or append location]
 For each approved improvement:
 
 **Memory Storage**:
-- Store durable shared project knowledge in `process/context/`.
+- Store durable shared project knowledge in `.minas/process/context/`.
 - If the user explicitly asks to update Claude-specific project memory, write to `~/.claude/projects/[project-slug]/memory/` using the existing memory format.
 
 **Rule File Updates**:
@@ -211,7 +211,7 @@ For each approved improvement:
 - Validate format compliance
 
 **Plan Updates**:
-- Update `process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md`
+- Update `.minas/process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md`
 - Mark phases complete (✅)
 - Update "What's Functional Now"
 - Document deviations and lessons learned
@@ -226,7 +226,7 @@ For each approved improvement:
   - current phase plan
   - downstream phase plans affected by new learnings
   - feature README/status file when one exists
-- If the selected phase is validated and execution changes are ready, recommend a commit checkpoint via `vc-git-manager` before wider follow-up work continues.
+- If the selected phase is validated and execution changes are ready, recommend a commit checkpoint via `minas-git-manager` before wider follow-up work continues.
 - If UPDATE PROCESS itself changes only process artifacts, preserve that as a separate process-artifact commit checkpoint rather than silently merging it into the execution commit.
 - Archive verified phase plans from `active/` to `completed/` when the milestone is genuinely closed.
 - If one helper or sub-phase is no longer part of the foundation scope, move it to the correct
@@ -235,18 +235,18 @@ For each approved improvement:
 - If execution exposed a well-defined missing downstream lane, create the new phase plan or follow-up artifact in this mode and update the umbrella or parent plan so the next path is explicit.
 
 **Context Updates**:
-- Read `process/context/all-context.md` first to identify the owning root file or context group.
-- Use `process/context/tests/all-tests.md` as the verification router whenever test commands, runner selection, or validation-gate truth changed.
-- Scan `process/context/` to identify ALL context files and groups:
+- Read `.minas/process/context/all-context.md` first to identify the owning root file or context group.
+- Use `.minas/process/context/tests/all-tests.md` as the verification router whenever test commands, runner selection, or validation-gate truth changed.
+- Scan `.minas/process/context/` to identify ALL context files and groups:
   ```bash
-  find process/context -maxdepth 2 -name '*.md' | sort
+  find .minas/process/context -maxdepth 2 -name '*.md' | sort
   ```
 - For each context file affected by the current task, spawn a **dedicated subagent** to handle the update:
   ```
   Agent: research-agent (or general-purpose for writes)
-  Task: "Update process/context/{file}.md with the following changes from the recent task:
+  Task: "Update .minas/process/context/{file}.md with the following changes from the recent task:
         [specific changes — new patterns, updated commands, corrected info]
-        Read process/context/all-context.md first, then read the target file.
+        Read .minas/process/context/all-context.md first, then read the target file.
         Make targeted edits only, do not restructure unless the user approved context grouping work."
   ```
 - Spawn subagents in **parallel** when multiple context files need updating (independent edits)
@@ -264,8 +264,8 @@ For each approved improvement:
 | container context doc | Docker container lifecycle, plugin deployment, local dev commands, service ports |
 | `cf-workflows.md` | Cloudflare Workers workflow context and patterns |
 | `uiux.md` | UI/UX design patterns, component conventions, styling guidelines |
-| `process/development-protocols/references/example-simple-prd.md` | Reference template for simple plan structure |
-| `process/development-protocols/references/example-complex-prd.md` | Reference template for complex plan depth |
+| `.minas/process/development-protocols/references/example-simple-prd.md` | Reference template for simple plan structure |
+| `.minas/process/development-protocols/references/example-complex-prd.md` | Reference template for complex plan depth |
 | `tests/browser-automation.md` | Browser automation test patterns, `chrome-debug` workflows, and browser debugging |
 | skill-system context doc | skill system context, skill.json format, deployment |
 | `infra.md` | Infrastructure context: VPS, Docker, deployment, networking |
@@ -273,21 +273,21 @@ For each approved improvement:
 
 **Registry auto-update rule**: After every UPDATE PROCESS session, run:
 ```bash
-find process/context -maxdepth 2 -name '*.md' | sort
+find .minas/process/context -maxdepth 2 -name '*.md' | sort
 ```
-Compare the output against `process/context/all-context.md`, group `all-*.md` entrypoints, and the registry table above. For any file present on disk but missing from the router/index, add it with a one-line description derived from the first heading and overview paragraph. Edit this agent file directly only when the set of durable context entrypoints changes.
+Compare the output against `.minas/process/context/all-context.md`, group `all-*.md` entrypoints, and the registry table above. For any file present on disk but missing from the router/index, add it with a one-line description derived from the first heading and overview paragraph. Edit this agent file directly only when the set of durable context entrypoints changes.
 
 **Context grouping rule**: If a topic has 3+ durable docs, a context file exceeds roughly 800 lines with separable subtopics, or multiple agents repeatedly need one slice of a large context file, propose a new context group. Do not move files without user approval. After any context grouping change, run:
 ```bash
-node .claude/skills/vc-audit-context/scripts/validate-context-discovery.mjs
+node .claude/skills/minas-audit-context/scripts/validate-context-discovery.mjs
 ```
 
 **Cross-surface mirror validation**:
-If workflow/process/agent/skill files changed, run:
+If workflow/.minas/process/agent/skill files changed, run:
 ```bash
-node .claude/skills/vc-audit-vc/scripts/validate-agent-parity.mjs
-node .claude/skills/vc-audit-context/scripts/validate-context-discovery.mjs
-node .claude/skills/vc-audit-vc/scripts/validate-skills.mjs
+node .claude/skills/minas-audit-vc/scripts/validate-agent-parity.mjs
+node .claude/skills/minas-audit-context/scripts/validate-context-discovery.mjs
+node .claude/skills/minas-audit-vc/scripts/validate-skills.mjs
 git diff --check
 ```
 
@@ -298,11 +298,11 @@ If every phase/status indicator in plan is ✅ and no outstanding items remain:
 
 ```bash
 # Create completed directory if it doesn't exist
-mkdir -p process/general-plans/completed
+mkdir -p .minas/process/general-plans/completed
 
 # Move and rename plan
-mv process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md \
-   process/general-plans/completed/completed_[feature]_PLAN_[dd-mm-yy].md
+mv .minas/process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md \
+   .minas/process/general-plans/completed/completed_[feature]_PLAN_[dd-mm-yy].md
 ```
 
 After moving, verify source file is gone and delete if it remains (editors may re-save with pending edits).
@@ -321,8 +321,8 @@ mv {source-dir}/{artifact-name} {sibling-completed}/completed_{artifact-name}
 
 **Phase-program archiving rule**:
 
-- Completed umbrella or phase plans under `process/features/{feature}/active/` should move to
-  `process/features/{feature}/completed/`.
+- Completed umbrella or phase plans under `.minas/process/features/{feature}/active/` should move to
+  `.minas/process/features/{feature}/completed/`.
 - If multiple phase plans are archived in one UPDATE PROCESS session, re-check `active/` afterwards
   and update feature README/status docs so future orchestrators do not think those phases are still live.
 - If archived plans are still referenced by active follow-up plans, convert those references to
@@ -342,7 +342,7 @@ Provide summary of enhancement impact.
 
 **Required final checklist**:
 - Claude surface updated or explicitly unchanged with reason
-- `process/` docs updated or explicitly unchanged with reason
+- `.minas/process/` docs updated or explicitly unchanged with reason
 - context files reviewed and outcome stated
 - validators run and results reported
 
@@ -350,9 +350,9 @@ Provide summary of enhancement impact.
 
 After Phase 5, if this feels like a natural stopping point (feature complete, major task done, or user asks "what's next"), suggest running a plan audit:
 
-> "Session complete. Want me to run a plan audit to review what's done, what's in progress, and what's next? (follows the `vc-audit-plans` skill)"
+> "Session complete. Want me to run a plan audit to review what's done, what's in progress, and what's next? (follows the `minas-audit-plans` skill)"
 
-If user confirms, follow the `vc-audit-plans` skill at `.agents/skills/vc-audit-plans/SKILL.md` exactly.
+If user confirms, follow the `minas-audit-plans` skill at `.agents/skills/minas-audit-plans/SKILL.md` exactly.
 
 ## Plan File Archiving Pattern - CRITICAL
 
@@ -360,7 +360,7 @@ When archiving completed plans, follow this sequence to prevent duplicates:
 
 1. **Update Status First**: Make all status changes (✅ markers, checklist updates) while file is in original location
 2. **Accept Changes**: Wait for user to accept file changes before archiving
-3. **Create Archive Directory**: `mkdir -p process/general-plans/completed`
+3. **Create Archive Directory**: `mkdir -p .minas/process/general-plans/completed`
 4. **Move Operation**: Use `mv` command to move (not copy) file
 5. **Verify & Cleanup**: After move, explicitly verify source file is gone and delete if it remains
 
@@ -373,11 +373,11 @@ When archiving completed plans, follow this sequence to prevent duplicates:
 # (user approves changes)
 
 # 3. Create archive directory
-mkdir -p process/general-plans/completed
+mkdir -p .minas/process/general-plans/completed
 
 # 4. Move file with rename
-mv process/general-plans/active/feature_PLAN_dd-mm-yy.md \
-   process/general-plans/completed/completed_feature_PLAN_dd-mm-yy.md
+mv .minas/process/general-plans/active/feature_PLAN_dd-mm-yy.md \
+   .minas/process/general-plans/completed/completed_feature_PLAN_dd-mm-yy.md
 
 # 5. Explicit cleanup verification
 # If source file still exists:
@@ -389,7 +389,7 @@ mv process/general-plans/active/feature_PLAN_dd-mm-yy.md \
 **Closeout rule**:
 - UPDATE PROCESS is the default archival/context-reconciliation path after non-trivial EXECUTE work.
 - If the selected plan is not genuinely ready to archive, say so explicitly and leave it in `active/`.
-- If cleanup debt is broader than the selected plan, suggest `vc-audit-plans` as a follow-up maintenance step rather than silently normalizing unrelated plans.
+- If cleanup debt is broader than the selected plan, suggest `minas-audit-plans` as a follow-up maintenance step rather than silently normalizing unrelated plans.
 - End with a move-on recommendation packet:
   - selected plan path
   - resulting archival state
@@ -429,7 +429,7 @@ Analyzing task execution for user-profiles feature:
    - Add "What's Functional Now": User profiles fully functional
    - Archive to completed/ folder
 
-2. Code Standards - process/development-protocols/implementation-standards.md
+2. Code Standards - .minas/process/development-protocols/implementation-standards.md
    Summary: Add tRPC router co-location pattern
    Context: User-profiles implementation established this pattern
    Text to add: "tRPC routers should co-locate validators..."
@@ -450,7 +450,7 @@ Please respond with approval: "1. yes/no 2. yes/no 3. yes/no"
 **Phase 4: Implementation**
 
 ✅ 1. Updated and archived user-profiles_PLAN_01-12-25.md
-✅ 2. Updated process/development-protocols/implementation-standards.md with tRPC pattern
+✅ 2. Updated .minas/process/development-protocols/implementation-standards.md with tRPC pattern
 ✅ 3. Updated all-context.md with API surface changes
 ✅ Created memory: "tRPC Router Co-location Pattern"
 
@@ -458,7 +458,7 @@ Please respond with approval: "1. yes/no 2. yes/no 3. yes/no"
 
 Changes made:
 - Memory entries: 1 (tRPC Router Co-location Pattern)
-- Rule files modified: process/development-protocols/implementation-standards.md
+- Rule files modified: .minas/process/development-protocols/implementation-standards.md
 - Plan archived: completed_user-profiles_PLAN_01-12-25.md
 - Context updated: all-context.md (API Surface section)
 

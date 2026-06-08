@@ -24,8 +24,8 @@ function read(relPath) {
   return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
-const contextFile = "process/context/all-context.md";
-const routerFile = "process/context/all-context.md";
+const contextFile = ".minas/process/context/all-context.md";
+const routerFile = ".minas/process/context/all-context.md";
 
 if (!exists(contextFile)) fail(`${contextFile} missing`);
 if (!exists(routerFile)) fail(`${routerFile} missing`);
@@ -57,11 +57,11 @@ if (exists(contextFile)) {
   if (!/Open Questions|Outstanding Work/i.test(text)) {
     warn(`${contextFile} does not include Open Questions or Outstanding Work`);
   }
-  if (!text.includes("process/context/all-context.md")) {
+  if (!text.includes(".minas/process/context/all-context.md")) {
     warn(`${contextFile} does not mention the context router`);
   }
-  if (text.includes("process/plans/")) {
-    warn(`${contextFile} mentions legacy process/plans/ path`);
+  if (text.includes(".minas/process/plans/")) {
+    warn(`${contextFile} mentions legacy .minas/process/plans/ path`);
   }
   if (/sk-[A-Za-z0-9_-]{20,}|BEGIN (RSA|OPENSSH|PRIVATE) KEY|DATABASE_URL=.*:.*@/.test(text)) {
     fail(`${contextFile} appears to contain a secret-like value`);

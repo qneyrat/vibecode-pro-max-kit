@@ -1,6 +1,6 @@
 # Metric Library
 
-Quick-reference verify commands by domain. Copy-paste into vc:autoresearch config.
+Quick-reference verify commands by domain. Copy-paste into minas:autoresearch config.
 Direction: **lower** = fewer errors/ms/bytes is better. **higher** = more coverage/accuracy is better.
 
 ## Code Quality

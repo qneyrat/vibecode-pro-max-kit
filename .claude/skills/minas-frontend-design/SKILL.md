@@ -1,5 +1,5 @@
 ---
-name: vc:frontend-design
+name: minas:frontend-design
 description: Create polished frontend interfaces from designs/screenshots/videos. Use for web components, 3D experiences, replicating UI designs, quick prototypes, immersive interfaces, avoiding AI slop.
 license: Complete terms in LICENSE.txt
 metadata:
@@ -36,7 +36,7 @@ Choose workflow based on input type:
 2. **Plan** with `ui-ux-designer` subagent - create phased implementation
 3. **Implement** - match source precisely
 4. **Verify** - compare to original
-5. **Document** - read `process/context/all-context.md`, then update `process/context/all-context.md`, the project's UI/UX context doc (if present), or the relevant grouped context file if approved
+5. **Document** - read `.minas/process/context/all-context.md`, then update `.minas/process/context/all-context.md`, the project's UI/UX context doc (if present), or the relevant grouped context file if approved
 
 See specific workflow files for detailed steps.
 

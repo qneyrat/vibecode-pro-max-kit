@@ -17,12 +17,12 @@
   <img src="assets/flowser-logo.svg" alt="Flowser" width="120">
 </a>
 
-*Built by world-class engineers, for vibecoders at*<br>
+*Built by world-class engineers, for minasrs at*<br>
 *[flowser.ai](https://flowser.ai) — AI Agents with computers for GTM*
 
 <br>
 
-# vibecode-pro-max-kit
+# minas-kit
 
 <br>
 
@@ -42,12 +42,12 @@
 🤝 Plans and specs are shareable — devs, PMs, and stakeholders review the same artifacts
 
 <p>
-  <a href="https://github.com/withkynam/vibecode-pro-max-kit/stargazers"><img src="https://img.shields.io/github/stars/withkynam/vibecode-pro-max-kit" alt="Stars"></a>
-  <a href="https://github.com/withkynam/vibecode-pro-max-kit/network/members"><img src="https://img.shields.io/github/forks/withkynam/vibecode-pro-max-kit" alt="Forks"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/withkynam/vibecode-pro-max-kit" alt="License"></a>
-  <a href="https://github.com/withkynam/vibecode-pro-max-kit/graphs/contributors"><img src="https://img.shields.io/github/contributors/withkynam/vibecode-pro-max-kit" alt="Contributors"></a>
-  <a href="https://github.com/withkynam/vibecode-pro-max-kit/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/withkynam/vibecode-pro-max-kit/validate.yml" alt="CI"></a>
-  <a href="https://github.com/withkynam/vibecode-pro-max-kit/commits/main"><img src="https://img.shields.io/github/last-commit/withkynam/vibecode-pro-max-kit" alt="Last Commit"></a>
+  <a href="https://github.com/withkynam/minas-kit/stargazers"><img src="https://img.shields.io/github/stars/withkynam/minas-kit" alt="Stars"></a>
+  <a href="https://github.com/withkynam/minas-kit/network/members"><img src="https://img.shields.io/github/forks/withkynam/minas-kit" alt="Forks"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/withkynam/minas-kit" alt="License"></a>
+  <a href="https://github.com/withkynam/minas-kit/graphs/contributors"><img src="https://img.shields.io/github/contributors/withkynam/minas-kit" alt="Contributors"></a>
+  <a href="https://github.com/withkynam/minas-kit/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/withkynam/minas-kit/validate.yml" alt="CI"></a>
+  <a href="https://github.com/withkynam/minas-kit/commits/main"><img src="https://img.shields.io/github/last-commit/withkynam/minas-kit" alt="Last Commit"></a>
   <img src="https://img.shields.io/badge/agents-12-orange" alt="Agents">
   <img src="https://img.shields.io/badge/skills-32-purple" alt="Skills">
   <img src="https://img.shields.io/badge/tools-7_%E2%9C%93-38BDF8" alt="7 Tools">
@@ -84,7 +84,7 @@
     <img alt="Tech Stack Row 3" src="https://skillicons.dev/icons?i=supabase,firebase,postgres,mongodb,redis,docker,kubernetes,aws,gcp,azure,vercel,cloudflare,tailwind,electron&perline=15" />
   </picture>
   <br>
-  <p><em>Not decorative. When you run <code>vc-setup</code>, parallel agents scan your codebase,<br>
+  <p><em>Not decorative. When you run <code>minas-setup</code>, parallel agents scan your codebase,<br>
   detect your stack, and build project-specific context groups that every skill reads before it works.<br>
   Other harnesses hardcode agents to one language — <code>rust-review-agent</code>, <code>python-linter</code> — useless elsewhere.<br>
   This one adapts to any combination above and compounds knowledge as you ship.</em></p>
@@ -101,13 +101,13 @@
 > Prefer to drive it from your agent? Open Claude Code or Codex **with that project folder as the working directory**, then paste the [full setup prompt](#-full-agent-setup-prompt) below.
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/withkynam/vibecode-pro-max-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/withkynam/minas-kit/main/install.sh | bash
 ```
 
 Then open Claude Code and say:
 
 ```
-Run vc-setup
+Run minas-setup
 ```
 
 That's it. The setup skill detects your stack, asks about your project (a real conversation, not a checklist), scaffolds the process directory, deep-scans your codebase, and populates context files with actual content — not placeholders.
@@ -123,13 +123,13 @@ That's it. The setup skill detects your stack, asks about your project (a real c
 your-project/
 ├── .claude/
 │   ├── agents/              # 🤖 12 specialized agent definitions
-│   │   ├── vc-research-agent.md
-│   │   ├── vc-execute-agent.md
+│   │   ├── minas-research-agent.md
+│   │   ├── minas-execute-agent.md
 │   │   └── ...
 │   ├── skills/              # ⚡ 31 auto-discovered skills
-│   │   ├── vc-generate-plan/
-│   │   ├── vc-security/
-│   │   ├── vc-scout/
+│   │   ├── minas-generate-plan/
+│   │   ├── minas-security/
+│   │   ├── minas-scout/
 │   │   └── ...
 │   └── hooks/               # 🪝 7 lifecycle hooks
 │       ├── privacy-block.cjs
@@ -139,14 +139,14 @@ your-project/
 │   └── agents/              # 🔄 Mirrored agents for Codex
 ├── CLAUDE.md                # 📋 Orchestrator + routing rules
 ├── AGENTS.md                # 📖 Agent registry
-└── process/                 # 🧠 Created by vc-setup (not install)
+└── .minas/process/                 # 🧠 Created by minas-setup (not install)
     └── ...
 ```
 
-- **Fresh project?** Installs the full harness, then `vc-setup` studies your codebase
-- **Existing `.claude/` config?** Backs up to `.vibecode-backup/`, installs fresh, restores your `settings.json`
-- **Existing `process/` directory?** Never touched by install — `vc-setup` handles migration intelligently
-- **Existing `CLAUDE.md`?** Backed up as `CLAUDE.md.pre-vibecode`, harness version installed
+- **Fresh project?** Installs the full harness, then `minas-setup` studies your codebase
+- **Existing `.claude/` config?** Backs up to `.minas-backup/`, installs fresh, restores your `settings.json`
+- **Existing `.minas/process/` directory?** Never touched by install — `minas-setup` handles migration intelligently
+- **Existing `CLAUDE.md`?** Backed up as `CLAUDE.md.pre-minas`, harness version installed
 
 </details>
 
@@ -158,20 +158,20 @@ your-project/
 > **First, open Claude Code or Codex with your project folder as the working directory** (launch it from inside the project, or `cd` there first). The harness installs into the current directory, so this must be your project — then paste the prompt below.
 
 ```
-First, install the vibecode-pro-max-kit agent harness by running this command:
+First, install the minas-kit agent harness by running this command:
 
-curl -fsSL https://raw.githubusercontent.com/withkynam/vibecode-pro-max-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/withkynam/minas-kit/main/install.sh | bash
 
-After the install completes, run vc-setup to configure everything for this project.
+After the install completes, run minas-setup to configure everything for this project.
 
 Follow the full interactive flow:
 
 1. DETECT — Read package.json, detect my stack (framework, package manager, monorepo
    structure, test framework, database, auth). Also check if I have any existing .claude/,
-   process/, or context files from a previous setup.
+   .minas/process/, or context files from a previous setup.
 
 2. SHOW ME WHAT YOU FOUND — Present a summary of the detection results and wait for me
-   to confirm before continuing. If this is an existing project with process/ folders or
+   to confirm before continuing. If this is an existing project with .minas/process/ folders or
    context files, tell me what you found and what looks good vs what could be improved.
 
 3. ASK ME ABOUT THE PROJECT — Before scaffolding or scanning, have a real conversation
@@ -181,11 +181,11 @@ Follow the full interactive flow:
    then dig into architecture, features, conventions, pain points, and anything else that
    matters. Summarize your understanding back to me and confirm it's correct before moving on.
 
-4. SCAFFOLD — Create the process/ directory structure. If I already have process/ folders,
+4. SCAFFOLD — Create the .minas/process/ directory structure. If I already have .minas/process/ folders,
    show me what you plan to change and wait for my approval before reorganizing anything.
    Never silently move or delete my existing files.
 
-5. STUDY — Deep-scan the codebase and populate process/context/all-context.md with REAL
+5. STUDY — Deep-scan the codebase and populate .minas/process/context/all-context.md with REAL
    content based on what you find AND what I told you. Include: repo structure, tech stack
    with versions, key patterns and conventions, import aliases, env vars, API routes,
    database schema, test setup. Do not leave placeholder text.
@@ -528,7 +528,7 @@ Walk away and come back to completed work.
 
 ### 🧬 Auto-Architecture Research — Learn From Any Codebase
 
-The agent doesn't just read your code — it **studies other repositories** to learn how they solved similar problems (`vc-xia`).
+The agent doesn't just read your code — it **studies other repositories** to learn how they solved similar problems (`minas-xia`).
 
 > 💡 It researches, compares approaches, and adapts the best patterns into your codebase. Architecture decisions are informed by real-world implementations, not hallucinated best practices.
 
@@ -539,7 +539,7 @@ The agent doesn't just read your code — it **studies other repositories** to l
 Context isn't one giant file. It's organized into **auto-routed knowledge domains**:
 
 ```
-process/context/
+.minas/process/context/
 ├── all-context.md              # 🧭 Root router — reads your task, loads what's relevant
 ├── tests/
 │   └── all-tests.md            # 🧪 Test runners, commands, debugging
@@ -565,7 +565,7 @@ Every completed feature feeds learnings back into the context system.
 
 ## How This Compares
 
-| Feature | vibecode-pro-max-kit | Superpowers | GSD | gstack |
+| Feature | minas-kit | Superpowers | GSD | gstack |
 |---------|---------------------|-------------|-----|--------|
 | Spec-driven lifecycle | Full RIPER-5 (research → plan → execute → verify) | Mandatory workflows | Context-rot fix | Partial |
 | Phase-locked safety | Tool restrictions per mode (read-only research, no-write innovate) | Skill-based constraints | Phase separation | None |
@@ -593,7 +593,7 @@ Most agent harnesses give you a big CLAUDE.md and some instructions. Here's what
 <td width="50%" valign="top">
 <h1>🔒</h1>
 <strong>Phase-Locked Tool Restrictions</strong><br><br>
-Your agent literally <strong>cannot</strong> write code during research. RESEARCH is read-only, INNOVATE has no Bash, PLAN can only write to <code>process/</code>. <strong>Actual capability removal</strong>, not suggestions.
+Your agent literally <strong>cannot</strong> write code during research. RESEARCH is read-only, INNOVATE has no Bash, PLAN can only write to <code>.minas/process/</code>. <strong>Actual capability removal</strong>, not suggestions.
 </td>
 <td width="50%" valign="top">
 <h1>🎯</h1>
@@ -605,7 +605,7 @@ Detects your intent from natural language. "build webhook support" → full pipe
 <td width="50%" valign="top">
 <h1>🔍</h1>
 <strong>Automatic Skill Discovery</strong><br><br>
-Before routing any request, scans <strong>32 skills</strong> and matches keywords. Say "add webhook support" and <code>vc-security</code> + <code>vc-scenario</code> surface automatically.
+Before routing any request, scans <strong>32 skills</strong> and matches keywords. Say "add webhook support" and <code>minas-security</code> + <code>minas-scenario</code> surface automatically.
 </td>
 <td width="50%" valign="top">
 <h1>💾</h1>
@@ -662,7 +662,7 @@ The orchestrator **never does the work itself** — it routes, monitors, and man
 ```
 # 🆕 Feature request
 You: "add webhook support to the API"
-→ Skill discovery surfaces: vc-scenario, vc-security
+→ Skill discovery surfaces: minas-scenario, minas-security
 → research-agent gathers context (read-only, can't touch code)
 → You say "go" → innovate-agent explores approaches
 → You say "go" → plan-agent writes spec with blast radius
@@ -674,7 +674,7 @@ You: "add webhook support to the API"
 ```
 # 🐛 Bug fix
 You: "login redirect is broken"
-→ Routes to vc-debugger → evidence gathering → competing hypotheses
+→ Routes to minas-debugger → evidence gathering → competing hypotheses
 → Root cause identified with proof chain
 → execute-agent implements the fix → quality pipeline
 ```
@@ -696,7 +696,7 @@ You: "build a full testing platform"
 
 ```
 # 🔄 Autonomous optimization
-You: "improve test coverage to 80% using vc-autoresearch"
+You: "improve test coverage to 80% using minas-autoresearch"
 → Agent iterates: make change → commit → measure → keep/revert
 → Stuck detection after 5 consecutive discards → strategy shift
 → Full audit trail in TSV
@@ -760,19 +760,19 @@ Before a single line of code is written, the system can catch issues through spe
 <td width="50%" valign="top">
 <h1>🎭</h1>
 <strong>5-Persona Pre-Implementation Debate</strong><br><br>
-<code>vc-predict</code> — Architect, Security, Performance, UX, and Devil's Advocate debate your plan. Produces a <strong>GO / CAUTION / STOP</strong> verdict before you write a line of code.
+<code>minas-predict</code> — Architect, Security, Performance, UX, and Devil's Advocate debate your plan. Produces a <strong>GO / CAUTION / STOP</strong> verdict before you write a line of code.
 </td>
 <td width="50%" valign="top">
 <h1>🎲</h1>
 <strong>12-Dimension Edge Case Generator</strong><br><br>
-<code>vc-scenario</code> — Decomposes any feature across 12 dimensions (user types, input extremes, timing, scale, state, env, errors, auth, data, integrations, compliance, business logic). Outputs usable as test specs.
+<code>minas-scenario</code> — Decomposes any feature across 12 dimensions (user types, input extremes, timing, scale, state, env, errors, auth, data, integrations, compliance, business logic). Outputs usable as test specs.
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 <h1>🔐</h1>
 <strong>STRIDE + OWASP Security Audit</strong><br><br>
-<code>vc-security</code> — Dual-methodology security audit with dependency auditing, secret detection, and <strong>auto-fix mode</strong> that sorts by severity and fixes Critical first with regression guards.
+<code>minas-security</code> — Dual-methodology security audit with dependency auditing, secret detection, and <strong>auto-fix mode</strong> that sorts by severity and fixes Critical first with regression guards.
 </td>
 </tr>
 </table>
@@ -788,19 +788,19 @@ Before a single line of code is written, the system can catch issues through spe
 <td width="50%" valign="top">
 <h1>🔄</h1>
 <strong>Autonomous Metric Optimization</strong><br><br>
-<code>vc-autoresearch</code> — Set a goal, walk away. Iterative git-backed loop: make ONE atomic change → commit → measure → keep or revert. Stuck detection after 5 consecutive discards triggers strategy shifts.
+<code>minas-autoresearch</code> — Set a goal, walk away. Iterative git-backed loop: make ONE atomic change → commit → measure → keep or revert. Stuck detection after 5 consecutive discards triggers strategy shifts.
 </td>
 <td width="50%" valign="top">
 <h1>👥</h1>
 <strong>Parallel Agent Teams</strong><br><br>
-<code>vc-team</code> — Multiple agents working <strong>simultaneously</strong> with git worktree isolation. Research in parallel, execute in parallel, review in parallel, debug adversarially.
+<code>minas-team</code> — Multiple agents working <strong>simultaneously</strong> with git worktree isolation. Research in parallel, execute in parallel, review in parallel, debug adversarially.
 </td>
 </tr>
 <tr>
 <td width="50%" valign="top">
 <h1>🔬</h1>
 <strong>Evidence-Before-Hypothesis Debugging</strong><br><br>
-<code>vc-debugger</code> — Gathers evidence first → forms 2-3 competing hypotheses → systematically tests each → documents elimination path. <strong>Never guesses — proves.</strong>
+<code>minas-debugger</code> — Gathers evidence first → forms 2-3 competing hypotheses → systematically tests each → documents elimination path. <strong>Never guesses — proves.</strong>
 </td>
 </tr>
 </table>
@@ -893,7 +893,7 @@ flowchart TD
 **Where plans live on disk:**
 
 ```
-process/
+.minas/process/
 ├── general-plans/
 │   ├── active/                  # 📋 Plans currently being worked on
 │   │   └── webhooks_PLAN_28-05-26.md
@@ -987,7 +987,7 @@ Project knowledge is organized into **context groups** — durable knowledge dom
 <br>
 
 ```
-process/context/
+.minas/process/context/
 ├── all-context.md              # 🧭 Root router — architecture, stack, patterns, conventions
 ├── tests/
 │   └── all-tests.md            # 🧪 Test runners, commands, debugging procedures
@@ -1012,7 +1012,7 @@ process/context/
 | 🧭 **Router pattern** | Agents read only what's relevant to their task, not everything |
 | 📏 **Auto-promotion** | Topics with 3+ docs or 800+ lines get their own context group |
 | 🔄 **Living docs** | Updated by `update-process-agent` after every non-trivial feature |
-| 🧪 **Auditable** | `vc-audit-context` verifies routing and consistency |
+| 🧪 **Auditable** | `minas-audit-context` verifies routing and consistency |
 
 ---
 
@@ -1023,7 +1023,7 @@ When a topic accumulates 5+ artifacts, it gets its own **feature folder** — a 
 <br>
 
 ```
-process/features/{feature}/
+.minas/process/features/{feature}/
 ├── active/       # 📋 Plans currently being worked on
 ├── completed/    # ✅ Archived plans (searchable decision history)
 ├── backlog/      # 📌 Deferred work (agents check before duplicating)
@@ -1057,12 +1057,12 @@ process/features/{feature}/
 
 | Agent | Role |
 |-------|------|
-| 🔍 `vc-research-agent` | Codebase + web research, read-only. Contradiction tracking built in |
-| 💡 `vc-innovate-agent` | Brainstorm 2-3 approaches. Must produce decision summary before PLAN |
-| 📋 `vc-plan-agent` | Write spec with anti-rationalization guards. "I already know how" is not a plan |
-| ⚡ `vc-execute-agent` | Implement per plan. 50% check-in, deviation protocol, self-review |
-| ⏩ `vc-fast-mode-agent` | Compressed RESEARCH→INNOVATE→PLAN with mandatory safety pause |
-| 🧠 `vc-update-process-agent` | 7-phase mandatory checklist including stale artifact scanning |
+| 🔍 `minas-research-agent` | Codebase + web research, read-only. Contradiction tracking built in |
+| 💡 `minas-innovate-agent` | Brainstorm 2-3 approaches. Must produce decision summary before PLAN |
+| 📋 `minas-plan-agent` | Write spec with anti-rationalization guards. "I already know how" is not a plan |
+| ⚡ `minas-execute-agent` | Implement per plan. 50% check-in, deviation protocol, self-review |
+| ⏩ `minas-fast-mode-agent` | Compressed RESEARCH→INNOVATE→PLAN with mandatory safety pause |
+| 🧠 `minas-update-process-agent` | 7-phase mandatory checklist including stale artifact scanning |
 
 <br>
 
@@ -1070,12 +1070,12 @@ process/features/{feature}/
 
 | Agent | Role |
 |-------|------|
-| 🐛 `vc-debugger` | Evidence-before-hypothesis. Competing hypotheses, elimination chains |
-| 🧪 `vc-tester` | Diff-aware. Only runs affected tests. Auto-escalates on config changes |
-| 🔎 `vc-code-reviewer` | Edge case scout BEFORE review. N+1 detection, auth path validation |
-| ✨ `vc-code-simplifier` | Clarity refactoring without behavior change |
-| 🎨 `vc-ui-ux-designer` | Design-aware frontend. Can spawn research subagent mid-execution |
-| 📦 `vc-git-manager` | Logical commit splitting from `touched_files`. Refuses unknown files |
+| 🐛 `minas-debugger` | Evidence-before-hypothesis. Competing hypotheses, elimination chains |
+| 🧪 `minas-tester` | Diff-aware. Only runs affected tests. Auto-escalates on config changes |
+| 🔎 `minas-code-reviewer` | Edge case scout BEFORE review. N+1 detection, auth path validation |
+| ✨ `minas-code-simplifier` | Clarity refactoring without behavior change |
+| 🎨 `minas-ui-ux-designer` | Design-aware frontend. Can spawn research subagent mid-execution |
+| 📦 `minas-git-manager` | Logical commit splitting from `touched_files`. Refuses unknown files |
 
 </details>
 
@@ -1088,21 +1088,21 @@ process/features/{feature}/
 
 <br>
 
-**🔧 Contract skills** — `vc-generate-plan` · `vc-generate-context` · `vc-audit-context` · `vc-audit-plans` · `vc-audit-vc` · `vc-setup` · `vc-update` · `vc-publish`
+**🔧 Contract skills** — `minas-generate-plan` · `minas-generate-context` · `minas-audit-context` · `minas-audit-plans` · `minas-audit-vc` · `minas-setup` · `minas-update` · `minas-publish`
 
-**🧠 Planning** — `vc-predict` (5-persona debate) · `vc-scenario` (12-dimension edge cases) · `vc-sequential-thinking` · `vc-problem-solving`
+**🧠 Planning** — `minas-predict` (5-persona debate) · `minas-scenario` (12-dimension edge cases) · `minas-sequential-thinking` · `minas-problem-solving`
 
-**🐛 Debug & security** — `vc-debug` · `vc-security` (STRIDE + OWASP + auto-fix) · `vc-autoresearch` (autonomous optimization)
+**🐛 Debug & security** — `minas-debug` · `minas-security` (STRIDE + OWASP + auto-fix) · `minas-autoresearch` (autonomous optimization)
 
-**📚 Research** — `vc-docs-seeker` · `vc-scout` · `vc-docs` · `vc-repomix` · `vc-xia` (repo comparison)
+**📚 Research** — `minas-docs-seeker` · `minas-scout` · `minas-docs` · `minas-repomix` · `minas-xia` (repo comparison)
 
-**🎨 Frontend** — `vc-frontend-design` · `vc-chrome-devtools` · `vc-agent-browser` · `vc-web-testing`
+**🎨 Frontend** — `minas-frontend-design` · `minas-chrome-devtools` · `minas-agent-browser` · `minas-web-testing`
 
-**⚙️ Utilities** — `vc-context-engineering` · `vc-mcp-management` · `vc-preview` · `vc-team` (parallel agents) · `vc-tech-graph` · `vc-watzup` (session handoff) · `vc-merge-worktree`
+**⚙️ Utilities** — `minas-context-engineering` · `minas-mcp-management` · `minas-preview` · `minas-team` (parallel agents) · `minas-tech-graph` · `minas-watzup` (session handoff) · `minas-merge-worktree`
 
 </details>
 
-> 💡 Some skills (like `vc-xia`) were inspired by [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) by [@mrgoonie](https://github.com/mrgoonie). We focused on fewer, deeper skills instead of 80+.
+> 💡 Some skills (like `minas-xia`) were inspired by [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) by [@mrgoonie](https://github.com/mrgoonie). We focused on fewer, deeper skills instead of 80+.
 
 <br>
 
@@ -1134,7 +1134,7 @@ your-project/
 │   └── skills -> ../.claude/skills   # 🔗 Symlink for Codex discovery
 ├── CLAUDE.md                # 📋 Orchestrator config + routing rules
 ├── AGENTS.md                # 📖 Agent + skill registry
-└── process/
+└── .minas/process/
     ├── context/             # 🧠 Auto-routed knowledge domains
     ├── general-plans/       # 📋 Cross-cutting plans + reports
     ├── features/            # 🏷️ Feature-scoped lifecycle folders
@@ -1148,10 +1148,10 @@ your-project/
 Pull the latest harness improvements:
 
 ```
-Run vc-update
+Run minas-update
 ```
 
-> 💡 Shows a dry-run diff, waits for confirmation. Your `process/` directory and project-specific content are **never touched**.
+> 💡 Shows a dry-run diff, waits for confirmation. Your `.minas/process/` directory and project-specific content are **never touched**.
 
 ---
 
@@ -1163,15 +1163,15 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 **Quick links:**
 
-- 🐛 [Report a bug](https://github.com/withkynam/vibecode-pro-max-kit/issues/new?template=1.bug_report.yml)
-- 💡 [Request a feature](https://github.com/withkynam/vibecode-pro-max-kit/issues/new?template=2.feature_request.yml)
-- ⚡ [Submit a skill](https://github.com/withkynam/vibecode-pro-max-kit/issues/new?template=3.skill_submission.yml)
-- 🌐 [Add a translation](https://github.com/withkynam/vibecode-pro-max-kit/issues/new?template=5.translation.yml)
+- 🐛 [Report a bug](https://github.com/withkynam/minas-kit/issues/new?template=1.bug_report.yml)
+- 💡 [Request a feature](https://github.com/withkynam/minas-kit/issues/new?template=2.feature_request.yml)
+- ⚡ [Submit a skill](https://github.com/withkynam/minas-kit/issues/new?template=3.skill_submission.yml)
+- 🌐 [Add a translation](https://github.com/withkynam/minas-kit/issues/new?template=5.translation.yml)
 
 <br>
 
-<a href="https://github.com/withkynam/vibecode-pro-max-kit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=withkynam/vibecode-pro-max-kit" alt="Contributors" />
+<a href="https://github.com/withkynam/minas-kit/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=withkynam/minas-kit" alt="Contributors" />
 </a>
 
 <br>
@@ -1180,17 +1180,17 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 This project benefited from [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) by [@mrgoonie](https://github.com/mrgoonie) — particularly skills like `ck:xia` which inspired some of ours.
 
-The difference: vibecode-pro-max-kit focuses on the spec-driven development framework and self-improving context organization, without bloating you with 80+ skills. Fewer tools, more structure.
+The difference: minas-kit focuses on the spec-driven development framework and self-improving context organization, without bloating you with 80+ skills. Fewer tools, more structure.
 
 ---
 
 ## ⭐ Star History
 
-<a href="https://star-history.com/#withkynam/vibecode-pro-max-kit&Date">
+<a href="https://star-history.com/#withkynam/minas-kit&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=withkynam/vibecode-pro-max-kit&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=withkynam/vibecode-pro-max-kit&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=withkynam/vibecode-pro-max-kit&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=withkynam/minas-kit&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=withkynam/minas-kit&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=withkynam/minas-kit&type=Date" />
  </picture>
 </a>
 

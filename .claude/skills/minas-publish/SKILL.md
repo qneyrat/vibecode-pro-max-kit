@@ -1,30 +1,30 @@
 ---
-name: vc:publish
+name: minas:publish
 description: Push agent harness improvements from the current development repo to the remote kit repository. Use when you want to publish local harness changes back to the shared kit. Diffs managed files, shows what changed, bumps version, and pushes.
 metadata:
-  author: vibecode
+  author: minas
   version: "2.0.0"
 ---
 
-# vc-publish
+# minas-publish
 
-Push harness improvements from the current development repo to the remote kit repository (`vibecode-pro-max-kit`). This is the **maintainer** counterpart to `vc-update`.
+Push harness improvements from the current development repo to the remote kit repository (`minas-kit`). This is the **maintainer** counterpart to `minas-update`.
 
-- `vc-update` = **user** pulls latest harness INTO their project FROM the remote
-- `vc-publish` = **maintainer** pushes improvements FROM the development repo TO the remote kit repo
+- `minas-update` = **user** pulls latest harness INTO their project FROM the remote
+- `minas-publish` = **maintainer** pushes improvements FROM the development repo TO the remote kit repo
 
 ## Prerequisites
 
-- Local checkout of the kit repo (`git clone git@github.com:withkynam/vibecode-pro-max-kit.git`)
-- `.vc-publish-config` file in the current repo root (see Configuration below)
+- Local checkout of the kit repo (`git clone git@github.com:withkynam/minas-kit.git`)
+- `.minas-publish-config` file in the current repo root (see Configuration below)
 - Git push access to the remote kit repo
 
 ## Configuration
 
-Create `.vc-publish-config` in the repo root:
+Create `.minas-publish-config` in the repo root:
 
 ```json
-{"kitRepoPath": "/path/to/vibecode-pro-max-kit"}
+{"kitRepoPath": "/path/to/minas-kit"}
 ```
 
 If this file is missing, ask the user for the kit repo checkout path and offer to create it.
@@ -33,14 +33,14 @@ If this file is missing, ask the user for the kit repo checkout path and offer t
 
 ### Step 1: Load Configuration
 
-1. Read `.vc-publish-config` from the current repo root.
+1. Read `.minas-publish-config` from the current repo root.
 2. If missing, ask the user for the kit repo local checkout path.
-3. Verify the path exists and contains `vc-manifest.json`.
+3. Verify the path exists and contains `minas-manifest.json`.
 4. Verify the kit repo worktree is clean (`git -C <kitRepoPath> status --porcelain`). If dirty, warn and ask whether to proceed or abort.
 
 ### Step 2: Read Manifest
 
-5. Read `vc-manifest.json` from the kit repo checkout.
+5. Read `minas-manifest.json` from the kit repo checkout.
 6. Extract the current `version`.
 
 ### Step 3: Resolve Both File Sets
@@ -57,7 +57,7 @@ If this file is missing, ask the user for the kit repo checkout path and offer t
    ```
    Extract `files` (dev managed files).
 
-   **Note:** The resolver uses the manifest from the `--root` directory. Since the dev repo has a copy of `vc-manifest.json`, the resolver works against it. If the dev repo doesn't have the resolver script, copy it from the kit repo first or use the kit repo's copy with `--root` pointing to the dev repo.
+   **Note:** The resolver uses the manifest from the `--root` directory. Since the dev repo has a copy of `minas-manifest.json`, the resolver works against it. If the dev repo doesn't have the resolver script, copy it from the kit repo first or use the kit repo's copy with `--root` pointing to the dev repo.
 
 ### Step 4: Compute Diff
 
@@ -72,13 +72,13 @@ If this file is missing, ask the user for the kit repo checkout path and offer t
 10. Print a summary table:
 
 ```
-vc-publish diff: current repo -> kit repo (v2.1.0)
+minas-publish diff: current repo -> kit repo (v2.1.0)
 ================================================
 
 FILES:
-  [modified]  .claude/agents/vc-execute-agent.md  (+8 -3)
+  [modified]  .claude/agents/minas-execute-agent.md  (+8 -3)
   [modified]  .claude/hooks/lib/scout-checker.cjs  (+2 -1)
-  [new]       .claude/skills/vc-new-skill/SKILL.md
+  [new]       .claude/skills/minas-new-skill/SKILL.md
   [merge]     .minas/CLAUDE.md (needs content review)
   [unchanged] .claude/settings.json
   ... (350 more unchanged)
@@ -118,7 +118,7 @@ Version bump semantics:
          - Absolute paths (`/Users/...`)
          - Product name references (the project's product name and repo/directory name)
       5. Verify the result is harness-only methodology with no project leaks.
-    - Update `vc-manifest.json`: bump `version` field per the chosen bump type. **No other manifest changes needed** -- glob patterns are stable, new files are automatically included.
+    - Update `minas-manifest.json`: bump `version` field per the chosen bump type. **No other manifest changes needed** -- glob patterns are stable, new files are automatically included.
     - Create symlinks if missing (`.agents/skills -> ../.claude/skills`).
 
 ### Step 8: Leak Detection
@@ -137,7 +137,7 @@ Version bump semantics:
     Take the resolved `files` and keep only TEXT surfaces:
     - `.claude/skills/**` matching `*.md`, `*.cjs`, `*.mjs`, `*.py`, `*.js`, `*.json`
     - `.claude/agents/**` matching `*.md`
-    - `process/development-protocols/**`
+    - `.minas/process/development-protocols/**`
     - plus `.minas/CLAUDE.md`
 
     Exclude binaries and `**/node_modules/**`.
@@ -158,11 +158,11 @@ Version bump semantics:
     `session-init.cjs`.
 
     **Check (b) -- non-portable context-path grep:** any concrete backticked
-    `process/context/...` file reference in the resolved text set, MINUS the
+    `.minas/process/context/...` file reference in the resolved text set, MINUS the
     shipped/seeded survivors, is a dangling-link leak → FAIL with file:line.
-    Survivors (allowed): `process/context/all-context.md`,
-    `process/context/tests/all-tests.md`. Portable directory refs (e.g.
-    `process/context/tests/`) and the `process/context/...` placeholder are fine.
+    Survivors (allowed): `.minas/process/context/all-context.md`,
+    `.minas/process/context/tests/all-tests.md`. Portable directory refs (e.g.
+    `.minas/process/context/tests/`) and the `.minas/process/context/...` placeholder are fine.
 
     **Keep the existing narrow `.minas/CLAUDE.md` grep** (this stays as-is on
     just that file; `tRPC`/`Prisma` plus the hosted-database product name all
@@ -180,7 +180,7 @@ Version bump semantics:
     `.ck.json`/`.ckignore` -- those Phase-2 legacy-fallback literals are intentional
     and must NOT be flagged. Do not add `ck`/`ckignore` to any leak grep.
 
-    The standing `validate-kit-portability.mjs` validator (run by `vc-audit-vc`)
+    The standing `validate-kit-portability.mjs` validator (run by `minas-audit-vc`)
     mirrors checks (a) and (b) for between-release drift; this Step-8 gate is the
     publish-time enforcement.
 
@@ -231,11 +231,11 @@ git push origin main && git push --tags
 19. Print publish summary:
 
 ```
-vc-publish complete
+minas-publish complete
 ===================
 Version:       v2.2.0 (was v2.1.0)
 Files changed: 4
-Remote:        git@github.com:withkynam/vibecode-pro-max-kit.git
+Remote:        git@github.com:withkynam/minas-kit.git
 Tag:           v2.2.0
 Release:       https://github.com/<owner>/<repo>/releases/tag/v2.2.0
 ```
@@ -249,13 +249,13 @@ Release:       https://github.com/<owner>/<repo>/releases/tag/v2.2.0
 ## Rules
 
 - **ALWAYS** run the full resolver diff (Steps 3-4) even when changes already exist in the kit repo. Direct kit edits (README, translations, community files) do not replace the dev→kit diff. Both change sources must be captured in the same publish.
-- **NEVER** copy project-specific files: `process/context/all-context.md` (with real content), `process/features/*`, `process/general-plans/*` (with real plans)
+- **NEVER** copy project-specific files: `.minas/process/context/all-context.md` (with real content), `.minas/process/features/*`, `.minas/process/general-plans/*` (with real plans)
 - **ALWAYS** verify no project-specific content leaked before committing (Step 8)
 - **ALWAYS** show the diff summary before publishing (Step 5-6)
 - `.minas/CLAUDE.md` requires special handling -- never copy the development repo's project-specific version directly
-- Kit repo checkout path is stored in `.vc-publish-config` (add to `.gitignore`)
+- Kit repo checkout path is stored in `.minas-publish-config` (add to `.gitignore`)
 - The only manifest edit at publish time is the version bump -- glob patterns are stable
 
 ## Reference
 
-See `references/vc-publish.md` for the detailed algorithm, `.minas/CLAUDE.md` stripping rules, error handling, and example outputs.
+See `references/minas-publish.md` for the detailed algorithm, `.minas/CLAUDE.md` stripping rules, error handling, and example outputs.

@@ -1,5 +1,5 @@
 ---
-name: vc:audit-plans
+name: minas:audit-plans
 description: Audit active project plan files for staleness, completion, and routing truth. Use when cleaning up plans, reconciling active work, or archiving completed artifacts.
 metadata:
   author: flowser
@@ -25,9 +25,9 @@ Prefer it when:
 1. Read `references/audit-plans.md` for the full audit process.
 2. Run the inventory validator:
    ```bash
-   node .claude/skills/vc-audit-plans/scripts/validate-plan-inventory.mjs
+   node .claude/skills/minas-audit-plans/scripts/validate-plan-inventory.mjs
    ```
-3. Inventory plans in `process/general-plans/active/` and `process/features/*/active/`.
+3. Inventory plans in `.minas/process/general-plans/active/` and `.minas/process/features/*/active/`.
 3.5. Scan sibling `reports/` and `references/` dirs alongside each `active/` dir for artifacts tied to plans classified as Completed or Obsolete. Match by feature slug, date proximity (7 days), or content reference to the plan filename.
 4. Cross-check each plan against the actual codebase with file existence checks and targeted `rg` searches.
 5. Classify each plan as `Completed`, `Partially Done`, `Obsolete`, `Stale`, `Active`, or `Reference`.

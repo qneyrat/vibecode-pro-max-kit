@@ -12,8 +12,8 @@
    - sampled recent commits per ranked branch
    - local worktrees
 2. project plan truth
-   - `process/general-plans/active/`
-   - `process/features/*/active/`
+   - `.minas/process/general-plans/active/`
+   - `.minas/process/features/*/active/`
    - compatibility shapes discovered from filesystem and ranked tracked refs
 3. Optional selected-plan hints
    - explicit CLI path
@@ -84,7 +84,7 @@ If the scanner errors, report that directly and fall back to:
 git status --short --branch
 git worktree list --porcelain
 git for-each-ref --format='%(refname:short) %(committerdate:iso8601) %(objectname:short) %(subject)' refs/heads refs/remotes
-find process/general-plans/active process/features -path '*/active/*' -type f | sort
+find .minas/process/general-plans/active .minas/process/features -path '*/active/*' -type f | sort
 ```
 
 Do not present the fallback summary as if the full scanner succeeded.
@@ -97,7 +97,7 @@ Cross-check `watzup` output with:
 git status --short --branch
 git worktree list --porcelain
 git for-each-ref --format='%(refname:short) %(committerdate:iso8601) %(objectname:short) %(subject)' refs/heads refs/remotes
-find process/general-plans/active process/features -path '*/active/*' -type f | sort
+find .minas/process/general-plans/active .minas/process/features -path '*/active/*' -type f | sort
 ```
 
 Recommended regression tests:

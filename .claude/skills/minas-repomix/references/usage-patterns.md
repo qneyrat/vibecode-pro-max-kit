@@ -11,7 +11,7 @@ pnpm dlx repomix . \
   --include "apps/<app>/src/**,packages/api/src/**,packages/validators/src/**,*.md" \
   --remove-comments \
   --style markdown \
-  -o process/general-plans/references/repomix-full-repo-slice-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-full-repo-slice-27-05-26.md
 ```
 
 Use for new codebase orientation, architecture review, or broad context sharing.
@@ -28,7 +28,7 @@ Tips:
 pnpm dlx repomix . \
   --include "packages/api/src/router/**,packages/api/src/routes/**" \
   --style xml \
-  -o process/general-plans/references/repomix-api-surface-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-api-surface-27-05-26.xml
 ```
 
 Use for feature analysis, bug investigation, or targeted refactoring prep.
@@ -37,10 +37,10 @@ Use for feature analysis, bug investigation, or targeted refactoring prep.
 
 ```bash
 git checkout feature-branch
-pnpm dlx repomix . --include "packages/api/src/**" -o process/general-plans/references/repomix-feature-branch-api-27-05-26.xml
+pnpm dlx repomix . --include "packages/api/src/**" -o .minas/process/general-plans/references/repomix-feature-branch-api-27-05-26.xml
 
 git checkout main
-pnpm dlx repomix . --include "packages/api/src/**" -o process/general-plans/references/repomix-main-api-27-05-26.xml
+pnpm dlx repomix . --include "packages/api/src/**" -o .minas/process/general-plans/references/repomix-main-api-27-05-26.xml
 ```
 
 Use for before-and-after comparisons or migration planning.
@@ -48,8 +48,8 @@ Use for before-and-after comparisons or migration planning.
 ### Cross-repository comparison
 
 ```bash
-pnpm dlx repomix --remote org/repo1 -o process/general-plans/references/repomix-org-repo1-27-05-26.xml
-pnpm dlx repomix --remote org/repo2 -o process/general-plans/references/repomix-org-repo2-27-05-26.xml
+pnpm dlx repomix --remote org/repo1 -o .minas/process/general-plans/references/repomix-org-repo1-27-05-26.xml
+pnpm dlx repomix --remote org/repo2 -o .minas/process/general-plans/references/repomix-org-repo2-27-05-26.xml
 ```
 
 Use for library comparison, upstream parity review, or adapter design.
@@ -63,7 +63,7 @@ pnpm dlx repomix \
   --remote vendor/library \
   --include "src/**,package.json,README.md" \
   --style xml \
-  -o process/general-plans/references/repomix-vendor-library-audit-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-vendor-library-audit-27-05-26.xml
 ```
 
 Workflow:
@@ -79,7 +79,7 @@ Workflow:
 pnpm dlx repomix . \
   --include "packages/api/src/**,packages/db/**,apps/<app>/src/**" \
   --style xml \
-  -o process/general-plans/references/repomix-predeploy-review-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-predeploy-review-27-05-26.xml
 ```
 
 Checklist:
@@ -95,7 +95,7 @@ Checklist:
 pnpm dlx repomix . \
   --include "**/package.json,pnpm-lock.yaml" \
   --style markdown \
-  -o process/general-plans/references/repomix-deps-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-deps-27-05-26.md
 ```
 
 Use when comparing dependency surfaces or preparing a license/security review.
@@ -106,9 +106,9 @@ Use when comparing dependency surfaces or preparing a license/security review.
 
 ```bash
 pnpm dlx repomix . \
-  --include "process/context/**/*.md,packages/api/src/**/*.ts,packages/validators/src/**/*.ts,README.md" \
+  --include ".minas/process/context/**/*.md,packages/api/src/**/*.ts,packages/validators/src/**/*.ts,README.md" \
   --style markdown \
-  -o process/general-plans/references/repomix-doc-context-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-doc-context-27-05-26.md
 ```
 
 Use for API docs, architecture docs, onboarding, or internal documentation refreshes.
@@ -120,7 +120,7 @@ pnpm dlx repomix . \
   --include "packages/*/src/**/*.ts,apps/<app>/src/**/*.tsx,*.md" \
   -i "**/*.test.ts,**/*.spec.ts,coverage/**" \
   --style markdown \
-  -o process/general-plans/references/repomix-architecture-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-architecture-27-05-26.md
 ```
 
 Focus on module structure, dependencies, and data flow rather than exhaustive coverage.
@@ -133,7 +133,7 @@ Focus on module structure, dependencies, and data flow rather than exhaustive co
 pnpm dlx repomix \
   --remote owner/library \
   --style markdown \
-  -o process/general-plans/references/repomix-library-eval-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-library-eval-27-05-26.md
 ```
 
 Evaluate:
@@ -150,11 +150,11 @@ Evaluate:
 pnpm dlx repomix \
   --remote vendor/library \
   --include "src/**,*.md" \
-  -o process/general-plans/references/repomix-vendor-library-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-vendor-library-27-05-26.xml
 
 pnpm dlx repomix . \
   --include "packages/**/src/integrations/**,packages/api/src/**" \
-  -o process/general-plans/references/repomix-local-integrations-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-local-integrations-27-05-26.xml
 ```
 
 Use the pair to inspect compatibility between the target library and local integration points.
@@ -168,7 +168,7 @@ python3 .claude/skills/repomix/scripts/repomix_batch.py \
   . \
   yamadashy/repomix \
   --style markdown \
-  --output-dir process/general-plans/references \
+  --output-dir .minas/process/general-plans/references \
   --remove-comments \
   --remote
 ```

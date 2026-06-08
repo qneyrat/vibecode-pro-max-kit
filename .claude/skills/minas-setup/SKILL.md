@@ -1,22 +1,22 @@
 ---
-name: vc:setup
+name: minas:setup
 description: Interactive agent harness setup for any project. Detects your stack, asks about your project, scaffolds process directories, deep-scans the codebase, and populates context with real content. Works on fresh projects and existing projects with pre-existing configs — always asks before reorganizing.
 metadata:
-  author: vibecode
+  author: minas
   version: "3.2.0"
 ---
 
 # VibeCo Agent Harness Setup
 
-Interactive setup for the agent development harness. Works on fresh projects and existing projects with pre-existing `.claude/` or `process/` configs.
+Interactive setup for the agent development harness. Works on fresh projects and existing projects with pre-existing `.claude/` or `.minas/process/` configs.
 
 The skill adapts its flow based on what it finds:
-- **New projects** (no existing process/ or context): detect, ask the user about their project, scaffold, study, validate.
-- **Existing projects** (has process/, context files, or CLAUDE.md): detect, study what exists first, present findings and ask what to keep vs change, scaffold with approval, re-study to fill gaps, validate.
+- **New projects** (no existing .minas/process/ or context): detect, ask the user about their project, scaffold, study, validate.
+- **Existing projects** (has .minas/process/, context files, or CLAUDE.md): detect, study what exists first, present findings and ask what to keep vs change, scaffold with approval, re-study to fill gaps, validate.
 
 In both cases, the skill asks questions and waits for approval at every major step. It never silently reorganizes files or overwrites good content.
 
-`.minas/CLAUDE.md` is a managed protocol file (orchestrator, RIPER-5 methodology, routing). It contains zero project-specific content and should NOT be adapted. Project-specific information lives in `process/context/all-context.md`, which is populated during the STUDY phase.
+`.minas/CLAUDE.md` is a managed protocol file (orchestrator, RIPER-5 methodology, routing). It contains zero project-specific content and should NOT be adapted. Project-specific information lives in `.minas/process/context/all-context.md`, which is populated during the STUDY phase.
 
 ## Prerequisites
 
@@ -25,20 +25,20 @@ In both cases, the skill asks questions and waits for approval at every major st
 
 ## Workflow
 
-Read `references/vc-setup.md` for detailed phase instructions, detection heuristics, interactive question templates, parallel subagent delegation strategy, and validation checks.
+Read `references/minas-setup.md` for detailed phase instructions, detection heuristics, interactive question templates, parallel subagent delegation strategy, and validation checks.
 
 ### Phase 0: BOOTSTRAP (handled by install.sh)
 
-The `install.sh` script handles fetching and installing harness files before vc-setup runs. For existing projects, it backs up old `.claude/`, `.agents/` to `.minas-backup/`, then does a clean install of all kit files. User's `.claude/settings.json` is restored after install. The `process/` directory is never touched by install.sh -- layout migration happens in vc-setup's SCAFFOLD phase.
+The `install.sh` script handles fetching and installing harness files before minas-setup runs. For existing projects, it backs up old `.claude/`, `.agents/` to `.minas-backup/`, then does a clean install of all kit files. User's `.claude/settings.json` is restored after install. The `.minas/process/` directory is never touched by install.sh -- layout migration happens in minas-setup's SCAFFOLD phase.
 
 **If harness files are already present** (`.claude/agents/` and `.claude/skills/` exist with 12+ agents and 20+ skills), skip Phase 0 and proceed directly to Phase 1 DETECT.
 
 **If harness files are NOT present**, tell the user to run the installer first:
 ```
-curl -fsSL https://raw.githubusercontent.com/withkynam/vibecode-pro-max-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/withkynam/minas-kit/main/install.sh | bash
 ```
 
-Then re-run vc-setup.
+Then re-run minas-setup.
 
 ### Phase 1: DETECT
 
@@ -46,17 +46,17 @@ Gather information about the target project before making any changes.
 
 1. Read `package.json` to detect the package manager (`packageManager` field, lockfile presence), framework (dependencies), and test commands (scripts).
 2. Detect monorepo structure: `workspaces` in `package.json`, `pnpm-workspace.yaml`, `apps/`, `packages/` directories.
-3. Scan for existing `process/`, `docs/`, `.github/` directories and any context files.
+3. Scan for existing `.minas/process/`, `docs/`, `.github/` directories and any context files.
 4. **Classify the project** as one of:
-   - **New**: no existing `process/` directory, no `all-context.md`, no meaningful prior setup.
-   - **Existing**: has `process/`, `all-context.md`, CLAUDE.md with project content, or other prior context.
+   - **New**: no existing `.minas/process/` directory, no `all-context.md`, no meaningful prior setup.
+   - **Existing**: has `.minas/process/`, `all-context.md`, CLAUDE.md with project content, or other prior context.
 5. Present a detection summary to the user and wait for confirmation before proceeding.
 
 **After detection, the workflow branches based on project type.** See the two flows below.
 
 ---
 
-### Flow A: New Project (no existing process/ or context)
+### Flow A: New Project (no existing .minas/process/ or context)
 
 For projects where the harness is being set up for the first time.
 
@@ -87,7 +87,7 @@ Start with the basics, then follow up based on their answers:
 
 **Keep asking follow-ups until you genuinely understand the project.** If the user gives a short answer, probe deeper. If they mention something complex, ask for details. The goal is that after this conversation, you could explain the project to another developer — what it does, how it's built, what matters, and what to watch out for. Only move on when both you and the user are satisfied.
 
-**Step 2: SCAFFOLD** -- Create the `process/` directory structure from seed templates. (See Phase 2 details below.)
+**Step 2: SCAFFOLD** -- Create the `.minas/process/` directory structure from seed templates. (See Phase 2 details below.)
 
 **Step 3: STUDY** -- Deep-scan the codebase and populate context files with real content, enriched by the user's answers from Step 1. (See Phase 3 details below.)
 
@@ -95,14 +95,14 @@ Start with the basics, then follow up based on their answers:
 
 ---
 
-### Flow B: Existing Project (has process/, context files, or prior setup)
+### Flow B: Existing Project (has .minas/process/, context files, or prior setup)
 
-For projects that already have some form of process/ directory, context files, or CLAUDE.md content.
+For projects that already have some form of .minas/process/ directory, context files, or CLAUDE.md content.
 
 **Step 1: STUDY EXISTING** -- Before proposing any changes, read and understand what is already there:
 
-- Read all files under `process/context/` (especially `all-context.md`).
-- Read all files under `process/general-plans/` and `process/features/`.
+- Read all files under `.minas/process/context/` (especially `all-context.md`).
+- Read all files under `.minas/process/general-plans/` and `.minas/process/features/`.
 - Read the existing CLAUDE.md if it contains project-specific content (beyond the managed protocol).
 - Read any existing `all-tests.md`, feature `_GUIDE.md` files, context group entrypoints.
 - Build a complete picture of what the user already has.
@@ -147,12 +147,12 @@ The combination of existing context + fresh user input produces the best results
 
 ### Phase 2: SCAFFOLD (details)
 
-Create the `process/` directory with seed files and instructional content.
+Create the `.minas/process/` directory with seed files and instructional content.
 
 1. Determine the scaffold mode:
-   - **Fresh**: no existing `process/` directory -- create everything from `process/_seeds/`.
-   - **Merge**: existing `process/` with a different layout -- preserve content, migrate old layout, add missing directories, seed empty folders.
-   - **Refresh**: existing harness `process/` -- update protocol docs, seed missing files, preserve user-created content.
+   - **Fresh**: no existing `.minas/process/` directory -- create everything from `.minas/process/_seeds/`.
+   - **Merge**: existing `.minas/process/` with a different layout -- preserve content, migrate old layout, add missing directories, seed empty folders.
+   - **Refresh**: existing harness `.minas/process/` -- update protocol docs, seed missing files, preserve user-created content.
 
 **For Merge and Refresh modes, show the user what you plan to change before doing it.** List every file you will create, move, or overwrite. Wait for approval.
 
@@ -160,29 +160,29 @@ Create the `process/` directory with seed files and instructional content.
 
 | Old Layout | Migration Action |
 |------------|-----------------|
-| `process/plans/` exists, `process/general-plans/` does not | Move `process/plans/*` to `process/general-plans/active/`, then remove empty `process/plans/` |
-| `process/reports/` exists at top level | Move `process/reports/*` to `process/general-plans/reports/`, then remove empty `process/reports/` |
-| `process/skills/` exists at top level | Move `process/skills/*` to `process/general-plans/references/`, then remove empty `process/skills/` |
-| Example PRDs at old locations (e.g. `process/context/example-*.md` or under `process/context/planning/`) that are not in `process/development-protocols/references/` | Move to `process/development-protocols/references/` |
-| process/context/backlog.md at top of context/ | Move to `process/general-plans/backlog/backlog.md` |
+| `.minas/process/plans/` exists, `.minas/process/general-plans/` does not | Move `.minas/process/plans/*` to `.minas/process/general-plans/active/`, then remove empty `.minas/process/plans/` |
+| `.minas/process/reports/` exists at top level | Move `.minas/process/reports/*` to `.minas/process/general-plans/reports/`, then remove empty `.minas/process/reports/` |
+| `.minas/process/skills/` exists at top level | Move `.minas/process/skills/*` to `.minas/process/general-plans/references/`, then remove empty `.minas/process/skills/` |
+| Example PRDs at old locations (e.g. `.minas/process/context/example-*.md` or under `.minas/process/context/planning/`) that are not in `.minas/process/development-protocols/references/` | Move to `.minas/process/development-protocols/references/` |
+| .minas/process/context/backlog.md at top of context/ | Move to `.minas/process/general-plans/backlog/backlog.md` |
 
 **Migration rules:**
 - Never overwrite existing files at the destination. If a file with the same name exists, keep both (rename the migrated copy with a `-migrated` suffix).
 - Print every move action to the user so they can verify.
 - After all moves, remove empty source directories.
-- If `process/plans/` contains files matching date-based patterns (e.g., `2026-05-22-*.md`, `*_PLAN_*.md`), classify completed plans (look for "COMPLETE" or "DONE" in the file) and move them to `completed/` instead of `active/`.
+- If `.minas/process/plans/` contains files matching date-based patterns (e.g., `2026-05-22-*.md`, `*_PLAN_*.md`), classify completed plans (look for "COMPLETE" or "DONE" in the file) and move them to `completed/` instead of `active/`.
 
 Seed and template handling:
-1. Seeds live in `process/_seeds/` (read-only during setup -- never modified by the scaffold process):
+1. Seeds live in `.minas/process/_seeds/` (read-only during setup -- never modified by the scaffold process):
    - Files with `.seed` extension: copy with `.seed` removed, replace `{{project_name}}` with the detected project name.
    - Files without `.seed` extension: copy verbatim.
    - Context group seed folders use `-seed` suffix (e.g., `tests-seed/`, `planning-seed/`). When copying to real locations, drop the `-seed` suffix.
-2. Copy development protocol docs from `process/development-protocols/` (these are managed system files, not seeds -- they live in the real directory, not `_seeds/`).
+2. Copy development protocol docs from `.minas/process/development-protocols/` (these are managed system files, not seeds -- they live in the real directory, not `_seeds/`).
 3. Place `_GUIDE.md` files in empty process folders to explain what goes there.
-4. Retain `.seed` originals alongside populated files: after copying and filling seed files, also copy the original `.seed` files to the target `process/` directory as structural reference companions. These `.seed` files serve as reference for what sections are expected, and future `vc-update` can diff against them to detect structural drift.
+4. Retain `.seed` originals alongside populated files: after copying and filling seed files, also copy the original `.seed` files to the target `.minas/process/` directory as structural reference companions. These `.seed` files serve as reference for what sections are expected, and future `minas-update` can diff against them to detect structural drift.
 5. Use `_all-group-template.md.seed` as the base when creating new context group entrypoints during the STUDY phase.
 6. Use `_feature-template/_GUIDE.md.seed` as the base when creating new feature folder guides during the STUDY phase. The `_feature-template/` now includes all 5 subdirectories (`active/`, `completed/`, `backlog/`, `reports/`, `references/`) with their own `_GUIDE.md` files.
-7. See `references/vc-setup.md` for the full target directory tree and placeholder list.
+7. See `references/minas-setup.md` for the full target directory tree and placeholder list.
 
 **After scaffolding, show a summary of what was created/changed.** Example: "Created 12 directories, 8 seed files, 6 protocol docs. No existing files were modified."
 
@@ -198,19 +198,19 @@ This is the core value -- instead of leaving placeholder text, the STUDY phase a
 4. **Feature area detection**: Identify major product areas from route groups, packages, and existing docs. Create feature folders for areas meeting the threshold (3+ source files, distinct product area).
 5. **Populate all-context.md**: Write real repository structure, technology stack details, key patterns, environment configuration, and routing tables -- not placeholders. Incorporate what the user told you in the ASK step.
 6. **Populate all-tests.md**: Write actual test runner names, real test commands, and per-package breakdowns.
-7. **Migration intelligence** (when existing process/ content is found): Read existing content, identify gaps vs fresh scan, fill only gaps while preserving user-written content.
+7. **Migration intelligence** (when existing .minas/process/ content is found): Read existing content, identify gaps vs fresh scan, fill only gaps while preserving user-written content.
 
 **For existing projects (Flow B):** Before writing, compare your scan results against existing content. If the existing content is more detailed than what you scanned, keep it. Only replace placeholder or stale sections. Add missing sections with scanned data. Never silently overwrite good content.
 
 **After the STUDY phase, show a summary of what was populated.** Example: "Populated all-context.md (8 sections with real content), all-tests.md (3 test runners, 12 commands), created 2 context groups (database/, container/), created 3 feature folders."
 
-See `references/vc-setup.md` for the full STUDY phase checklist, parallel subagent delegation strategy, context group detection table, and feature detection heuristics.
+See `references/minas-setup.md` for the full STUDY phase checklist, parallel subagent delegation strategy, context group detection table, and feature detection heuristics.
 
 ### Phase 4: VALIDATE
 
 Verify the setup is complete, correct, and populated with real content.
 
-1. Check all expected directories exist under `process/`.
+1. Check all expected directories exist under `.minas/process/`.
 2. Check that `.agents/skills` symlink exists and resolves.
 3. Verify STUDY phase output quality:
    - `all-context.md` has no remaining `{{placeholder}}` text (except `{{project_name}}` if seed was just created)
@@ -221,8 +221,8 @@ Verify the setup is complete, correct, and populated with real content.
    - Feature folders created have `_GUIDE.md` files with real scope descriptions
 4. Report any issues found.
 5. Suggest running validation scripts if they exist in the target repo:
-   - `node .claude/skills/vc-generate-context/scripts/validate-all-context.mjs`
-   - `node .claude/skills/vc-audit-context/scripts/validate-context-discovery.mjs`
+   - `node .claude/skills/minas-generate-context/scripts/validate-all-context.mjs`
+   - `node .claude/skills/minas-audit-context/scripts/validate-context-discovery.mjs`
 
 **Present the final summary** to the user: what was set up, what is ready to use, and recommended next steps (review context, start using the harness).
 
@@ -234,7 +234,7 @@ These principles apply throughout the entire setup flow:
 - **Study before scaffold for existing projects.** Understand what is already there before proposing changes.
 - **Have a real conversation, not a checklist.** Do not ask a fixed list of questions and move on. Ask, listen, follow up, ask more. If an answer is vague, probe deeper. If the user mentions something interesting, explore it. Continue until you genuinely understand the project — what it does, how it's built, what matters, and what to watch out for.
 - **Show summaries at each step.** After DETECT, show findings. After ASK, summarize your understanding and confirm it's correct. After SCAFFOLD, show what was created. After STUDY, show what was populated.
-- **Preserve the user's existing good content.** If they have a well-written CLAUDE.md, detailed context files, or a working process/ layout, merge intelligently -- do not replace with generic scans.
+- **Preserve the user's existing good content.** If they have a well-written CLAUDE.md, detailed context files, or a working .minas/process/ layout, merge intelligently -- do not replace with generic scans.
 - **One step at a time.** Complete each phase, show the result, and get confirmation before moving to the next phase.
 - **Verify your understanding before acting.** After the discovery conversation, summarize what you learned back to the user: "Here's what I understand about your project: [summary]. Is this accurate? Anything I'm missing?" Only proceed when they confirm.
 
@@ -248,6 +248,6 @@ These principles apply throughout the entire setup flow:
 - Always ask the user about their project before populating context files. Do not rely solely on code scans.
 - In Merge mode, never overwrite existing user content.
 - In Flow B (existing projects), always present what you found and get approval before modifying anything.
-- Project-specific information (tech stack, features, conventions) belongs in `process/context/all-context.md`, not in CLAUDE.md.
+- Project-specific information (tech stack, features, conventions) belongs in `.minas/process/context/all-context.md`, not in CLAUDE.md.
 - In STUDY phase, write real researched content, not placeholder text. Every section should contain actual project-specific information discovered by scanning the codebase AND informed by the user's answers.
 - For large repos (monorepos, 5+ source directories), spawn parallel subagents to maximize throughput and avoid context window exhaustion -- see reference doc for delegation strategy.

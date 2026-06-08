@@ -2,7 +2,7 @@
 
 Canonical shared workflow rules for this repository live here.
 
-Use this folder for durable, repo-specific operating instructions that must stay aligned across Claude, Codex, and future agent systems. Keep tool-specific bootstrapping in `AGENTS.md` and `CLAUDE.md`, but keep the actual shared protocol content here.
+Use this folder for durable, repo-specific operating instructions that must stay aligned across Claude and future agent systems. Keep tool-specific bootstrapping in `CLAUDE.md`, but keep the actual shared protocol content here.
 
 ## Read Order
 
@@ -29,10 +29,10 @@ Use this folder for durable, repo-specific operating instructions that must stay
 - `intent-clarification.md`
   Tiered intent-clarification protocol: signal scoring, three routing tiers, question category menu, autonomy mode, light research pass, and FAST-mode integration.
 - `context-maintenance.md`
-  How `process/context/` is organized, when to create or split groups, how to keep `all-context.md` accurate, and how long-lived knowledge differs from feature plans.
+  How `.minas/process/context/` is organized, when to create or split groups, how to keep `all-context.md` accurate, and how long-lived knowledge differs from feature plans.
 
 ## Maintenance Rules
 
 - Update these files first when shared workflow behavior changes.
-- When `AGENTS.md`, `CLAUDE.md`, agent prompts, hook reminders, or skill guides describe shared repo workflow, they should point here instead of duplicating large blocks.
+- When `CLAUDE.md`, agent prompts, hook reminders, or skill guides describe shared repo workflow, they should point here instead of duplicating large blocks.
 - After changing protocol files, re-run the relevant validators and any hook tests that resolve rule paths.

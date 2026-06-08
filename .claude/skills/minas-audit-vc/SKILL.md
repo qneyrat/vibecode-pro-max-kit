@@ -1,5 +1,5 @@
 ---
-name: vc:audit-vc
+name: minas:audit-vc
 description: >-
   Audit agent harness health: agent definition consistency, skill registry
   consistency, README.md sync, and protocol file wiring. Use when agents,
@@ -17,23 +17,23 @@ For context routing, grouping, and discoverability audits, use the `audit-contex
 
 1. Run the shared skill discovery validator:
    ```bash
-   node .claude/skills/vc-audit-vc/scripts/validate-skills.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-skills.mjs
    ```
 2. Run the README.md sync validator:
    ```bash
-   node .claude/skills/vc-audit-vc/scripts/validate-guide-sync.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-guide-sync.mjs
    ```
 3. Run the protocol wiring validator:
    ```bash
-   node .claude/skills/vc-audit-vc/scripts/validate-protocol-wiring.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-protocol-wiring.mjs
    ```
 4. Run the seed file consistency validator:
    ```bash
-   node .claude/skills/vc-audit-vc/scripts/validate-seeds.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-seeds.mjs
    ```
 5. Run the kit portability validator:
    ```bash
-   node .claude/skills/vc-audit-vc/scripts/validate-kit-portability.mjs
+   node .claude/skills/minas-audit-vc/scripts/validate-kit-portability.mjs
    ```
 6. If any script reports failures, inspect the referenced files and patch the smallest
    relevant surface.

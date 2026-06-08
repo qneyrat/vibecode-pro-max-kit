@@ -38,13 +38,13 @@ Thresholds:
 - Orchestrator collects all outputs and synthesizes them
 - Use when: agents work on independent dimensions, directions, or review concerns
 
-### Tier 2: vc-team (Escalation)
+### Tier 2: minas-team (Escalation)
 
 - Full Agent Teams with worktree isolation and inter-agent messaging
 - Use when: agents need adversarial debate, cross-layer implementation touching the same files, or results that depend on each other
-- Escalation trigger: if any parallel agent's output could conflict with or depend on another parallel agent's output, use vc-team instead of Tier 1
+- Escalation trigger: if any parallel agent's output could conflict with or depend on another parallel agent's output, use minas-team instead of Tier 1
 
-When in doubt, start with Tier 1. The orchestrator can always escalate to vc-team if the first
+When in doubt, start with Tier 1. The orchestrator can always escalate to minas-team if the first
 round reveals inter-dependencies.
 
 ## Checkpoints
@@ -66,7 +66,7 @@ packages, different external APIs, different architectural options).
 > Research identified N distinct directions: [list]. Recommend parallel deep-dive?
 > [A] Single agent sequentially (faster, cheaper)
 > [B] Fan out N research agents (deeper, ~Nx tokens)
-> [C] Fan out via vc-team (agents can cross-reference findings)
+> [C] Fan out via minas-team (agents can cross-reference findings)
 
 **Per-agent task:** investigate one specific direction or area. Produce a structured findings
 summary using the output format in the Synthesis Protocol section.
@@ -122,7 +122,7 @@ against a domain -- that is analytical research, not planning or execution).
 | Infra/setup fit | Does this work with container/worker/proxy architecture? | `container/all-container.md`, `infra/all-infra.md` |
 | Test coverage | Is the verification strategy realistic given test infra? | `tests/all-tests.md` |
 | Breaking changes | API contracts, schemas, auth flows, public contract changes | Plan's public contracts and blast radius sections |
-| Security surface | Quick STRIDE/OWASP scan | `vc-security` skill context |
+| Security surface | Quick STRIDE/OWASP scan | `minas-security` skill context |
 
 **Per-agent output:** structured pass/fail/concern list against the plan.
 
@@ -155,8 +155,8 @@ executing phase 1.
 
 **Trigger:** complexity score >= MEDIUM OR implementation touched 5+ files.
 
-**Mutual exclusion:** if `/vc:team review` was already invoked for the same scope, skip this
-checkpoint. Conversely, if this checkpoint was already run, do not also invoke `/vc:team review`
+**Mutual exclusion:** if `/minas:team review` was already invoked for the same scope, skip this
+checkpoint. Conversely, if this checkpoint was already run, do not also invoke `/minas:team review`
 for the same scope.
 
 **Recommendation wording:**
@@ -171,7 +171,7 @@ for the same scope.
 |-----------|-----------|-------------------|
 | Code quality | `code-reviewer` | Changed files, plan checklist |
 | Test gaps | `tester` | Changed files, `tests/all-tests.md` |
-| Security | `research-agent` | Changed files, `vc-security` skill context |
+| Security | `research-agent` | Changed files, `minas-security` skill context |
 | API contracts | `code-reviewer` | Plan's public contracts section |
 
 **Per-agent output:** structured review with severity-rated findings.
@@ -215,7 +215,7 @@ contract results. Re-run security review? [Y/N]"
 
 ## Escalation Criteria
 
-Use vc-team instead of lightweight subagents when:
+Use minas-team instead of lightweight subagents when:
 
 - Parallel agents need to read each other's outputs before finishing
 - The work involves adversarial debate (one agent argues for, another argues against)
@@ -226,4 +226,4 @@ If none of these apply, use lightweight subagents. Start lightweight and escalat
 first round reveals inter-dependencies.
 
 Cross-reference: see the "When to Use Agent Teams vs Subagents" table in
-`.claude/skills/vc-team/SKILL.md` for the complementary decision matrix.
+`.claude/skills/minas-team/SKILL.md` for the complementary decision matrix.

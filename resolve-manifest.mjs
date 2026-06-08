@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * resolve-manifest.mjs — Glob-based manifest resolver for vibecode-pro-max-kit.
+ * resolve-manifest.mjs — Glob-based manifest resolver for minas-kit.
  *
- * Resolves vc-manifest.json include/exclude/kitOnly patterns to a flat file list.
+ * Resolves minas-manifest.json include/exclude/kitOnly patterns to a flat file list.
  * Supports both v2.1+ (glob) and legacy v2.0.x (explicit list) formats.
  *
  * Usage:
@@ -37,10 +37,10 @@ const kitOnlyMode = flag("--kit-only");
 
 // ── Manifest loading ──────────────────────────────────────────────────────────
 
-const manifestPath = path.join(rootDir, "vc-manifest.json");
+const manifestPath = path.join(rootDir, "minas-manifest.json");
 
 if (!fs.existsSync(manifestPath)) {
-  console.error(`Error: vc-manifest.json not found at ${manifestPath}`);
+  console.error(`Error: minas-manifest.json not found at ${manifestPath}`);
   process.exit(1);
 }
 
@@ -48,7 +48,7 @@ let manifest;
 try {
   manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 } catch (err) {
-  console.error(`Error: Failed to parse vc-manifest.json: ${err.message}`);
+  console.error(`Error: Failed to parse minas-manifest.json: ${err.message}`);
   process.exit(1);
 }
 

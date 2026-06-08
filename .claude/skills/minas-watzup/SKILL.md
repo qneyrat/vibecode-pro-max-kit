@@ -1,5 +1,5 @@
 ---
-name: vc:watzup
+name: minas:watzup
 description: "Use when you need a read-only handoff summary of current branch state, local/remote refs, worktrees, active project plans, selected-plan hints, and suggested next checks."
 license: MIT
 argument-hint: "[--json] [--fetch] [--selected-plan <path>] [--cwd <path>]"
@@ -23,7 +23,7 @@ This is a helper skill only.
 
 `watzup` is advisory.
 
-- Evidence comes from git, worktree metadata, and `process/*` plan inventory.
+- Evidence comes from git, worktree metadata, and `.minas/process/*` plan inventory.
 - Selected-plan awareness is a hint, not a command.
 - Next-step recommendations are suggestions, not workflow gates.
 
@@ -42,7 +42,7 @@ Useful flags:
 ```bash
 node .claude/skills/watzup/scripts/watzup-scan.cjs
 node .claude/skills/watzup/scripts/watzup-scan.cjs --json --max-branches 8 --plan-limit 6
-node .claude/skills/watzup/scripts/watzup-scan.cjs --selected-plan process/general-plans/active/example_PLAN_27-05-26.md
+node .claude/skills/watzup/scripts/watzup-scan.cjs --selected-plan .minas/process/general-plans/active/example_PLAN_27-05-26.md
 node .claude/skills/watzup/scripts/watzup-scan.cjs --since "14 days ago"
 node .claude/skills/watzup/scripts/watzup-scan.cjs --fetch
 ```
@@ -54,8 +54,8 @@ The scanner reads from:
 - `git status --short --branch`
 - `git worktree list --porcelain`
 - local and remote branch refs plus sampled recent commits
-- `process/general-plans/active/`
-- `process/features/*/active/`
+- `.minas/process/general-plans/active/`
+- `.minas/process/features/*/active/`
 - optional session-state hints if a local session id is present
 
 It does not scan upstream `plans/**`, and it never treats a selected-plan hint as execute authority.
@@ -78,7 +78,7 @@ If the scanner fails, say that explicitly and fall back to the minimal read-only
 git status --short --branch
 git worktree list --porcelain
 git for-each-ref --format='%(refname:short) %(committerdate:iso8601) %(objectname:short) %(subject)' refs/heads refs/remotes
-find process/general-plans/active process/features -path '*/active/*' -type f | sort
+find .minas/process/general-plans/active .minas/process/features -path '*/active/*' -type f | sort
 ```
 
 ## Safety Rules

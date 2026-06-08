@@ -16,11 +16,11 @@ function warn(message) {
   else warnings.push(message);
 }
 
-const seedsDir = path.join(root, "process/_seeds");
+const seedsDir = path.join(root, ".minas/process/_seeds");
 
 // 1. Check seeds directory exists
 if (!fs.existsSync(seedsDir)) {
-  fail("process/_seeds/ directory does not exist");
+  fail(".minas/process/_seeds/ directory does not exist");
 } else {
   // 2. Check expected subdirectory structure
   const expectedDirs = [
@@ -35,7 +35,7 @@ if (!fs.existsSync(seedsDir)) {
 
   for (const dir of expectedDirs) {
     if (!fs.existsSync(path.join(seedsDir, dir))) {
-      fail(`Missing seed directory: process/_seeds/${dir}`);
+      fail(`Missing seed directory: .minas/process/_seeds/${dir}`);
     }
   }
 
@@ -94,7 +94,7 @@ if (!fs.existsSync(seedsDir)) {
     if (!fs.existsSync(guidePath)) {
       const seedGuidePath = path.join(seedsDir, dir, "_GUIDE.md.seed");
       if (!fs.existsSync(seedGuidePath)) {
-        warn(`Missing _GUIDE.md or _GUIDE.md.seed in process/_seeds/${dir || "(root)"}`);
+        warn(`Missing _GUIDE.md or _GUIDE.md.seed in .minas/process/_seeds/${dir || "(root)"}`);
       }
     }
   }

@@ -9,17 +9,17 @@
     ".codex/**",
     "CLAUDE.md",
     "AGENTS.md",
-    "process/development-protocols/**",
-    "process/context/planning/example-*.md",
-    "process/_seeds/**",
-    "process/_seeds/**/.gitkeep",
-    "process/_seeds/**/.gitignore",
-    "process/_seeds/**/.env.example"
+    ".minas/process/development-protocols/**",
+    ".minas/process/context/planning/example-*.md",
+    ".minas/process/_seeds/**",
+    ".minas/process/_seeds/**/.gitkeep",
+    ".minas/process/_seeds/**/.gitignore",
+    ".minas/process/_seeds/**/.env.example"
   ],
   "exclude": [
-    "process/context/all-context.md",
-    "process/features/**",
-    "process/general-plans/**",
+    ".minas/process/context/all-context.md",
+    ".minas/process/features/**",
+    ".minas/process/general-plans/**",
     "**/.git/**",
     "**/.logs/**",
     ".codex/statusline.cjs",
@@ -30,7 +30,7 @@
     ".claude/settings.json"
   ],
   "copyIfMissing": [
-    "process/context/planning/example-*.md"
+    ".minas/process/context/planning/example-*.md"
   ],
   "symlinks": {
     ".agents/skills": "../.claude/skills"

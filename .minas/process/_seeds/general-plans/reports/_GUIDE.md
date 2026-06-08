@@ -1,6 +1,6 @@
 # Reports
 
-This folder holds operational reports for general and cross-cutting work. Feature-specific reports live in `process/features/{feature}/reports/`.
+This folder holds operational reports for general and cross-cutting work. Feature-specific reports live in `.minas/process/features/{feature}/reports/`.
 
 ## What Goes Here
 
@@ -32,5 +32,5 @@ Examples:
 
 - Implementation plans (use `active/`)
 - Research or reference material (use `references/`)
-- Durable project knowledge (use `process/context/`)
-- Feature-specific reports (use `process/features/{feature}/reports/`)
+- Durable project knowledge (use `.minas/process/context/`)
+- Feature-specific reports (use `.minas/process/features/{feature}/reports/`)

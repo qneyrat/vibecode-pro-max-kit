@@ -1,6 +1,6 @@
 # VibeCo Agent Harness Setup - Reference
 
-Detailed instructions for each phase of the vc-setup skill, including interactive flows for new and existing projects.
+Detailed instructions for each phase of the minas-setup skill, including interactive flows for new and existing projects.
 
 ## Project Classification
 
@@ -8,8 +8,8 @@ After running DETECT, classify the project before choosing a flow:
 
 | Signal | Classification |
 |--------|---------------|
-| No `process/` directory, no `all-context.md`, no meaningful CLAUDE.md content | **New project** -- use Flow A |
-| Has `process/` directory with any content | **Existing project** -- use Flow B |
+| No `.minas/process/` directory, no `all-context.md`, no meaningful CLAUDE.md content | **New project** -- use Flow A |
+| Has `.minas/process/` directory with any content | **Existing project** -- use Flow B |
 | Has `all-context.md` with real (non-placeholder) content | **Existing project** -- use Flow B |
 | Has CLAUDE.md with project-specific sections (beyond managed protocol) | **Existing project** -- use Flow B |
 | Has `.minas-backup/` (just ran install.sh over an existing setup) | **Existing project** -- use Flow B |
@@ -81,7 +81,7 @@ Proceed with the standard phases documented below. All scaffolding uses Fresh mo
 
 ## Flow B: Existing Project
 
-For projects that already have process/, context files, or prior setup. The full sequence is:
+For projects that already have .minas/process/, context files, or prior setup. The full sequence is:
 
 ```
 DETECT -> STUDY EXISTING -> PRESENT & ASK -> (optionally ASK project questions) -> SCAFFOLD (approved changes only) -> STUDY (gap-fill) -> present summary -> VALIDATE
@@ -97,12 +97,12 @@ Before proposing any changes, build a complete picture of what is already there.
 
 **Read these files/directories:**
 
-- `process/context/all-context.md` -- assess quality: does it have real content or placeholders?
-- `process/context/tests/all-tests.md` -- assess quality: real test commands or template text?
-- All `process/context/*/all-*.md` -- list existing context groups
-- All `process/features/*/` -- list existing feature folders, read their `_GUIDE.md` files
-- All `process/general-plans/active/*.md` -- note active plans (do not touch these)
-- `process/development-protocols/` -- check if protocol docs exist and their version
+- `.minas/process/context/all-context.md` -- assess quality: does it have real content or placeholders?
+- `.minas/process/context/tests/all-tests.md` -- assess quality: real test commands or template text?
+- All `.minas/process/context/*/all-*.md` -- list existing context groups
+- All `.minas/process/features/*/` -- list existing feature folders, read their `_GUIDE.md` files
+- All `.minas/process/general-plans/active/*.md` -- note active plans (do not touch these)
+- `.minas/process/development-protocols/` -- check if protocol docs exist and their version
 - Any `CLAUDE.md` content beyond the managed protocol (some users add project-specific sections)
 
 **Produce an internal assessment:**
@@ -121,22 +121,22 @@ Show the user your findings in this format:
 Here is what I found in your existing setup:
 
 LOOKS GOOD (I recommend keeping these as-is):
-- process/context/all-context.md -- has detailed architecture and stack info
-- process/features/auth/ -- well-documented with 3 active plans
+- .minas/process/context/all-context.md -- has detailed architecture and stack info
+- .minas/process/features/auth/ -- well-documented with 3 active plans
 - [etc.]
 
 COULD BE IMPROVED (I can update these):
-- process/context/tests/all-tests.md -- has placeholder text, no real test commands
-- process/features/billing/_GUIDE.md -- empty, no scope description
+- .minas/process/context/tests/all-tests.md -- has placeholder text, no real test commands
+- .minas/process/features/billing/_GUIDE.md -- empty, no scope description
 - [etc., with brief reason for each]
 
 MISSING (I recommend adding these):
-- process/context/database/ -- you have Prisma with 15+ models but no database context group
-- process/features/api/ -- the API layer has 20+ routes, warrants its own feature folder
+- .minas/process/context/database/ -- you have Prisma with 15+ models but no database context group
+- .minas/process/features/api/ -- the API layer has 20+ routes, warrants its own feature folder
 - [etc., with evidence for each recommendation]
 
 LAYOUT CHANGES (reorganization I would suggest):
-- process/plans/ -> process/general-plans/active/ (old layout, 4 plan files to migrate)
+- .minas/process/plans/ -> .minas/process/general-plans/active/ (old layout, 4 plan files to migrate)
 - [etc.]
 - [if none needed: "Your layout matches the harness standard. No reorganization needed."]
 ```
@@ -219,10 +219,10 @@ Check these signals:
 
 Check for:
 
-- `process/` directory (existing harness)
-- `process/context/all-context.md` (existing context -- read first few lines to check if real or placeholder)
-- `process/development-protocols/` (existing protocol docs)
-- `process/features/` (existing feature folders)
+- `.minas/process/` directory (existing harness)
+- `.minas/process/context/all-context.md` (existing context -- read first few lines to check if real or placeholder)
+- `.minas/process/development-protocols/` (existing protocol docs)
+- `.minas/process/features/` (existing feature folders)
 - `docs/` directory (existing documentation)
 - `.github/` directory (CI/CD)
 - `README.md` content (project description)
@@ -261,19 +261,19 @@ Proceed? (y/n)
 
 `.minas/CLAUDE.md` and agent prompts are **managed protocol files**. They are copied as-is from the harness source and should NOT be adapted per-project. They contain zero project-specific content.
 
-Project-specific information lives in `process/context/all-context.md`, populated during the STUDY phase.
+Project-specific information lives in `.minas/process/context/all-context.md`, populated during the STUDY phase.
 
 ### Seed Location
 
-All seed templates live in `process/_seeds/` (read-only during setup -- never modified by the scaffold process). The SCAFFOLD phase reads from `_seeds/` and copies to the real working directories.
+All seed templates live in `.minas/process/_seeds/` (read-only during setup -- never modified by the scaffold process). The SCAFFOLD phase reads from `_seeds/` and copies to the real working directories.
 
 Context group seed folders use `-seed` suffix (e.g., `tests-seed/`, `planning-seed/`). When copying to real locations, drop the `-seed` suffix.
 
 ### Seed Directory Tree
 
 ```
-process/_seeds/
-  _GUIDE.md                              -- explains the process/ directory
+.minas/process/_seeds/
+  _GUIDE.md                              -- explains the .minas/process/ directory
   context/
     all-context.md.seed                  -- root context router template
     _all-group-template.md.seed          -- template for new context group entrypoints
@@ -311,7 +311,7 @@ process/_seeds/
 ### Target Directory Tree (after SCAFFOLD)
 
 ```
-process/
+.minas/process/
   _seeds/                                -- read-only seed templates (copied from above)
   development-protocols/
     all-development-protocols.md
@@ -361,25 +361,25 @@ process/
 
 | Signal | Mode |
 |--------|------|
-| No `process/` directory exists | Fresh |
-| `process/` exists but no `development-protocols/` | Merge |
-| `process/` exists with `development-protocols/` | Refresh |
-| `process/context/all-context.md` exists | Merge or Refresh (preserve it) |
+| No `.minas/process/` directory exists | Fresh |
+| `.minas/process/` exists but no `development-protocols/` | Merge |
+| `.minas/process/` exists with `development-protocols/` | Refresh |
+| `.minas/process/context/all-context.md` exists | Merge or Refresh (preserve it) |
 
 ### Fresh Mode
 
-Create everything from `process/_seeds/` (read-only source, never modified during setup):
+Create everything from `.minas/process/_seeds/` (read-only source, never modified during setup):
 
 1. Create all directories in the target tree
-2. Copy all files from `process/_seeds/` to their real locations
+2. Copy all files from `.minas/process/_seeds/` to their real locations
 3. Process `.seed` files: copy with `.seed` removed, replace `{{project_name}}` with detected project name
 4. Copy non-seed files verbatim (example PRDs, development protocols, `_GUIDE.md` files)
 5. Context group seed folders: copy from `-seed` suffix dirs to real dirs (e.g., `tests-seed/` -> `tests/`, `planning-seed/` -> `planning/`)
-6. Retain `.seed` originals: copy the original `.seed` files alongside the populated real files in the target `process/` directory. These serve as structural reference companions -- agents and future `vc-update` runs can diff populated files against their `.seed` originals to detect structural drift or missing sections
+6. Retain `.seed` originals: copy the original `.seed` files alongside the populated real files in the target `.minas/process/` directory. These serve as structural reference companions -- agents and future `minas-update` runs can diff populated files against their `.seed` originals to detect structural drift or missing sections
 
 ### Merge Mode
 
-Preserve existing content, migrate old layouts, fill gaps (read from `process/_seeds/`, never modify seeds):
+Preserve existing content, migrate old layouts, fill gaps (read from `.minas/process/_seeds/`, never modify seeds):
 
 **Step 0 -- Layout Migration (before creating anything new):**
 
@@ -387,11 +387,11 @@ Detect old directory layouts and reorganize them into the harness standard struc
 
 | Old Layout | Migration Action |
 |------------|-----------------|
-| `process/plans/` exists, no `process/general-plans/` | Create `process/general-plans/active/` and `process/general-plans/completed/`. For each file in `process/plans/`: scan for "COMPLETE", "DONE", or checkmark markers -- move matches to `completed/`, move the rest to `active/`. Remove empty `process/plans/`. |
-| `process/reports/` exists at top level | Move `process/reports/*` to `process/general-plans/reports/`. Remove empty `process/reports/`. |
-| `process/skills/` exists at top level | Move `process/skills/*` to `process/general-plans/references/`. Remove empty `process/skills/`. |
-| Example PRDs at old locations (under `process/context/` or `process/context/planning/`) not yet moved to `process/development-protocols/references/` | Move to `process/development-protocols/references/`. |
-| process/context/backlog.md | Move to `process/general-plans/backlog/backlog.md` |
+| `.minas/process/plans/` exists, no `.minas/process/general-plans/` | Create `.minas/process/general-plans/active/` and `.minas/process/general-plans/completed/`. For each file in `.minas/process/plans/`: scan for "COMPLETE", "DONE", or checkmark markers -- move matches to `completed/`, move the rest to `active/`. Remove empty `.minas/process/plans/`. |
+| `.minas/process/reports/` exists at top level | Move `.minas/process/reports/*` to `.minas/process/general-plans/reports/`. Remove empty `.minas/process/reports/`. |
+| `.minas/process/skills/` exists at top level | Move `.minas/process/skills/*` to `.minas/process/general-plans/references/`. Remove empty `.minas/process/skills/`. |
+| Example PRDs at old locations (under `.minas/process/context/` or `.minas/process/context/planning/`) not yet moved to `.minas/process/development-protocols/references/` | Move to `.minas/process/development-protocols/references/`. |
+| .minas/process/context/backlog.md | Move to `.minas/process/general-plans/backlog/backlog.md` |
 
 **Migration rules:**
 - Never overwrite existing files at the destination. If a same-name file exists, keep both (rename the migrated copy with a `-migrated` suffix).
@@ -402,7 +402,7 @@ Detect old directory layouts and reorganize them into the harness standard struc
 **Step 1-6 -- Standard merge (after migration):**
 
 1. Create only missing directories
-2. Add `_GUIDE.md` to empty directories that lack them (source: `process/_seeds/`)
+2. Add `_GUIDE.md` to empty directories that lack them (source: `.minas/process/_seeds/`)
 3. Copy seed files only where the target file does not exist
 4. Copy development protocols only where the target file does not exist
 5. Retain `.seed` originals alongside populated files (same as Fresh mode step 6)
@@ -410,12 +410,12 @@ Detect old directory layouts and reorganize them into the harness standard struc
 
 ### Refresh Mode
 
-Update protocols, preserve user content (read from `process/_seeds/`, never modify seeds):
+Update protocols, preserve user content (read from `.minas/process/_seeds/`, never modify seeds):
 
-1. Overwrite development protocol files from `process/development-protocols/` (these are managed system files that live in the real directory, not in `_seeds/`)
+1. Overwrite development protocol files from `.minas/process/development-protocols/` (these are managed system files that live in the real directory, not in `_seeds/`)
 2. Add missing seed files (do not overwrite existing ones)
-3. Add missing `_GUIDE.md` files from `process/_seeds/`
-4. Update `.seed` companion files to latest versions from `process/_seeds/` (these are structural references, not user content)
+3. Add missing `_GUIDE.md` files from `.minas/process/_seeds/`
+4. Update `.seed` companion files to latest versions from `.minas/process/_seeds/` (these are structural references, not user content)
 5. Preserve all user-created plans, reports, references, and context docs
 
 ### Placeholder Reference
@@ -430,7 +430,7 @@ All other content is populated by the STUDY phase using real codebase analysis, 
 
 ## STUDY Phase
 
-The STUDY phase is the core value of vc-setup v3. It transforms scaffolded seed files into ready-to-use context by actively scanning the codebase.
+The STUDY phase is the core value of minas-setup v3. It transforms scaffolded seed files into ready-to-use context by actively scanning the codebase.
 
 ### Incorporating User Answers
 
@@ -443,11 +443,11 @@ If the user answered project questions (from the ASK step in Flow A, or the PRES
 
 ### Parallel Subagent Delegation Strategy
 
-The STUDY phase is the most resource-intensive part of vc-setup. The executing agent SHOULD spawn parallel subagents to maximize throughput and avoid context window exhaustion.
+The STUDY phase is the most resource-intensive part of minas-setup. The executing agent SHOULD spawn parallel subagents to maximize throughput and avoid context window exhaustion.
 
-**Round 0 -- Migration Gap Analysis (only when existing process/ is found):**
+**Round 0 -- Migration Gap Analysis (only when existing .minas/process/ is found):**
 
-Spawn a single subagent that reads all existing `process/` content and produces a gap analysis. Round 1 subagents receive this gap analysis to avoid duplicating existing content.
+Spawn a single subagent that reads all existing `.minas/process/` content and produces a gap analysis. Round 1 subagents receive this gap analysis to avoid duplicating existing content.
 
 **Round 1 -- Parallel Research (read-only, no file writes):**
 
@@ -468,10 +468,10 @@ Spawn up to 4 parallel subagents. Each writes to a distinct set of files with no
 
 | Subagent | Consumes | Writes to |
 |----------|----------|-----------|
-| E: all-context.md Writer | Findings from A + C + user answers | `process/context/all-context.md` |
-| F: all-tests.md Writer | Findings from B | `process/context/tests/all-tests.md` |
-| G: Context Group Scaffolder | Findings from C | `process/context/{group}/all-{group}.md` for each group |
-| H: Feature Folder Scaffolder | Findings from D + user answers | `process/features/{feature}/` dirs + `_GUIDE.md` files |
+| E: all-context.md Writer | Findings from A + C + user answers | `.minas/process/context/all-context.md` |
+| F: all-tests.md Writer | Findings from B | `.minas/process/context/tests/all-tests.md` |
+| G: Context Group Scaffolder | Findings from C | `.minas/process/context/{group}/all-{group}.md` for each group |
+| H: Feature Folder Scaffolder | Findings from D + user answers | `.minas/process/features/{feature}/` dirs + `_GUIDE.md` files |
 
 Wait for all Round 2 subagents to complete. Proceed to VALIDATE.
 
@@ -583,9 +583,9 @@ After scanning test setup (or receiving Round 1 findings from Subagent B), write
 
 ### Migration Intelligence (for Merge/Refresh modes)
 
-When existing `process/` content is found, follow these rules:
+When existing `.minas/process/` content is found, follow these rules:
 
-1. **Read every existing `.md` file under `process/context/`**
+1. **Read every existing `.md` file under `.minas/process/context/`**
 2. **For each file**:
    - Parse section headings
    - Identify which sections have real content vs placeholders/TODOs
@@ -612,7 +612,7 @@ When existing `process/` content is found, follow these rules:
 Verify all directories from the target tree exist:
 
 ```bash
-ls -d process/development-protocols/ process/context/ process/context/planning/ process/context/tests/ process/general-plans/active/ process/general-plans/completed/ process/general-plans/backlog/ process/general-plans/reports/ process/general-plans/references/ process/features/
+ls -d .minas/process/development-protocols/ .minas/process/context/ .minas/process/context/planning/ .minas/process/context/tests/ .minas/process/general-plans/active/ .minas/process/general-plans/completed/ .minas/process/general-plans/backlog/ .minas/process/general-plans/reports/ .minas/process/general-plans/references/ .minas/process/features/
 ```
 
 ### STUDY Output Quality Checks
@@ -623,8 +623,8 @@ Verify the STUDY phase produced real content:
 2. **Repository Structure populated**: `all-context.md` contains a code block under "Repository Structure" with actual directory names
 3. **Technology Stack populated**: `all-context.md` contains specific framework names and versions under "Technology Stack"
 4. **Test commands populated**: `all-tests.md` contains actual test commands (not `{{test_commands}}` or placeholder text)
-5. **Context group routing**: Every context group directory under `process/context/` has a corresponding entry in the "Current Context Groups" table in `all-context.md`
-6. **Feature folder guides**: Every feature folder under `process/features/` (excluding the root `_GUIDE.md`) has a `_GUIDE.md` file with a real scope description
+5. **Context group routing**: Every context group directory under `.minas/process/context/` has a corresponding entry in the "Current Context Groups" table in `all-context.md`
+6. **Feature folder guides**: Every feature folder under `.minas/process/features/` (excluding the root `_GUIDE.md`) has a `_GUIDE.md` file with a real scope description
 7. **User input incorporated**: If the user provided project description or conventions in the ASK step, verify they appear in the relevant sections of all-context.md
 
 ### Skill Discovery Check
@@ -633,7 +633,7 @@ Verify the symlink resolves:
 
 ```bash
 ls -la .agents/skills
-ls .agents/skills/vc-setup/SKILL.md
+ls .agents/skills/minas-setup/SKILL.md
 ```
 
 ### Post-Setup Summary
@@ -653,8 +653,8 @@ What was preserved (existing project only):
 - [list of files/dirs that were kept as-is per user approval]
 
 Recommended next steps:
-1. Review process/context/all-context.md and refine any sections that need more detail
+1. Review .minas/process/context/all-context.md and refine any sections that need more detail
 2. Review detected context groups and feature folders -- add or remove as needed
-3. Run the vc-audit-context skill to validate context discovery wiring
+3. Run the minas-audit-context skill to validate context discovery wiring
 4. Start using the harness: describe a feature request to trigger the RIPER-5 workflow
 ```

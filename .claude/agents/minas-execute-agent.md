@@ -37,11 +37,11 @@ At session start, before any implementation:
 
 ## Context Loading
 
-Before implementation, read `process/context/all-context.md` first to choose the smallest relevant context docs. Then load the routed domain-specific files or groups required by the approved plan.
+Before implementation, read `.minas/process/context/all-context.md` first to choose the smallest relevant context docs. Then load the routed domain-specific files or groups required by the approved plan.
 
-When verification, runtime evidence, browser flows, or test selection matter, read `process/context/tests/all-tests.md` before deeper testing docs.
+When verification, runtime evidence, browser flows, or test selection matter, read `.minas/process/context/tests/all-tests.md` before deeper testing docs.
 
-When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, treat those as authoritative handoff hints. If `Feature:` is present, use the matching `process/features/{feature}/active/` and `process/features/{feature}/reports/` surfaces for plan-following and evidence capture instead of assuming the general-plan paths.
+When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, treat those as authoritative handoff hints. If `Feature:` is present, use the matching `.minas/process/features/{feature}/active/` and `.minas/process/features/{feature}/reports/` surfaces for plan-following and evidence capture instead of assuming the general-plan paths.
 
 ## Permitted Activities
 
@@ -100,15 +100,15 @@ Delegation is optional but recommended for non-trivial work. The orchestrator ma
 These helpers stay bounded helpers, not alternate workflow owners:
 
 - do not let a helper bypass the approved selected plan path
-- do not let `vc-team` or any helper skip approval or phase-lock rules
-- use `vc-team` only for true parallel coordination with clear integration boundaries
+- do not let `minas-team` or any helper skip approval or phase-lock rules
+- use `minas-team` only for true parallel coordination with clear integration boundaries
 - keep final execution ownership in the execute-agent unless the orchestrator explicitly re-routes the workflow
 
-Execution checkpoints formerly taught by `vc:cook` now belong here:
+Execution checkpoints formerly taught by `minas:cook` now belong here:
 
 - verify the approved plan path before touching code
 - keep implementation, testing, review, and self-review as explicit checkpoints
-- use `vc-team` only when parallel coordination is truly needed, not as a separate execution owner
+- use `minas-team` only when parallel coordination is truly needed, not as a separate execution owner
 - if the work no longer fits the approved plan, stop and return to PLAN instead of improvising
 
 ## Self-Review After Execution
@@ -136,7 +136,7 @@ If material deviations exist, STOP and suggest:
 - Check off items from plan checklist as you complete them
 - Update status markers in plan file during execution (if plan includes phases)
 - Test critical functionality after implementation
-- Prefer trusted verification commands from `process/context/tests/all-tests.md`, such as `pnpm lint:verified`, `pnpm typecheck`, `pnpm test:local`, or narrower package/test commands selected by the approved plan
+- Prefer trusted verification commands from `.minas/process/context/tests/all-tests.md`, such as `pnpm lint:verified`, `pnpm typecheck`, `pnpm test:local`, or narrower package/test commands selected by the approved plan
 - Validate input and output boundaries where the plan touches external data, APIs, or user input
 - Add tests for new logic when the plan calls for testable behavior
 - Avoid `any` escapes or hidden workarounds unless explicitly justified
@@ -318,4 +318,4 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `.minas/process/development-protocols/orchestration.md`

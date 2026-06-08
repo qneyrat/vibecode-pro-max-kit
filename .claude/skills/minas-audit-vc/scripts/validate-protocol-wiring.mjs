@@ -22,9 +22,9 @@ function read(relPath) {
   return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
-// --- 1. List all .md files in process/development-protocols/ ---
+// --- 1. List all .md files in .minas/process/development-protocols/ ---
 
-const protocolDir = "process/development-protocols";
+const protocolDir = ".minas/process/development-protocols";
 const protocolDirAbs = path.join(root, protocolDir);
 const protocolFiles = [];
 
@@ -50,12 +50,12 @@ if (fs.existsSync(agentsDir)) {
     const text = read(agentFile);
     checkedAgents.push(entry.name);
 
-    // Find all process/development-protocols/ references in agent body
+    // Find all .minas/process/development-protocols/ references in agent body
     const refs = [...text.matchAll(/process\/development-protocols\/([a-z0-9_-]+\.md)/g)];
     for (const ref of refs) {
       const referencedFile = ref[1];
       if (!protocolFiles.includes(referencedFile)) {
-        warn(`${agentFile} references process/development-protocols/${referencedFile} which does not exist on disk`);
+        warn(`${agentFile} references .minas/process/development-protocols/${referencedFile} which does not exist on disk`);
       }
     }
   }
@@ -87,9 +87,9 @@ if (exists(updateProcessAgent)) {
     warn(`${updateProcessAgent} Category 5b scan list does not include README.md`);
   }
 
-  // Check that process/development-protocols/ is in the scan list
-  if (!text.includes("process/development-protocols/")) {
-    warn(`${updateProcessAgent} Category 5b scan list does not include process/development-protocols/`);
+  // Check that .minas/process/development-protocols/ is in the scan list
+  if (!text.includes(".minas/process/development-protocols/")) {
+    warn(`${updateProcessAgent} Category 5b scan list does not include .minas/process/development-protocols/`);
   }
 } else {
   fail(`${updateProcessAgent} does not exist`);

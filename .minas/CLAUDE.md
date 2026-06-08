@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-See `process/context/all-context.md` for project-specific coding preferences and conventions.
+See `.minas/process/context/all-context.md` for project-specific coding preferences and conventions.
 
 ## RIPER-5 Spec-Driven Development System
 
@@ -8,28 +8,28 @@ This project uses RIPER-5 methodology for systematic, spec-driven development. R
 
 ### Shared Development Protocols
 
-Canonical shared workflow rules now live in `process/development-protocols/`.
+Canonical shared workflow rules now live in `.minas/process/development-protocols/`.
 
 Read these files as needed:
 
-- `process/development-protocols/all-development-protocols.md`
-- `process/development-protocols/orchestration.md`
-- `process/development-protocols/implementation-standards.md`
-- `process/development-protocols/plan-lifecycle.md`
-- `process/development-protocols/phase-programs.md`
-- `process/development-protocols/context-maintenance.md`
-- `process/development-protocols/parallel-fan-out.md`
-- `process/development-protocols/intent-clarification.md`
+- `.minas/process/development-protocols/all-development-protocols.md`
+- `.minas/process/development-protocols/orchestration.md`
+- `.minas/process/development-protocols/implementation-standards.md`
+- `.minas/process/development-protocols/plan-lifecycle.md`
+- `.minas/process/development-protocols/phase-programs.md`
+- `.minas/process/development-protocols/context-maintenance.md`
+- `.minas/process/development-protocols/parallel-fan-out.md`
+- `.minas/process/development-protocols/intent-clarification.md`
 
 Reference docs (harness methodology, not project-specific):
 
-- `process/development-protocols/references/example-simple-prd.md` - Reference for simple plan structure
-- `process/development-protocols/references/example-complex-prd.md` - Reference for complex plan depth
-- `process/development-protocols/references/program-goal-charter-template.md` - Program Goal Charter template for phase programs
+- `.minas/process/development-protocols/references/example-simple-prd.md` - Reference for simple plan structure
+- `.minas/process/development-protocols/references/example-complex-prd.md` - Reference for complex plan depth
+- `.minas/process/development-protocols/references/program-goal-charter-template.md` - Program Goal Charter template for phase programs
 
 ### Orchestrator Role (Main Claude Code Session)
 
-> **Delegation rules, subagent status codes (DONE / DONE_WITH_CONCERNS / BLOCKED / NEEDS_CONTEXT), and context isolation protocol:** see `process/development-protocols/orchestration.md`.
+> **Delegation rules, subagent status codes (DONE / DONE_WITH_CONCERNS / BLOCKED / NEEDS_CONTEXT), and context isolation protocol:** see `.minas/process/development-protocols/orchestration.md`.
 
 **You are the orchestrator, not the worker.**
 
@@ -42,11 +42,11 @@ Your responsibilities:
 
 **You do NOT**:
 
-- Perform research yourself (delegate to vc-research-agent)
-- Brainstorm approaches yourself (delegate to vc-innovate-agent)
-- Write plans yourself (delegate to vc-plan-agent)
-- Implement code yourself (delegate to vc-execute-agent)
-- Update rules yourself (delegate to vc-update-process-agent)
+- Perform research yourself (delegate to minas-research-agent)
+- Brainstorm approaches yourself (delegate to minas-innovate-agent)
+- Write plans yourself (delegate to minas-plan-agent)
+- Implement code yourself (delegate to minas-execute-agent)
+- Update rules yourself (delegate to minas-update-process-agent)
 
 **Exception**: Trivial questions that don't require mode-specific work (e.g., "What is RIPER-5?") can be answered directly.
 
@@ -69,8 +69,8 @@ Read `.minas/process/context/all-context.md` for project-specific coding prefere
 
 Before substantial planning or implementation work, consult:
 
-- `process/context/all-context.md`
-- `process/development-protocols/all-development-protocols.md`
+- `.minas/process/context/all-context.md`
+- `.minas/process/development-protocols/all-development-protocols.md`
 
 **Context routing discipline:** `all-*.md` entrypoints are routers, not the full knowledge. Agents MUST follow the routing tables in `all-*.md` files to read the most relevant deeper file(s) before proposing or executing operational steps. Reading only the router and skipping the deeper docs leads to stale or incomplete procedures.
 
@@ -95,29 +95,29 @@ The complete RIPER-5 protocol is defined in the agent files at `.claude/agents/`
 
 **Auto-Detection Patterns** (summary — full routing in Routing Protocol section below):
 
-- Feature requests → Step 0 skill discovery → vc-research-agent → INNOVATE → PLAN → EXECUTE
-- Questions → vc-research-agent (non-trivial) or direct answer (trivial conceptual)
-- Trivial fixes → vc-execute-agent directly (no plan required)
-- Bug/debug → vc-debugger as default owner; helper skills like `vc-scout`, `vc-sequential-thinking`, and `vc-problem-solving` may assist (see routing table)
-- UI/frontend → surface vc-frontend-design skill + vc-research-agent
-- Refactor/simplify → vc-code-simplifier (pure style) or RESEARCH→PLAN→EXECUTE (behavioral)
-- Missing context → suggest the `vc-generate-context` skill
-- Existing plan file → scan process/general-plans/active/ and process/features/*/active/, confirm with user, resume from last phase
+- Feature requests → Step 0 skill discovery → minas-research-agent → INNOVATE → PLAN → EXECUTE
+- Questions → minas-research-agent (non-trivial) or direct answer (trivial conceptual)
+- Trivial fixes → minas-execute-agent directly (no plan required)
+- Bug/debug → minas-debugger as default owner; helper skills like `minas-scout`, `minas-sequential-thinking`, and `minas-problem-solving` may assist (see routing table)
+- UI/frontend → surface minas-frontend-design skill + minas-research-agent
+- Refactor/simplify → minas-code-simplifier (pure style) or RESEARCH→PLAN→EXECUTE (behavioral)
+- Missing context → suggest the `minas-generate-context` skill
+- Existing plan file → scan .minas/process/general-plans/active/ and .minas/process/features/*/active/, confirm with user, resume from last phase
 
 **Intent clarification**: Before auto-routing, the orchestrator scores request ambiguity per
-`process/development-protocols/intent-clarification.md`. Clear requests (score 0-1) auto-route
+`.minas/process/development-protocols/intent-clarification.md`. Clear requests (score 0-1) auto-route
 silently. Ambiguous requests get an inline summary (score 2) or multiple-choice questions (score 3+).
 
 **Large program rule**:
 
 - If the request is a substantial multi-phase effort, do not treat it as one normal PLAN → EXECUTE pass.
-- Use `process/development-protocols/phase-programs.md`.
+- Use `.minas/process/development-protocols/phase-programs.md`.
 - First recommend the plan shape, sequencing, and next actions.
 - Only after approval, create or confirm an umbrella plan plus explicit phase plans.
 - Advance one phase at a time using the required loop:
   research subagent → execution approval → execute subagent → validate subagent → durable report/context update.
 - When the user wants to launch a new large program cleanly, prefer the kickoff prompt template in
-  `process/development-protocols/phase-programs.md` rather than freehanding the structure.
+  `.minas/process/development-protocols/phase-programs.md` rather than freehanding the structure.
 
 ---
 
@@ -137,35 +137,35 @@ When specialized help is needed beyond the core RIPER modes, prefer discovering 
 
 ### Technology Stack
 
-See `process/context/all-context.md` for project technology stack, structure, and key technologies.
+See `.minas/process/context/all-context.md` for project technology stack, structure, and key technologies.
 
 ---
 
 ## Shared Process Folder
 
-Claude Code and Codex share the `process/` directory:
+Claude Code and Codex share the `.minas/process/` directory:
 
-### `process/general-plans/`
+### `.minas/process/general-plans/`
 
 Default new feature plans use date-stamped naming: `[feature]_PLAN_[dd-mm-yy].md`
 
 - Plans are system-agnostic and work in both IDEs
 - Date stamps prevent conflicts
-- Completed plans archived to `process/general-plans/completed/`
+- Completed plans archived to `.minas/process/general-plans/completed/`
 - Current active inventory is mixed: direct `*_PLAN_*.md` files are the default, but legacy `PLAN.md`, `plan.md`, and `phase-*.md` layouts still exist and must be treated as compatibility shapes during audits/resume flows
 
-### `process/context/`
+### `.minas/process/context/`
 
 **Source of truth for project-specific knowledge.** All agents should reference these files rather than hardcoding project details:
 
 - `all-context.md` - Root context entrypoint: quick routing plus authoritative repo context, architecture, patterns, conventions, and stack details
 - `tests/all-tests.md` - Testing quick-start, runner selection, commands, debugging procedures, and routing to deeper testing docs
 
-**Context discovery rule:** Read `process/context/all-context.md` first, then load only the relevant root file or context group. Context groups are durable knowledge domains, not feature folders. Every group must have an `all-{group}.md` entrypoint with scope, read-when rules, quick procedures, source paths, update triggers, and routing to deeper docs.
+**Context discovery rule:** Read `.minas/process/context/all-context.md` first, then load only the relevant root file or context group. Context groups are durable knowledge domains, not feature folders. Every group must have an `all-{group}.md` entrypoint with scope, read-when rules, quick procedures, source paths, update triggers, and routing to deeper docs.
 
-**Context group lifecycle:** Create or promote a context group when a topic has 3+ durable docs, a single doc exceeds roughly 800 lines with separable subtopics, or multiple agents repeatedly need only one slice of a large context file. Move/split one group at a time, use `all-*.md` entrypoints, update this router and agent prompts in the same patch, and run the `vc-audit-context` skill after every context organization change.
+**Context group lifecycle:** Create or promote a context group when a topic has 3+ durable docs, a single doc exceeds roughly 800 lines with separable subtopics, or multiple agents repeatedly need only one slice of a large context file. Move/split one group at a time, use `all-*.md` entrypoints, update this router and agent prompts in the same patch, and run the `minas-audit-context` skill after every context organization change.
 
-### `process/features/`
+### `.minas/process/features/`
 
 Feature-scoped storage for large feature clusters. Each feature folder contains:
 - `active/` - In-progress plans
@@ -174,13 +174,13 @@ Feature-scoped storage for large feature clusters. Each feature folder contains:
 - `reports/` - Feature-specific operational reports
 - `references/` - Feature-specific research and reference documents
 
-See `process/context/all-context.md` for current feature list.
+See `.minas/process/context/all-context.md` for current feature list.
 
-**Routing rule:** When a feature has 5+ artifacts, store new plans/reports in `process/features/{feature}/`. General or cross-cutting items go in `process/general-plans/` (with `reports/` and `references/` inside).
+**Routing rule:** When a feature has 5+ artifacts, store new plans/reports in `.minas/process/features/{feature}/`. General or cross-cutting items go in `.minas/process/general-plans/` (with `reports/` and `references/` inside).
 
 When routing to a subagent for a feature-scoped task, include `Feature: {feature-name}` in the prompt and override paths:
-- `Reports: {work_context}/process/features/{feature}/reports/`
-- `Plans: {work_context}/process/features/{feature}/active/`
+- `Reports: {work_context}/.minas/process/features/{feature}/reports/`
+- `Plans: {work_context}/.minas/process/features/{feature}/active/`
 
 #### Feature Folder Lifecycle
 
@@ -188,32 +188,32 @@ When routing to a subagent for a feature-scoped task, include `Feature: {feature
 
 | Signal | Action |
 |--------|--------|
-| `process/features/{topic}/` already exists | Use it — pass `Feature: {topic}` to subagent |
+| `.minas/process/features/{topic}/` already exists | Use it — pass `Feature: {topic}` to subagent |
 | Topic clearly belongs to an existing feature | Use that feature's folder |
 | New multi-phase project (3+ planned phases) | Create feature folder upfront |
 | User says "this is a big feature" or names a product area | Create feature folder upfront |
-| Single plan, no backlog, unclear scope | Use `process/general-plans/active/` (general) |
+| Single plan, no backlog, unclear scope | Use `.minas/process/general-plans/active/` (general) |
 | Cross-cutting work touching multiple features | Use general folders |
 
 **Promotion protocol (general → feature folder):**
 
 When general artifacts for a single topic reach 5+, or when a user requests it:
-1. Create `process/features/{new-feature}/` with subdirs: `active/`, `completed/`, `backlog/`, `reports/`, `references/`
-2. Move related artifacts from `process/general-plans/` (including `reports/` and `references/` inside it) into the new feature's subdirs
-3. Update the **Current features** list in `process/context/all-context.md`
+1. Create `.minas/process/features/{new-feature}/` with subdirs: `active/`, `completed/`, `backlog/`, `reports/`, `references/`
+2. Move related artifacts from `.minas/process/general-plans/` (including `reports/` and `references/` inside it) into the new feature's subdirs
+3. Update the **Current features** list in `.minas/process/context/all-context.md`
 4. Inform subagents of the new feature scope going forward
 
-**Feature list maintenance:** The current features list in `process/context/all-context.md` must be updated whenever a new feature folder is created or an empty one is removed. The `vc-update-process-agent` checks for drift between `ls process/features/` and this list during Phase 2.
+**Feature list maintenance:** The current features list in `.minas/process/context/all-context.md` must be updated whenever a new feature folder is created or an empty one is removed. The `minas-update-process-agent` checks for drift between `ls .minas/process/features/` and this list during Phase 2.
 
-### `process/general-plans/reports/`
+### `.minas/process/general-plans/reports/`
 
-General/cross-cutting operational reports. Feature-specific reports live in `process/features/{feature}/reports/`.
+General/cross-cutting operational reports. Feature-specific reports live in `.minas/process/features/{feature}/reports/`.
 
-### `process/general-plans/references/`
+### `.minas/process/general-plans/references/`
 
-General/cross-cutting research outputs. Feature-specific references live in `process/features/{feature}/references/`.
+General/cross-cutting research outputs. Feature-specific references live in `.minas/process/features/{feature}/references/`.
 
-When routing to subagents, always pass relevant `process/context/` files. As new context files are added (e.g., UI patterns, deployment procedures), agents will automatically benefit.
+When routing to subagents, always pass relevant `.minas/process/context/` files. As new context files are added (e.g., UI patterns, deployment procedures), agents will automatically benefit.
 
 ---
 
@@ -227,57 +227,57 @@ Claude command files are compatibility aliases when they still exist.
 The active system is intentionally split into four layers:
 
 - **Actor agents** own the actual phase or specialist role:
-  - `vc-research-agent`
-  - `vc-innovate-agent`
-  - `vc-plan-agent`
-  - `vc-execute-agent`
-  - `vc-update-process-agent`
-  - `vc-debugger`
-  - `vc-tester`
-  - `vc-code-reviewer`
-  - `vc-code-simplifier`
-  - `vc-ui-ux-designer`
-  - `vc-git-manager`
+  - `minas-research-agent`
+  - `minas-innovate-agent`
+  - `minas-plan-agent`
+  - `minas-execute-agent`
+  - `minas-update-process-agent`
+  - `minas-debugger`
+  - `minas-tester`
+  - `minas-code-reviewer`
+  - `minas-code-simplifier`
+  - `minas-ui-ux-designer`
+  - `minas-git-manager`
 - **Contract skills** define repo workflow artifacts and durable process contracts:
-  - `vc-generate-plan`
-  - `vc-generate-context`
-  - `vc-audit-context`
-  - `vc-audit-plans`
-  - `vc-audit-vc`
-  - `vc-update`
-  - `vc-publish`
+  - `minas-generate-plan`
+  - `minas-generate-context`
+  - `minas-audit-context`
+  - `minas-audit-plans`
+  - `minas-audit-vc`
+  - `minas-update`
+  - `minas-publish`
 - **Helper skills** improve how agents work but do not own the workflow:
-  - `vc-scout`
-  - `vc-sequential-thinking`
-  - `vc-problem-solving`
-  - `vc-preview`
-  - `vc-tech-graph`
-  - `vc-watzup`
-  - `vc-xia`
-  - `vc-repomix`
-  - `vc-docs-seeker`
-  - `vc-chrome-devtools`
-  - `vc-agent-browser`
-  - `vc-context-engineering`
-  - `vc-web-testing`
-  - `vc-frontend-design`
-  - `vc-predict`
-  - `vc-scenario`
-  - `vc-security`
-  - `vc-autoresearch`
+  - `minas-scout`
+  - `minas-sequential-thinking`
+  - `minas-problem-solving`
+  - `minas-preview`
+  - `minas-tech-graph`
+  - `minas-watzup`
+  - `minas-xia`
+  - `minas-repomix`
+  - `minas-docs-seeker`
+  - `minas-chrome-devtools`
+  - `minas-agent-browser`
+  - `minas-context-engineering`
+  - `minas-web-testing`
+  - `minas-frontend-design`
+  - `minas-predict`
+  - `minas-scenario`
+  - `minas-security`
+  - `minas-autoresearch`
 - **Orchestration utility**:
-  - `vc-team` coordinates multiple surviving actors/helpers in parallel but is not a competing default workflow owner
+  - `minas-team` coordinates multiple surviving actors/helpers in parallel but is not a competing default workflow owner
 
-Former workflow-owner skills such as `vc:plan`, `vc:research`, `vc:cook`, `vc:fix`, and `vc:code-review` are migration sources only. Their useful practices should be absorbed into the surviving actor/contract surfaces instead of being routed as separate default workflows.
+Former workflow-owner skills such as `minas:plan`, `minas:research`, `minas:cook`, `minas:fix`, and `minas:code-review` are migration sources only. Their useful practices should be absorbed into the surviving actor/contract surfaces instead of being routed as separate default workflows.
 
-`vc:debug` remains a valid helper skill. It is not a default workflow owner, but its root-cause methodology is still available alongside the `vc-debugger` agent.
+`minas:debug` remains a valid helper skill. It is not a default workflow owner, but its root-cause methodology is still available alongside the `minas-debugger` agent.
 
 ### Core Skills
 
-- **`vc-generate-plan`** - Create implementation plans (SIMPLE or COMPLEX) with explicit touchpoints, blast radius, verification evidence, and resume handoff
-- **`vc-generate-context`** - Generate/update repository context
-- **`vc-audit-context`** - Audit context routing, grouping, discoverability, and Claude/Codex wiring
-- **`vc-audit-vc`** - Audit agent harness health: agent parity, skill registry, README.md sync, and protocol wiring
+- **`minas-generate-plan`** - Create implementation plans (SIMPLE or COMPLEX) with explicit touchpoints, blast radius, verification evidence, and resume handoff
+- **`minas-generate-context`** - Generate/update repository context
+- **`minas-audit-context`** - Audit context routing, grouping, discoverability, and Claude/Codex wiring
+- **`minas-audit-vc`** - Audit agent harness health: agent parity, skill registry, README.md sync, and protocol wiring
 
 Legacy `@sync-to-riper5.md` and `@sync-from-riper5.md` commands are intentionally left
 unchanged and are not part of the Codex skill compatibility surface.
@@ -294,35 +294,35 @@ Claude Code provides specialized subagents for each RIPER-5 mode. Each subagent 
 
 ### Available Agents
 
-**vc-research-agent**
+**minas-research-agent**
 
 - Purpose: Information gathering only (read-only)
 - Tools: Read, Grep, Glob, Bash (safe commands)
 - Use: Understanding codebase, gathering context
 - Invoke: User says "ENTER RESEARCH MODE" or explicit agent call
 
-**vc-innovate-agent**
+**minas-innovate-agent**
 
 - Purpose: Brainstorming approaches (discussion-only)
 - Tools: Read, Grep, Glob (no execution)
 - Use: Exploring implementation options
 - Invoke: After RESEARCH, user says "go" or "ENTER INNOVATE MODE"
 
-**vc-plan-agent**
+**minas-plan-agent**
 
 - Purpose: Creating detailed specifications
-- Tools: Read, Write (process/general-plans/active/ or process/features/*/active/ only), Grep, Glob, Bash
+- Tools: Read, Write (.minas/process/general-plans/active/ or .minas/process/features/*/active/ only), Grep, Glob, Bash
 - Use: Writing implementation plans
 - Invoke: After INNOVATE, user says "go" or "ENTER PLAN MODE"
 
-**vc-execute-agent**
+**minas-execute-agent**
 
 - Purpose: Implementing per approved plan
 - Tools: Full access (Read, Write, Edit, Delete, Grep, Glob, Bash)
 - Use: Code implementation
 - Invoke: **ONLY** with explicit "ENTER EXECUTE MODE" after plan approval
 
-**vc-fast-mode-agent**
+**minas-fast-mode-agent**
 
 - Purpose: Compressed workflow (RESEARCH → INNOVATE → PLAN → PAUSE → EXECUTE)
 - Tools: Full access
@@ -330,7 +330,7 @@ Claude Code provides specialized subagents for each RIPER-5 mode. Each subagent 
 - Invoke: "ENTER FAST MODE"
 - **CRITICAL**: Pauses before EXECUTE for confirmation
 
-**vc-update-process-agent**
+**minas-update-process-agent**
 
 - Purpose: Rule updates, memory storage, plan archiving
 - Tools: Read, Write, Edit, Grep, Glob, Bash, update_memory
@@ -342,27 +342,27 @@ These agents add capabilities beyond the core RIPER-5 workflow. They are invoked
 
 **During EXECUTE phase:**
 
-- **vc-tester** — Diff-aware test verification. Maps changed files to test files, runs only affected tests. Invoke after implementation sub-steps complete.
-- **vc-debugger** — Root cause analysis for bugs. Evidence-before-hypothesis methodology. Can also be invoked standalone.
-- **vc-code-reviewer** — Production-readiness review. Edge case scouting, N+1 detection, auth path validation. Invoke as pre-PR quality gate.
+- **minas-tester** — Diff-aware test verification. Maps changed files to test files, runs only affected tests. Invoke after implementation sub-steps complete.
+- **minas-debugger** — Root cause analysis for bugs. Evidence-before-hypothesis methodology. Can also be invoked standalone.
+- **minas-code-reviewer** — Production-readiness review. Edge case scouting, N+1 detection, auth path validation. Invoke as pre-PR quality gate.
   Note: the adversarial/checklist review methodology now belongs in the agent prompt itself. Invoke the agent directly rather than a separate review-owner workflow.
-- **vc-code-simplifier** — Post-implementation refactor for clarity without behavior change. Invoke after code-reviewer passes.
-- **vc-ui-ux-designer** — Design-aware frontend implementation. Invoke for UI/UX tasks within execute phase.
-- **vc-git-manager** — Clean conventional commits. Invoke for git operations.
+- **minas-code-simplifier** — Post-implementation refactor for clarity without behavior change. Invoke after code-reviewer passes.
+- **minas-ui-ux-designer** — Design-aware frontend implementation. Invoke for UI/UX tasks within execute phase.
+- **minas-git-manager** — Clean conventional commits. Invoke for git operations.
 
 **Cross-phase utilities (skills, not agents):**
 
-- `vc-sequential-thinking` — Structured reasoning, usable in any phase
-- `vc-problem-solving` — Cognitive toolkit when stuck in any phase
-- `vc-scout` — Fast codebase scouting, usable in RESEARCH
-- `vc-tech-graph` — Publish-grade SVG/PNG technical diagram generator for durable process artifacts; pair with `vc-preview` for review or explanation after generation
-- `vc-watzup` — Read-only repo, local/remote ref, worktree, and active-plan handoff summary helper with advisory-only selected-plan hints
-- `vc-xia` — Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
-- `vc-repomix` — Repository packing helper for references-only artifacts, audits, and feature-porting prep
-- `vc-chrome-devtools` / `vc-agent-browser` — Browser automation, primarily EXECUTE
-- `vc-context-engineering` — Token optimization guidance, any phase
-- `vc:debug` — specialist root-cause-analysis helper, usable alongside `vc-debugger`
-- `vc-autoresearch` — Autonomous iterative optimization loop. Use AFTER execute phase to improve measurable metrics (test coverage, bundle size, lint errors) through automated git-backed iterations.
+- `minas-sequential-thinking` — Structured reasoning, usable in any phase
+- `minas-problem-solving` — Cognitive toolkit when stuck in any phase
+- `minas-scout` — Fast codebase scouting, usable in RESEARCH
+- `minas-tech-graph` — Publish-grade SVG/PNG technical diagram generator for durable process artifacts; pair with `minas-preview` for review or explanation after generation
+- `minas-watzup` — Read-only repo, local/remote ref, worktree, and active-plan handoff summary helper with advisory-only selected-plan hints
+- `minas-xia` — Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
+- `minas-repomix` — Repository packing helper for references-only artifacts, audits, and feature-porting prep
+- `minas-chrome-devtools` / `minas-agent-browser` — Browser automation, primarily EXECUTE
+- `minas-context-engineering` — Token optimization guidance, any phase
+- `minas:debug` — specialist root-cause-analysis helper, usable alongside `minas-debugger`
+- `minas-autoresearch` — Autonomous iterative optimization loop. Use AFTER execute phase to improve measurable metrics (test coverage, bundle size, lint errors) through automated git-backed iterations.
 
 ---
 
@@ -378,32 +378,32 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 
 | Skill | Purpose | Trigger Keywords |
 |---|---|---|
-| `vc-frontend-design` | Polished UI from designs/screenshots/videos | UI, design, layout, component, page, interface, visual, CSS, Tailwind, login page, dashboard |
-| `vc-debug` | Root cause-analysis helper used alongside `vc-debugger` | debug, root cause, investigate, why is this |
-| `vc-scenario` | Edge case generation across 12 dimensions | edge cases, test scenarios, what could go wrong |
-| `vc-security` | STRIDE + OWASP security audit | security, vulnerability, auth, XSS, SQL injection |
-| `vc-autoresearch` | Autonomous metric optimization loop | improve coverage, reduce bundle, optimize metric |
-| `vc-predict` | 5-persona pre-implementation debate | risks, predict issues, architectural review |
-| `vc-scout` | Fast parallel codebase scouting | find files, where is, search codebase |
-| `vc-tech-graph` | Publish-grade technical diagrams as SVG or PNG for durable process artifacts | generate diagram, architecture diagram, flowchart, sequence diagram, system visual |
-| `vc-watzup` | Read-only branch, local/remote ref, worktree, and active-plan handoff summary with advisory selected-plan hints | what's in flight, handoff, worktree status, active plans, next steps |
-| `vc-xia` | Repo comparison and adaptation-prep research | copy from repo, compare repo, adapt from repo, study how they built it, analyze feature parity |
-| `vc-repomix` | Pack local or remote repos into references-only artifacts | pack repo, snapshot codebase, repo context, compare repo, feature port, security audit |
-| `vc-docs` | Project documentation management | docs, README, document codebase |
-| `vc-docs-seeker` | Library docs via context7 | how does X work, API docs, version, syntax |
-| `vc-web-testing` | Playwright/Vitest/k6 test automation | tests, e2e, integration test, performance test |
-| `vc-sequential-thinking` | Step-by-step reasoning | complex problem, think through, analyze step by step |
-| `vc-problem-solving` | Cognitive unblocking techniques | stuck, can't figure out, complex, spiral |
-| `vc-context-engineering` | Token/context optimization | context limit, token usage, optimize context |
-| `vc-preview` | Visual diagrams, slides, file viewer | diagram, visualize, slides, preview |
-| `vc-mcp-management` | MCP server tools | MCP, model context protocol |
-| `vc-chrome-devtools` | Puppeteer browser automation | browser, screenshot, scrape, automate browser |
-| `vc-agent-browser` | AI browser automation CLI | long browser session, browserbase, visual testing |
-| `vc-team` | Multi-agent parallel collaboration | parallel agents, multi-agent, team |
-| `vc-setup` | Scaffold agent harness into new project | seed, harness, bootstrap, new project, scaffold, setup |
-| `vc-update` | Pull latest harness from remote kit repo | update harness, pull kit, sync harness, upgrade agents |
-| `vc-publish` | Push harness improvements to remote kit repo | publish kit, push harness, release kit, update remote |
-| `vc-audit-vc` | Agent harness health audit (agents, skills, README.md, protocol wiring) | harness, agent parity, skill audit, guide sync |
+| `minas-frontend-design` | Polished UI from designs/screenshots/videos | UI, design, layout, component, page, interface, visual, CSS, Tailwind, login page, dashboard |
+| `minas-debug` | Root cause-analysis helper used alongside `minas-debugger` | debug, root cause, investigate, why is this |
+| `minas-scenario` | Edge case generation across 12 dimensions | edge cases, test scenarios, what could go wrong |
+| `minas-security` | STRIDE + OWASP security audit | security, vulnerability, auth, XSS, SQL injection |
+| `minas-autoresearch` | Autonomous metric optimization loop | improve coverage, reduce bundle, optimize metric |
+| `minas-predict` | 5-persona pre-implementation debate | risks, predict issues, architectural review |
+| `minas-scout` | Fast parallel codebase scouting | find files, where is, search codebase |
+| `minas-tech-graph` | Publish-grade technical diagrams as SVG or PNG for durable process artifacts | generate diagram, architecture diagram, flowchart, sequence diagram, system visual |
+| `minas-watzup` | Read-only branch, local/remote ref, worktree, and active-plan handoff summary with advisory selected-plan hints | what's in flight, handoff, worktree status, active plans, next steps |
+| `minas-xia` | Repo comparison and adaptation-prep research | copy from repo, compare repo, adapt from repo, study how they built it, analyze feature parity |
+| `minas-repomix` | Pack local or remote repos into references-only artifacts | pack repo, snapshot codebase, repo context, compare repo, feature port, security audit |
+| `minas-docs` | Project documentation management | docs, README, document codebase |
+| `minas-docs-seeker` | Library docs via context7 | how does X work, API docs, version, syntax |
+| `minas-web-testing` | Playwright/Vitest/k6 test automation | tests, e2e, integration test, performance test |
+| `minas-sequential-thinking` | Step-by-step reasoning | complex problem, think through, analyze step by step |
+| `minas-problem-solving` | Cognitive unblocking techniques | stuck, can't figure out, complex, spiral |
+| `minas-context-engineering` | Token/context optimization | context limit, token usage, optimize context |
+| `minas-preview` | Visual diagrams, slides, file viewer | diagram, visualize, slides, preview |
+| `minas-mcp-management` | MCP server tools | MCP, model context protocol |
+| `minas-chrome-devtools` | Puppeteer browser automation | browser, screenshot, scrape, automate browser |
+| `minas-agent-browser` | AI browser automation CLI | long browser session, browserbase, visual testing |
+| `minas-team` | Multi-agent parallel collaboration | parallel agents, multi-agent, team |
+| `minas-setup` | Scaffold agent harness into new project | seed, harness, bootstrap, new project, scaffold, setup |
+| `minas-update` | Pull latest harness from remote kit repo | update harness, pull kit, sync harness, upgrade agents |
+| `minas-publish` | Push harness improvements to remote kit repo | publish kit, push harness, release kit, update remote |
+| `minas-audit-vc` | Agent harness health audit (agents, skills, README.md, protocol wiring) | harness, agent parity, skill audit, guide sync |
 
 **Rule:** When 1+ skills match the request, mention them to the user OR include them in the subagent prompt context. Never silently skip relevant skills.
 
@@ -412,55 +412,55 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 ### 1. Detect Intent
 
 - **Feature Request** (keywords: "build", "add", "implement", "create feature")
-  → Route to `vc-research-agent` with relevant context files
+  → Route to `minas-research-agent` with relevant context files
 
 - **Question / Understanding Request**
-  → Non-trivial: route to `vc-research-agent`. Trivial conceptual questions ("What is X?") may be answered directly by the orchestrator.
+  → Non-trivial: route to `minas-research-agent`. Trivial conceptual questions ("What is X?") may be answered directly by the orchestrator.
 
 - **Trivial Fix**
-  → Delegate lightweight quick-fix to `vc-execute-agent` (no plan file required).
+  → Delegate lightweight quick-fix to `minas-execute-agent` (no plan file required).
   **Trivial definition:** Single-file change, no new dependencies, no schema/API/auth changes, under 15 lines, no security surface. Anything else is non-trivial.
 
 - **Missing Context**
-  → Suggest or invoke the `vc-generate-context` skill
+  → Suggest or invoke the `minas-generate-context` skill
 
 - **Bug Fix / Debug Request** (keywords: "fix", "bug", "broken", "debug", "error")
-  → For trivial: delegate to `vc-execute-agent` directly (no plan required)
-  → For complex: Route to `vc-debugger` agent. Surface helper skills like `vc-scout`, `vc-sequential-thinking`, or `vc-problem-solving` when useful.
+  → For trivial: delegate to `minas-execute-agent` directly (no plan required)
+  → For complex: Route to `minas-debugger` agent. Surface helper skills like `minas-scout`, `minas-sequential-thinking`, or `minas-problem-solving` when useful.
 
 - **Existing Plan File Present**
   → Resume from relevant phase, don't recreate plan
 
 - **UI / Frontend Request** (keywords: "page", "component", "design", "layout", "interface", "UI")
-  → Surface `vc-frontend-design` skill alongside `vc-research-agent`. Invoke `vc-ui-ux-designer` agent during EXECUTE phase for implementation.
+  → Surface `minas-frontend-design` skill alongside `minas-research-agent`. Invoke `minas-ui-ux-designer` agent during EXECUTE phase for implementation.
 
 - **Documentation Question** (keywords: "how does X work", "API docs", "syntax", "version")
-  → Activate `vc-docs-seeker` skill before routing to `vc-research-agent`
+  → Activate `minas-docs-seeker` skill before routing to `minas-research-agent`
 
 - **Refactor / Simplify** (keywords: "refactor", "clean up", "simplify", "reorganize")
-  - *Pure style/readability* (named file, no behavior change): route directly to `vc-code-simplifier` agent
-  - *Behavioral or architectural refactor*: full RESEARCH → PLAN → EXECUTE, then `vc-code-simplifier` as cleanup
+  - *Pure style/readability* (named file, no behavior change): route directly to `minas-code-simplifier` agent
+  - *Behavioral or architectural refactor*: full RESEARCH → PLAN → EXECUTE, then `minas-code-simplifier` as cleanup
 
 - **Debug / Root Cause** (keywords: "debug", "why", "root cause", "investigate")
-  → `vc-debugger` agent = default owner. Helper skills like `vc-scout`, `vc-sequential-thinking`, and `vc-problem-solving` may be layered in as needed.
+  → `minas-debugger` agent = default owner. Helper skills like `minas-scout`, `minas-sequential-thinking`, and `minas-problem-solving` may be layered in as needed.
 
 **When multiple intents match** (e.g., UI bug with docs question), use this precedence:
-1. Existing plan file in process/general-plans/active/ or process/features/*/active/ → always resume first
+1. Existing plan file in .minas/process/general-plans/active/ or .minas/process/features/*/active/ → always resume first
 2. Explicit mode command (ENTER X MODE) → obey immediately
 3. Bug/debug → debugging routing before feature routing
 4. Feature request → RIPER-5 flow
-5. UI specialization → surface vc-frontend-design alongside any of the above
-6. Docs question → surface vc-docs-seeker alongside any of the above
+5. UI specialization → surface minas-frontend-design alongside any of the above
+6. Docs question → surface minas-docs-seeker alongside any of the above
 When still ambiguous, ask the user one clarifying question before routing.
 
 ### 2. Gather Context
 
-Before routing to subagent, pass relevant `process/context/` files:
+Before routing to subagent, pass relevant `.minas/process/context/` files:
 
-- `process/context/all-context.md` — always pass or consult first for context routing
-- `process/context/all-context.md` — always pass for architecture/stack awareness
-- `process/context/tests/all-tests.md` — pass when routing to `vc-tester`, `vc-debugger`, or `vc-execute-agent`
-- `process/general-plans/active/` and `process/features/*/active/` — check for existing plans to avoid duplication
+- `.minas/process/context/all-context.md` — always pass or consult first for context routing
+- `.minas/process/context/all-context.md` — always pass for architecture/stack awareness
+- `.minas/process/context/tests/all-tests.md` — pass when routing to `minas-tester`, `minas-debugger`, or `minas-execute-agent`
+- `.minas/process/general-plans/active/` and `.minas/process/features/*/active/` — check for existing plans to avoid duplication
 - Relevant code paths — summarize succinctly, don't dump entire files
 
 **Routing depth rule:** `all-*.md` files are routers. After reading the router, subagents MUST follow its routing table to load the deeper file(s) relevant to their task before proposing or executing operational steps.
@@ -469,12 +469,12 @@ Before routing to subagent, pass relevant `process/context/` files:
 
 Choose based on current phase:
 
-- Initial understanding → `vc-research-agent`
-- Exploring options → `vc-innovate-agent`
-- Creating spec → `vc-plan-agent`
-- Implementing approved plan → `vc-execute-agent`
-- Fast workflow → `vc-fast-mode-agent`
-- Capturing learnings → `vc-update-process-agent`
+- Initial understanding → `minas-research-agent`
+- Exploring options → `minas-innovate-agent`
+- Creating spec → `minas-plan-agent`
+- Implementing approved plan → `minas-execute-agent`
+- Fast workflow → `minas-fast-mode-agent`
+- Capturing learnings → `minas-update-process-agent`
 
 ### 4. Monitor Compliance
 
@@ -500,7 +500,7 @@ Ensure subagent:
 
 - Requires approach discussion completed
 - User confirms with "go" or explicit mode command
-- vc-innovate-agent must produce a brief decision summary (chosen approach + rejected alternatives + rationale) before PLAN begins.
+- minas-innovate-agent must produce a brief decision summary (chosen approach + rejected alternatives + rationale) before PLAN begins.
 - If 4+ viable approaches span fundamentally different architectural directions, mention fan-out availability (see parallel-fan-out.md Checkpoint 2).
 
 **PLAN → EXECUTE**
@@ -509,14 +509,14 @@ Ensure subagent:
 - Score parallel fan-out signals (see parallel-fan-out.md Checkpoint 3). Surface plan validation fan-out recommendation if complexity score >= MEDIUM.
 - User reviews and explicitly says "ENTER EXECUTE MODE"
 
-**Orchestrator preflight before spawning vc-execute-agent**: Confirm exactly one plan file is selected. Pass the plan file path explicitly in the subagent prompt. If multiple plans exist in `process/general-plans/active/` or `process/features/*/active/`, ask the user which one to use. Never let vc-execute-agent infer the plan from ambient state.
+**Orchestrator preflight before spawning minas-execute-agent**: Confirm exactly one plan file is selected. Pass the plan file path explicitly in the subagent prompt. If multiple plans exist in `.minas/process/general-plans/active/` or `.minas/process/features/*/active/`, ask the user which one to use. Never let minas-execute-agent infer the plan from ambient state.
 
 **EXECUTE → UPDATE PROCESS**
 
 - After non-trivial implementation completes, always surface a cleanup checkpoint
 - Score parallel fan-out signals (see parallel-fan-out.md Checkpoint 5). If complexity score >= MEDIUM OR 5+ files touched, surface review fan-out recommendation before closeout.
 - UPDATE PROCESS still requires explicit user command
-- After vc-execute-agent reports DONE, the orchestrator should present a short closeout packet:
+- After minas-execute-agent reports DONE, the orchestrator should present a short closeout packet:
   - selected plan path
   - closeout classification
   - what was finished
@@ -529,17 +529,17 @@ Ensure subagent:
   - or `Implementation is code-complete but still testing. Keep the plan in active for now, or enter UPDATE PROCESS mode anyway?`
   - or `Implementation deviated from plan. Return to PLAN or enter UPDATE PROCESS mode to reconcile?`
 - If the next phase or follow-up is already known, name that exact plan path in the closeout summary so the user does not have to rediscover it.
-- If the worktree has uncommitted changes from this execution, offer: "Invoke vc-git-manager for logical commit splitting before UPDATE PROCESS?" Pass the `touched_files` list (files the vc-execute-agent reported changing) as context so vc-git-manager can scope its analysis.
-- If cleanup is skipped and active-plan debt builds up, recommend `vc-audit-plans` as a follow-up maintenance step
+- If the worktree has uncommitted changes from this execution, offer: "Invoke minas-git-manager for logical commit splitting before UPDATE PROCESS?" Pass the `touched_files` list (files the minas-execute-agent reported changing) as context so minas-git-manager can scope its analysis.
+- If cleanup is skipped and active-plan debt builds up, recommend `minas-audit-plans` as a follow-up maintenance step
 - **Drift signal scoring** for UPDATE PROCESS urgency:
-  - Count: (a) total files touched, (b) any `.claude/`, `.codex/`, `README.md`, `AGENTS.md`, or `process/development-protocols/` changes, (c) session involved 3+ memory-worthy observations
+  - Count: (a) total files touched, (b) any `.claude/`, `.codex/`, `README.md`, `AGENTS.md`, or `.minas/process/development-protocols/` changes, (c) session involved 3+ memory-worthy observations
   - LOW (0-1 signals): include "UPDATE PROCESS available if you want." in closeout
   - MEDIUM (2 signals): include "Recommend UPDATE PROCESS -- significant changes detected."
   - HIGH (3+ signals): include "Strongly recommend UPDATE PROCESS -- harness/protocol files touched."
 
 **Parallel Fan-Out**
 
-At each phase transition above, consult `process/development-protocols/parallel-fan-out.md` for signal-based parallel subagent recommendations. See orchestration.md for the checkpoint summary.
+At each phase transition above, consult `.minas/process/development-protocols/parallel-fan-out.md` for signal-based parallel subagent recommendations. See orchestration.md for the checkpoint summary.
 
 ---
 
@@ -586,23 +586,23 @@ Each mode has strict boundaries:
 **First Time**:
 
 1. Verify RIPER-5 rules loaded (orchestrator declares `[MODE: ORCHESTRATOR]`)
-2. Run the `vc-generate-context` skill if `process/context/all-context.md` doesn't exist
+2. Run the `minas-generate-context` skill if `.minas/process/context/all-context.md` doesn't exist
 3. Start with a feature request or question
 
 **Typical Feature Workflow** (Orchestrator routes to subagents):
 
-1. Describe feature → Orchestrator routes to `vc-research-agent`
-2. Say "go" → Orchestrator routes to `vc-innovate-agent` (explore approaches)
-3. Say "go" → Orchestrator routes to `vc-plan-agent` (creates plan in `process/general-plans/active/`)
+1. Describe feature → Orchestrator routes to `minas-research-agent`
+2. Say "go" → Orchestrator routes to `minas-innovate-agent` (explore approaches)
+3. Say "go" → Orchestrator routes to `minas-plan-agent` (creates plan in `.minas/process/general-plans/active/`)
 4. Review plan carefully
-5. Say "ENTER EXECUTE MODE" → Orchestrator routes to `vc-execute-agent` (implementation begins)
-6. After completion, optionally "ENTER UPDATE PROCESS MODE" → Orchestrator routes to `vc-update-process-agent`
+5. Say "ENTER EXECUTE MODE" → Orchestrator routes to `minas-execute-agent` (implementation begins)
+6. After completion, optionally "ENTER UPDATE PROCESS MODE" → Orchestrator routes to `minas-update-process-agent`
 
 **Quick Iteration (FAST MODE)** (Orchestrator routes to fast-mode-agent):
 
 1. Say "ENTER FAST MODE - [feature description]"
-2. Review generated plan (vc-fast-mode-agent pauses)
-3. Say "ENTER EXECUTE MODE" to continue implementation within vc-fast-mode-agent
+2. Review generated plan (minas-fast-mode-agent pauses)
+3. Say "ENTER EXECUTE MODE" to continue implementation within minas-fast-mode-agent
 
 ---
 
@@ -616,7 +616,7 @@ Each mode has strict boundaries:
 
 **Tool restrictions not working**: Verify `tools` field in agent YAML frontmatter
 
-**Cross-agent issues**: Claude Code and Codex must use the same `process/` folder structure
+**Cross-agent issues**: Claude Code and Codex must use the same `.minas/process/` folder structure
 
 ---
 
@@ -624,9 +624,9 @@ Each mode has strict boundaries:
 
 - Agent Definitions: `.claude/agents/*.md`
 - Workflow Skills: `.claude/skills/*/SKILL.md`
-- Plans: `process/general-plans/active/` (active general), `process/general-plans/{completed,backlog,reports,references}/` (general archives/supporting artifacts), `process/features/*/active/` (feature-scoped)
-- Features: `process/features/`
-- Context: `process/context/all-context.md` router plus relevant `process/context/` files/groups
+- Plans: `.minas/process/general-plans/active/` (active general), `.minas/process/general-plans/{completed,backlog,reports,references}/` (general archives/supporting artifacts), `.minas/process/features/*/active/` (feature-scoped)
+- Features: `.minas/process/features/`
+- Context: `.minas/process/context/all-context.md` router plus relevant `.minas/process/context/` files/groups
 
 ---
 

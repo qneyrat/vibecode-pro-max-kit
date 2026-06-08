@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# vibecode-pro-max-kit installer
+# minas-kit installer
 # Clean install with backup for both new and existing projects.
 # Replaces .claude/, .codex/, .agents/, CLAUDE.md, AGENTS.md with kit versions.
 # Preserves: process/ (user content), .claude/settings.json (user config).
 # After this script, run Claude Code and say "Run vc-setup" to
 # auto-detect your project, scaffold process/, and populate context.
 
-REPO="https://github.com/withkynam/vibecode-pro-max-kit.git"
+REPO="https://github.com/withkynam/minas-kit.git"
 TMPDIR="/tmp/vc-kit-install-$$"
-BACKUP_DIR=".vibecode-backup"
+BACKUP_DIR=".minas-backup"
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
@@ -20,7 +20,7 @@ cleanup() { rm -rf "$TMPDIR" 2>/dev/null; }
 trap cleanup EXIT
 
 echo ""
-echo "  vibecode-pro-max-kit installer"
+echo "  minas-kit installer"
 echo "  ─────────────────────────────────"
 echo ""
 

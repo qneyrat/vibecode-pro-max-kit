@@ -4,7 +4,7 @@ This is the operational workspace for the agent harness. It holds context, plans
 
 ## Directory Structure
 
-process/
+.minas/process/
   _seeds/                  -- seed templates (read-only reference, never modified during setup)
   context/                 -- durable project knowledge (all-context.md is the root router)
   development-protocols/   -- managed methodology docs (RIPER-5, orchestration, standards)
@@ -31,4 +31,4 @@ process/
 - Real files in `context/`, `features/`, `general-plans/` contain actual project content
 - SCAFFOLD phase copies seed structure to create real working folders
 - STUDY phase reads seeds for section guidance, writes real content to working folders
-- Seeds are maintained for reference and future harness updates (vc-update)
+- Seeds are maintained for reference and future harness updates (minas-update)

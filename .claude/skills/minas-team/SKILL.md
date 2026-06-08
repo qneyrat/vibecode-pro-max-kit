@@ -1,5 +1,5 @@
 ---
-name: vc:team
+name: minas:team
 description: "Orchestrate Agent Teams for parallel multi-session collaboration. Use for research, implementation, review, and debug workflows requiring independent teammates."
 argument-hint: "<template> <context> [--devs|--researchers|--reviewers N] [--delegate]"
 metadata:
@@ -18,7 +18,7 @@ Coordinate multiple independent Claude Code sessions. Each teammate has own cont
 ## Usage
 
 ```
-/vc:team <template> <context> [flags]
+/minas:team <template> <context> [flags]
 ```
 
 **Templates:** `research`, `execute`, `review`, `debug`
@@ -35,7 +35,7 @@ Coordinate multiple independent Claude Code sessions. Each teammate has own cont
 1. Step 2 of every template calls `TeamCreate(team_name: "...", ...)`. Do NOT check whether the tool exists first -- just call it.
 2. If the call SUCCEEDS: continue with the template.
 3. If the call returns an ERROR or is unrecognized: **STOP. Tell user:** "Agent Teams requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings.json. Team mode is not available."
-4. Do NOT fall back to subagents. `/vc:team` MUST use Agent Teams or abort.
+4. Do NOT fall back to subagents. `/minas:team` MUST use Agent Teams or abort.
 5. Ensure `TeamCreate` was called before spawning teammates -- team association happens via session context.
 
 When activated, first confirm team creation if the user has not already explicitly approved using agent teams for this task.
@@ -102,8 +102,8 @@ Every teammate spawn prompt MUST include this context at the end:
 CK Context:
 - Work dir: {CK_PROJECT_ROOT or CWD}
 - Feature: {CK_FEATURE or "none"}
-- Reports: {CK_REPORTS_PATH or "process/general-plans/reports/"}
-- Plans: {CK_PLANS_PATH or "process/general-plans/active/"}
+- Reports: {CK_REPORTS_PATH or ".minas/process/general-plans/reports/"}
+- Plans: {CK_PLANS_PATH or ".minas/process/general-plans/active/"}
 - Branch: {CK_GIT_BRANCH or current branch}
 - Naming: {CK_NAME_PATTERN or "YYMMDD-HHMM"}
 - Active plan: {CK_ACTIVE_PLAN or "none"}
@@ -113,7 +113,7 @@ CK Context:
 
 ---
 
-## ON `/vc:team research <topic>` [--researchers N]:
+## ON `/minas:team research <topic>` [--researchers N]:
 
 *Coordinates parallel `research-agent` teammates plus shared helper skills where useful.*
 
@@ -152,24 +152,24 @@ IMMEDIATELY execute in order:
 9. **CLEANUP**: `TeamDelete` (no parameters -- just call it)
 
 10. **REPORT**: Tell user `Research complete. Summary: {path}. N reports generated.`
-11. **FOLLOW-UP**: If durable process/context learnings surfaced, suggest `ENTER UPDATE PROCESS MODE`.
+11. **FOLLOW-UP**: If durable .minas/process/context learnings surfaced, suggest `ENTER UPDATE PROCESS MODE`.
 
 ---
 
-## ON `/vc:team execute <plan-path>` [--devs N]:
+## ON `/minas:team execute <plan-path>` [--devs N]:
 
 *Coordinates approved-plan execution with parallel `execute-agent` teammates, testing, review, and final reporting without introducing a separate execution owner.*
 
 Do not use this template to flatten an entire multi-phase program into one execution wave. If the
 selected work is really a phase program, the lead must first pick one current phase plan and execute
-that phase only. See `process/development-protocols/phase-programs.md`.
+that phase only. See `.minas/process/development-protocols/phase-programs.md`.
 
 IMMEDIATELY execute in order:
 
 1. **PRE-FLIGHT APPROVAL CHECK**:
-   - Require one explicit approved plan file path under `process/general-plans/active/` or `process/features/*/active/`
+   - Require one explicit approved plan file path under `.minas/process/general-plans/active/` or `.minas/process/features/*/active/`
    - If the user supplied only a description or an unapproved draft, STOP and tell the user to create/select a plan first, then return with `ENTER EXECUTE MODE`
-   - Do not use `vc:team execute` to bypass the repo's explicit execute approval gate
+   - Do not use `minas:team execute` to bypass the repo's explicit execute approval gate
    - If the selected plan is an umbrella/orchestration plan for a large program, STOP and require
      one explicit current phase plan instead of executing the whole program at once
 
@@ -217,11 +217,11 @@ IMMEDIATELY execute in order:
 10. **CLEANUP**: `TeamDelete` (no parameters -- just call it)
 
 11. **REPORT**: Tell user what was implemented, test results, docs impact, and any remaining concerns.
-12. **FOLLOW-UP**: If durable process/context learnings surfaced, suggest `ENTER UPDATE PROCESS MODE`.
+12. **FOLLOW-UP**: If durable .minas/process/context learnings surfaced, suggest `ENTER UPDATE PROCESS MODE`.
 
 ---
 
-## ON `/vc:team review <scope>` [--reviewers N]:
+## ON `/minas:team review <scope>` [--reviewers N]:
 
 *Coordinates parallel `code-reviewer` teammates using the absorbed review methodology now owned by the agent path.*
 
@@ -258,11 +258,11 @@ IMMEDIATELY execute in order:
 8. **CLEANUP**: `TeamDelete` (no parameters -- just call it)
 
 9. **REPORT**: Tell user `Review complete. {X} findings ({Y} critical). Report: {path}.`
-10. **FOLLOW-UP**: If the review changes durable process/context guidance, suggest `ENTER UPDATE PROCESS MODE`.
+10. **FOLLOW-UP**: If the review changes durable .minas/process/context guidance, suggest `ENTER UPDATE PROCESS MODE`.
 
 ---
 
-## ON `/vc:team debug <issue>` [--debuggers N]:
+## ON `/minas:team debug <issue>` [--debuggers N]:
 
 *Coordinates parallel `debugger` teammates using the absorbed root-cause-first debug workflow now owned by the debugger path.*
 
@@ -299,7 +299,7 @@ IMMEDIATELY execute in order:
 9. **CLEANUP**: `TeamDelete` (no parameters -- just call it)
 
 10. **REPORT**: Tell user `Debug complete. Root cause: <summary>. Report: {path}.`
-11. **FOLLOW-UP**: If the debug session produced durable process/context learnings, suggest `ENTER UPDATE PROCESS MODE`.
+11. **FOLLOW-UP**: If the debug session produced durable .minas/process/context learnings, suggest `ENTER UPDATE PROCESS MODE`.
 
 ---
 
@@ -367,6 +367,6 @@ If unresponsive: close terminal or kill session. Clean orphaned configs at `~/.c
 
 ## Rules Reference
 
-See `process/development-protocols/orchestration.md` for teammate coordination, status handling, and context-isolation rules.
+See `.minas/process/development-protocols/orchestration.md` for teammate coordination, status handling, and context-isolation rules.
 
 > v3.0.0: Agent tool migration, worktree isolation for execute devs, run_in_background spawning, updated model requirements.

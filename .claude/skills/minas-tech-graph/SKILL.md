@@ -1,5 +1,5 @@
 ---
-name: vc:tech-graph
+name: minas:tech-graph
 description: "Use when you need publish-grade SVG or PNG technical diagrams for architecture, flow, sequence, UML, state, or comparison visuals, with preview used afterward for review rather than generation."
 license: MIT
 argument-hint: "[diagram-type or system description] [--style <n>] [--output <path>] [--feature <name>]"
@@ -16,7 +16,7 @@ Generate publish-grade technical diagrams as SVG first, then PNG when raster exp
 This is a helper skill only.
 
 - Do use it for architecture diagrams, data flow diagrams, flowcharts, sequence diagrams, state machines, ER diagrams, use-case diagrams, timelines, and comparison matrices that should become durable artifacts.
-- Do use it when the output should live under `process/general-plans/references/`, `process/general-plans/reports/visuals/`, `process/features/{feature}/references/`, or `process/features/{feature}/reports/visuals/`.
+- Do use it when the output should live under `.minas/process/general-plans/references/`, `.minas/process/general-plans/reports/visuals/`, `.minas/process/features/{feature}/references/`, or `.minas/process/features/{feature}/reports/visuals/`.
 - Do use `preview` after generation when you want explanation, HTML framing, Mermaid review, or visual self-check of the finished artifact.
 - Do not use it as a plan or execution workflow.
 - Do not use it to replace inline doc diagrams when a lightweight Mermaid or ASCII explanation is enough.
@@ -45,10 +45,10 @@ Load the smallest references that fit the request:
 
 Use `tech-graph` when the output should become a durable artifact:
 
-- `process/general-plans/references/`
-- `process/general-plans/reports/visuals/`
-- `process/features/{feature}/references/`
-- `process/features/{feature}/reports/visuals/`
+- `.minas/process/general-plans/references/`
+- `.minas/process/general-plans/reports/visuals/`
+- `.minas/process/features/{feature}/references/`
+- `.minas/process/features/{feature}/reports/visuals/`
 
 Use `preview` instead when the goal is:
 

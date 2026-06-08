@@ -1,7 +1,7 @@
 # Summarize Workflow
 
-Activate `vc:scout` skill to analyze the codebase, read `process/context/all-context.md`,
-update the relevant `process/context/` summary document, and respond with a concise
+Activate `minas:scout` skill to analyze the codebase, read `.minas/process/context/all-context.md`,
+update the relevant `.minas/process/context/` summary document, and respond with a concise
 summary report.
 
 ## Arguments
@@ -15,9 +15,9 @@ $2: Should scan codebase (`Boolean`, default: `false`)
 <should_scan_codebase>$2</should_scan_codebase>
 
 ## Important
-- Use `process/context/all-context.md` as the source of truth for documentation discovery.
-- Update `process/context/all-context.md` only for broad repository context.
-- Update grouped or topic-specific `process/context/` files only when the router points to them.
+- Use `.minas/process/context/all-context.md` as the source of truth for documentation discovery.
+- Update `.minas/process/context/all-context.md` only for broad repository context.
+- Update grouped or topic-specific `.minas/process/context/` files only when the router points to them.
 - Run `audit-context` after adding, moving, splitting, or grouping context files.
 - Do not scan the entire codebase unless the user explicitly requests it.
 - **Do not** start implementing.

@@ -1,5 +1,5 @@
 ---
-name: vc:repomix
+name: minas:repomix
 description: "Use when you need to pack a local or remote repository into an AI-friendly reference artifact for research, audits, feature-porting prep, context review, or security-oriented repo analysis."
 license: MIT
 argument-hint: "[path-or-owner/repo] [--feature <name>] [--include <glob>] [--ignore <glob>] [--remote]"
@@ -16,7 +16,7 @@ This is a helper skill only.
 
 - Do use it for research, audits, source comparison, documentation context, bug investigation prep, and feature-porting prep.
 - Do not use it to create plans, decide execution scope, or bypass RIPER approval.
-- Do not write outputs into plan-control folders like `process/general-plans/active/` or `process/features/*/active/`.
+- Do not write outputs into plan-control folders like `.minas/process/general-plans/active/` or `.minas/process/features/*/active/`.
 
 ## When To Use
 
@@ -36,9 +36,9 @@ If the task only needs a few files, ordinary `rg` plus targeted reads is cheaper
 Generated artifacts belong in the project's `references/` folders only:
 
 - General or cross-cutting work:
-  - `process/general-plans/references/`
+  - `.minas/process/general-plans/references/`
 - Feature-scoped work:
-  - `process/features/{feature}/references/`
+  - `.minas/process/features/{feature}/references/`
 
 Keep outputs flat by default unless the user explicitly asks for a dedicated subfolder.
 
@@ -62,7 +62,7 @@ pnpm dlx repomix --version
 Default no-install path:
 
 ```bash
-pnpm dlx repomix . --style markdown -o process/general-plans/references/repomix-snapshot-27-05-26.md
+pnpm dlx repomix . --style markdown -o .minas/process/general-plans/references/repomix-snapshot-27-05-26.md
 ```
 
 For repeat usage in one session, direct `repomix` CLI is fine if already installed and approved by the user. Otherwise prefer `pnpm dlx`.
@@ -76,11 +76,11 @@ Do not default to clipboard-first flows.
 
 ```bash
 pnpm dlx repomix . \
-  --include "apps/<app>/src/**/*.tsx,packages/ui/src/**/*.tsx,process/context/**/*.md" \
+  --include "apps/<app>/src/**/*.tsx,packages/ui/src/**/*.tsx,.minas/process/context/**/*.md" \
   --ignore "**/*.test.*,coverage/**" \
   --remove-comments \
   --style markdown \
-  -o process/general-plans/references/repomix-ui-context-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-ui-context-27-05-26.md
 ```
 
 ### 2. Remote repo comparison pack
@@ -91,26 +91,26 @@ pnpm dlx repomix \
   --include "src/**/*.ts,**/*.md" \
   --remove-comments \
   --style xml \
-  -o process/general-plans/references/repomix-owner-repo-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-owner-repo-27-05-26.xml
 ```
 
 ### 3. Feature-scoped pack
 
 ```bash
 pnpm dlx repomix . \
-  --include "packages/api/src/routes/workflows.ts,apps/workflows/**/*.ts,process/features/workflows/**/*.md" \
+  --include "packages/api/src/routes/workflows.ts,apps/workflows/**/*.ts,.minas/process/features/workflows/**/*.md" \
   --style markdown \
-  -o process/features/workflows/references/repomix-workflows-surface-27-05-26.md
+  -o .minas/process/features/workflows/references/repomix-workflows-surface-27-05-26.md
 ```
 
 ### 4. Documentation context pack
 
 ```bash
 pnpm dlx repomix . \
-  --include "packages/api/src/**/*.ts,packages/validators/src/**/*.ts,*.md,process/context/**/*.md" \
+  --include "packages/api/src/**/*.ts,packages/validators/src/**/*.ts,*.md,.minas/process/context/**/*.md" \
   --remove-comments \
   --style markdown \
-  -o process/general-plans/references/repomix-api-doc-context-27-05-26.md
+  -o .minas/process/general-plans/references/repomix-api-doc-context-27-05-26.md
 ```
 
 ### 5. Security-oriented remote audit pack
@@ -120,7 +120,7 @@ pnpm dlx repomix \
   --remote vendor/library \
   --include "src/**,*.md,package.json" \
   --style xml \
-  -o process/general-plans/references/repomix-vendor-library-audit-27-05-26.xml
+  -o .minas/process/general-plans/references/repomix-vendor-library-audit-27-05-26.xml
 ```
 
 ## Token And Size Review
@@ -182,7 +182,7 @@ python3 .claude/skills/repomix/scripts/repomix_batch.py --help
 
 The wrapper keeps the same constraints:
 
-- default output directory is `process/general-plans/references/`
+- default output directory is `.minas/process/general-plans/references/`
 - output directories must stay under the project's `references/` folder
 - `pnpm dlx repomix` remains the default execution path
 - security checks stay enabled unless explicitly disabled

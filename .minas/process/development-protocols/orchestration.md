@@ -5,14 +5,14 @@
 When spawning subagents, always include:
 
 1. Work context path: the git root for the primary files being touched
-2. Reports path: `{work_context}/process/general-plans/reports/`
-3. Plans path: `{work_context}/process/general-plans/active/`
+2. Reports path: `{work_context}/.minas/process/general-plans/reports/`
+3. Plans path: `{work_context}/.minas/process/general-plans/active/`
 4. Feature: optional, but required when the work belongs to a feature-scoped folder
 
 Feature override paths:
 
-- Reports: `{work_context}/process/features/{feature}/reports/`
-- Plans: `{work_context}/process/features/{feature}/active/`
+- Reports: `{work_context}/.minas/process/features/{feature}/reports/`
+- Plans: `{work_context}/.minas/process/features/{feature}/active/`
 
 Rule: if the current shell CWD differs from the real work context, pass the work-context paths, not the shell CWD.
 
@@ -20,15 +20,15 @@ Rule: if the current shell CWD differs from the real work context, pass the work
 
 Before setting `Feature:` in a subagent prompt:
 
-1. Check whether `process/features/{topic}/` already exists.
+1. Check whether `.minas/process/features/{topic}/` already exists.
 2. Check whether the request clearly belongs to an existing feature.
 3. If the request is a new multi-phase product area or the user frames it as a substantial feature, create a feature folder first.
-4. Otherwise default to `process/general-plans/active/`.
+4. Otherwise default to `.minas/process/general-plans/active/`.
 
 When creating a new feature folder:
 
 ```bash
-mkdir -p process/features/{name}/{active,completed,backlog,reports,references}
+mkdir -p .minas/process/features/{name}/{active,completed,backlog,reports,references}
 ```
 
 Then update `.minas/CLAUDE.md` so the current-features list stays in sync.
@@ -100,7 +100,7 @@ Run in parallel only when scopes are independent and integration boundaries are 
 ## Large Project Phase Programs
 
 When a task is a large program rather than a normal single-plan feature, use
-`process/development-protocols/phase-programs.md`.
+`.minas/process/development-protocols/phase-programs.md`.
 
 Signals:
 
@@ -121,7 +121,7 @@ Controller rules for phase programs:
    - regression checkpoint (against previously verified overlapping surfaces)
    - regression-found workflow (conditional, if regression detected)
    - durable report/context update
-   - commit checkpoint (vc-git-manager for execution changes)
+   - commit checkpoint (minas-git-manager for execution changes)
    - inter-phase UPDATE PROCESS (archive phase, capture learnings)
    - move-on recommendation
 4. after each phase, update reports and downstream phase plans before advancing
@@ -130,13 +130,13 @@ Controller rules for phase programs:
 6. the umbrella plan must carry a Program Goal Charter (north star, definition of done, what
    "verified" means, scope tiers → phase mapping, out-of-scope tier, hard safety constraints), and
    the kickoff must print the compressed copy-pasteable session-goal block in chat — see
-   `process/development-protocols/phase-programs.md` ("Program Goal Charter" and "Kickoff
+   `.minas/process/development-protocols/phase-programs.md` ("Program Goal Charter" and "Kickoff
    Recommendation Format" step 5)
 
 ## Intent Clarification
 
 Before routing a new user request to a subagent, consult
-`process/development-protocols/intent-clarification.md` for the tiered
+`.minas/process/development-protocols/intent-clarification.md` for the tiered
 clarification protocol.
 
 The orchestrator scores the request's ambiguity (0-4 signals), selects a tier
@@ -148,7 +148,7 @@ mode commands, plan resumption) bypass clarification entirely.
 
 ## Parallel Fan-Out Checkpoints
 
-At these phase transitions, consult `process/development-protocols/parallel-fan-out.md`:
+At these phase transitions, consult `.minas/process/development-protocols/parallel-fan-out.md`:
 
 1. After initial research identifies multiple directions
 2. After innovate surfaces 4+ architectural approaches
@@ -157,7 +157,7 @@ At these phase transitions, consult `process/development-protocols/parallel-fan-
 5. After non-trivial EXECUTE completion, before closeout
 
 The fan-out protocol uses the same signal-count scoring as drift scoring. It recommends
-parallel subagents when coverage benefit justifies the token cost, and escalates to vc-team
+parallel subagents when coverage benefit justifies the token cost, and escalates to minas-team
 only when agents need inter-communication.
 
 ## Approval Gates Still Apply in Parallel
@@ -189,8 +189,8 @@ Required closeout packet:
    - return to PLAN
    - move to the next explicit phase/follow-up after cleanup
 7. commit-checkpoint recommendation
-   - if the selected phase is validated and execution changes are present, explicitly recommend whether to invoke `vc-git-manager` before UPDATE PROCESS
-   - if only process/plan/context artifacts remain, say that the commit checkpoint belongs after UPDATE PROCESS instead of before it
+   - if the selected phase is validated and execution changes are present, explicitly recommend whether to invoke `minas-git-manager` before UPDATE PROCESS
+   - if only .minas/process/plan/context artifacts remain, say that the commit checkpoint belongs after UPDATE PROCESS instead of before it
 8. regression status (phase programs only)
    - list which previously verified surfaces were checked for regression
    - state whether all passed, or whether fixes were applied
@@ -210,13 +210,13 @@ Rules:
 - Do automatically recommend the next valid state when it is clear from the selected plan and latest verification.
 - Do explicitly recommend a commit checkpoint when a selected phase is well-tested and validated.
 - If cleanup/context capture is the only remaining safe action, say that directly instead of ending with a generic summary.
-- If cleanup was skipped and active-plan debt accumulates, recommend `vc-audit-plans` as a maintenance follow-up.
+- If cleanup was skipped and active-plan debt accumulates, recommend `minas-audit-plans` as a maintenance follow-up.
 
 ### Drift Signal Scoring
 
 After building the closeout packet, score the UPDATE PROCESS urgency:
 
-- Count: (a) total files touched, (b) any `.claude/`, `.minas/CLAUDE.md`, `README.md`, or `process/development-protocols/` changes, (c) session involved 3+ memory-worthy observations
+- Count: (a) total files touched, (b) any `.claude/`, `.minas/CLAUDE.md`, `README.md`, or `.minas/process/development-protocols/` changes, (c) session involved 3+ memory-worthy observations
 - LOW (0-1 signals): include "UPDATE PROCESS available if you want." in closeout
 - MEDIUM (2 signals): include "Recommend UPDATE PROCESS -- significant changes detected."
 - HIGH (3+ signals): include "Strongly recommend UPDATE PROCESS -- harness/protocol files touched."
@@ -236,9 +236,9 @@ It means the orchestrator should:
 Examples:
 
 - If the selected plan is verified and the next phase is explicit, recommend:
-  `ENTER UPDATE PROCESS MODE, then continue with process/features/.../next-phase_PLAN_...md`
+  `ENTER UPDATE PROCESS MODE, then continue with .minas/process/features/.../next-phase_PLAN_...md`
 - If the selected plan is verified and implementation changes are still uncommitted, recommend:
-  `Invoke vc-git-manager for a logical execution commit, then ENTER UPDATE PROCESS MODE for plan/context reconciliation`
+  `Invoke minas-git-manager for a logical execution commit, then ENTER UPDATE PROCESS MODE for plan/context reconciliation`
 - If the selected plan is code-complete but still testing, recommend:
   `Keep the plan active and continue validation on the same selected plan`
 - If the selected plan exposed follow-up work outside its boundary, recommend:

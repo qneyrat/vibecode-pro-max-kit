@@ -22,15 +22,15 @@ Use this helper when you need a bounded repository artifact for research, compar
 ## Output Rules
 
 - General artifact:
-  - `process/general-plans/references/`
+  - `.minas/process/general-plans/references/`
 - Feature artifact:
-  - `process/features/{feature}/references/`
+  - `.minas/process/features/{feature}/references/`
 
 Never write to:
 
-- `process/general-plans/active/`
-- `process/features/*/active/`
-- `process/context/`
+- `.minas/process/general-plans/active/`
+- `.minas/process/features/*/active/`
+- `.minas/process/context/`
 
 ## Suggested Review Checklist
 

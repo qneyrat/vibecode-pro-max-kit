@@ -105,7 +105,7 @@ candidate looks good →
 
 ### Environment Pinning (User Responsibility)
 
-vc:autoresearch cannot control the environment. User must ensure:
+minas:autoresearch cannot control the environment. User must ensure:
 - Fixed random seeds for ML workloads
 - Warmed caches (or cold caches) consistently
 - No background processes competing for CPU

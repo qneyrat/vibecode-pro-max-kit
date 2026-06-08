@@ -1,5 +1,5 @@
 ---
-name: vc:scenario
+name: minas:scenario
 description: "Generate comprehensive edge cases and test scenarios by decomposing features across 12 dimensions. Use before implementation or testing to catch issues early."
 argument-hint: "<file path or feature description>"
 metadata:
@@ -9,7 +9,7 @@ metadata:
   version: "1.0.0"
 ---
 
-# vc:scenario — Edge Case & Scenario Explorer
+# minas:scenario — Edge Case & Scenario Explorer
 
 Decompose any feature or code path across 12 dimensions to surface edge cases, risks, and test targets before implementation begins.
 
@@ -97,17 +97,17 @@ Dimensions skipped: [list + reason]
 
 | Next Step | Skill | How |
 |-----------|-------|-----|
-| Generate test cases from scenarios | `vc:test` | Pass scenario table as input context |
+| Generate test cases from scenarios | `minas:test` | Pass scenario table as input context |
 | Inform implementation plan risks | `generate-plan` / `plan-agent` | Paste Critical/High rows into risk assessment |
-| Deep persona debate on top risks | `vc:predict` | Feed Critical scenarios as the change proposal |
+| Deep persona debate on top risks | `minas:predict` | Feed Critical scenarios as the change proposal |
 
 ---
 
 ## Example Invocations
 
 ```
-/vc:scenario src/api/payment.ts
-/vc:scenario "User registration with OAuth providers"
-/vc:scenario src/middleware/auth.ts
-/vc:scenario "Add multi-tenancy to the database layer"
+/minas:scenario src/api/payment.ts
+/minas:scenario "User registration with OAuth providers"
+/minas:scenario src/middleware/auth.ts
+/minas:scenario "Add multi-tenancy to the database layer"
 ```

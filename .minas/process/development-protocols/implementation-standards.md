@@ -3,7 +3,7 @@
 ## Core Principles
 
 - Follow YAGNI, KISS, and DRY.
-- Read `process/context/all-context.md` first, then load only the relevant context group or root file.
+- Read `.minas/process/context/all-context.md` first, then load only the relevant context group or root file.
 - Prefer updating existing files over creating parallel "enhanced" variants.
 - Implement real code paths rather than mock-only stand-ins unless the user explicitly asks for a mock or stub.
 

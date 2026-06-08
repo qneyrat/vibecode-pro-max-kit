@@ -1,5 +1,5 @@
 ---
-name: vc:predict
+name: minas:predict
 description: "5 expert personas debate proposed changes before implementation. Catches architectural, security, performance, and UX issues early. Use before major features or risky changes."
 argument-hint: "<feature description or change proposal> [--files <glob>]"
 metadata:
@@ -9,7 +9,7 @@ metadata:
   version: "1.0.0"
 ---
 
-# vc:predict — Multi-Persona Pre-Analysis
+# minas:predict — Multi-Persona Pre-Analysis
 
 Five expert personas independently analyze a proposed change, then debate conflicts to produce a consensus verdict before a single line of code is written.
 
@@ -103,7 +103,7 @@ Five expert personas independently analyze a proposed change, then debate confli
 
 | Workflow Step | Skill | How |
 |---------------|-------|-----|
-| Deepen risk scenarios | `vc:scenario` | Feed Risk Summary rows as feature description |
+| Deepen risk scenarios | `minas:scenario` | Feed Risk Summary rows as feature description |
 | Create implementation plan | `generate-plan` / `plan-agent` | Attach Recommendations as constraints to the canonical planning path |
 | High-risk feature implementation | `execute-agent` | Reference CAUTION/STOP items as acceptance gates |
 
@@ -112,8 +112,8 @@ Five expert personas independently analyze a proposed change, then debate confli
 ## Example Invocations
 
 ```
-/vc:predict "Add WebSocket support for real-time notifications"
-/vc:predict "Migrate authentication from JWT to session cookies"
-/vc:predict "Add multi-tenancy to the database layer"
-/vc:predict "Replace REST API with GraphQL" --files src/api/**/*.ts
+/minas:predict "Add WebSocket support for real-time notifications"
+/minas:predict "Migrate authentication from JWT to session cookies"
+/minas:predict "Add multi-tenancy to the database layer"
+/minas:predict "Replace REST API with GraphQL" --files src/api/**/*.ts
 ```

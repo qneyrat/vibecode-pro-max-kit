@@ -1,20 +1,20 @@
 ---
-name: vc:update
+name: minas:update
 description: Pull latest agent harness improvements from the remote kit repository. Shows a dry-run diff summary, waits for confirmation, then applies updates.
 metadata:
-  author: vibecode
+  author: minas
   version: "2.0.0"
 ---
 
-# vc-update
+# minas-update
 
-Pull the latest agent harness improvements from the remote vibecode-pro-max-kit repository into the current project.
+Pull the latest agent harness improvements from the remote minas-kit repository into the current project.
 
 ## When to Use
 
 - After being told a new harness version is available
 - Periodically to check for updates
-- After bootstrapping a project with `vc-setup` and wanting the latest improvements
+- After bootstrapping a project with `minas-setup` and wanting the latest improvements
 
 ## Workflow
 
@@ -29,7 +29,7 @@ Run `git status --porcelain` in the project root.
 
 ### Step 2: Read Current Version
 
-Read the file `.vc-version` in the project root.
+Read the file `.minas-version` in the project root.
 
 - If it exists: store its contents as `currentVersion` (a semver string like `2.0.4`).
 - If it does not exist: set `currentVersion` to `"0.0.0"` (treat as first update).
@@ -37,8 +37,8 @@ Read the file `.vc-version` in the project root.
 ### Step 3: Clone Remote Repository
 
 ```bash
-TMPDIR="/tmp/vc-update-$(date +%s)"
-git clone --depth 1 https://github.com/withkynam/vibecode-pro-max-kit.git "$TMPDIR"
+TMPDIR="/tmp/minas-update-$(date +%s)"
+git clone --depth 1 https://github.com/withkynam/minas-kit.git "$TMPDIR"
 ```
 
 If the clone fails (network error, auth error, repo not found):
@@ -63,10 +63,10 @@ Parse the JSON output to extract:
 
 Extract the remote version from the manifest:
 ```bash
-node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/vc-manifest.json','utf8')).version)"
+node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/minas-manifest.json','utf8')).version)"
 ```
 
-**Legacy fallback:** If `resolve-manifest.mjs` does not exist in the remote (very old kit version), fall back to reading `vc-manifest.json` directly and using the old `managed`/`managedDirs`/`seedsDir` fields for file resolution.
+**Legacy fallback:** If `resolve-manifest.mjs` does not exist in the remote (very old kit version), fall back to reading `minas-manifest.json` directly and using the old `managed`/`managedDirs`/`seedsDir` fields for file resolution.
 
 ### Step 5: Compare Versions
 
@@ -77,12 +77,12 @@ Compare the remote manifest `version` against `currentVersion`.
 
 ### Step 6: Read Local Snapshot and Compute Diff
 
-**Read `.vc-installed-files`** from the project root (if it exists). This file contains one file path per line -- the list of files installed by the last update.
+**Read `.minas-installed-files`** from the project root (if it exists). This file contains one file path per line -- the list of files installed by the last update.
 
-**If `.vc-installed-files` does NOT exist** (first update with new system):
+**If `.minas-installed-files` does NOT exist** (first update with new system):
 1. Build a synthetic snapshot by scanning the user project for files that exist AND match the remote `files` list.
 2. Also check for legacy `deletions` from the v2.0.4 era -- the resolver embeds these as `legacyDeletions` in legacy mode. For any path in the legacy deletions list that still exists locally, mark it for deletion.
-3. Write this synthetic snapshot to `.vc-installed-files` for future updates.
+3. Write this synthetic snapshot to `.minas-installed-files` for future updates.
 
 **Compute the diff** using three lists: remote `files`, local snapshot, and local filesystem:
 
@@ -107,13 +107,13 @@ For each entry in the `symlinks` object (key = symlink path, value = target):
 Print a summary with all collected results. Format:
 
 ```
-vc-update dry run: v{currentVersion} -> v{remoteVersion}
+minas-update dry run: v{currentVersion} -> v{remoteVersion}
 
 FILES:
-  [modified]  .claude/agents/vc-execute-agent.md  (+12 -3)
+  [modified]  .claude/agents/minas-execute-agent.md  (+12 -3)
   [new]       .claude/hooks/lib/new-util.cjs
   [removed]   .claude/skills/deprecated-skill/SKILL.md
-  [unchanged] .claude/agents/vc-debugger.md
+  [unchanged] .claude/agents/minas-debugger.md
   ...
 
 MERGE (preserved, manual review needed):
@@ -159,9 +159,9 @@ On user confirmation, apply in this order:
    - If a wrong symlink exists: `rm` it first.
    - Create the symlink: `ln -s {target} {path}`
 
-4. **Write snapshot**: Write the remote `files` list (sorted, one per line) to `.vc-installed-files`.
+4. **Write snapshot**: Write the remote `files` list (sorted, one per line) to `.minas-installed-files`.
 
-5. **Write version**: Write the manifest version string to `.vc-version`.
+5. **Write version**: Write the manifest version string to `.minas-version`.
 
 6. **Clean up**: Remove `$TMPDIR`.
 
@@ -173,7 +173,7 @@ If any copy/delete fails with a permission error:
 ### Step 11: Print Applied Changes Summary
 
 ```
-vc-update complete: v{currentVersion} -> v{remoteVersion}
+minas-update complete: v{currentVersion} -> v{remoteVersion}
 
 Applied:
   5 files modified
@@ -182,22 +182,22 @@ Applied:
   1 symlink fixed
   1 merge file preserved (review .claude/settings.json manually)
 
-Snapshot written to .vc-installed-files
-Version written to .vc-version: {remoteVersion}
+Snapshot written to .minas-installed-files
+Version written to .minas-version: {remoteVersion}
 ```
 
 ## Rules
 
-- `process/_seeds/` is managed reference -- overwritten entirely on update (included in the resolved file list).
-- Real working files outside `_seeds/` (`process/context/`, `process/features/`, `process/general-plans/`) are **NEVER** touched by vc-update.
+- `.minas/process/_seeds/` is managed reference -- overwritten entirely on update (included in the resolved file list).
+- Real working files outside `_seeds/` (`.minas/process/context/`, `.minas/process/features/`, `.minas/process/general-plans/`) are **NEVER** touched by minas-update.
 - Always show the dry-run diff before applying. Never apply without user confirmation.
 - Clean up the temp clone directory even on error or abort.
-- If `.vc-version` is missing, treat as version `0.0.0` (first update, apply everything).
-- `.minas/CLAUDE.md` is a harness-only file — overwritten freely on update. Project-specific content belongs in `process/context/all-context.md`, not in this file.
+- If `.minas-version` is missing, treat as version `0.0.0` (first update, apply everything).
+- `.minas/CLAUDE.md` is a harness-only file — overwritten freely on update. Project-specific content belongs in `.minas/process/context/all-context.md`, not in this file.
 - Files in the `merge` list (e.g. `.claude/settings.json`) are never overwritten if they exist locally. Show the diff for manual review.
 - Files in the `copyIfMissing` list are only installed if they don't already exist locally.
-- Removals are detected by comparing the local `.vc-installed-files` snapshot against the new resolved file list.
+- Removals are detected by comparing the local `.minas-installed-files` snapshot against the new resolved file list.
 
 ## Reference
 
-For detailed algorithm, error handling matrix, and edge cases, see `references/vc-update.md`.
+For detailed algorithm, error handling matrix, and edge cases, see `references/minas-update.md`.

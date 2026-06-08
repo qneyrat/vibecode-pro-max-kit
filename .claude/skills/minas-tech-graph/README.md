@@ -23,10 +23,10 @@ This skill materially adapts upstream `fireworks-tech-graph` assets for this kit
 
 Preferred destinations for final artifacts:
 
-- `process/general-plans/references/`
-- `process/general-plans/reports/visuals/`
-- `process/features/{feature}/references/`
-- `process/features/{feature}/reports/visuals/`
+- `.minas/process/general-plans/references/`
+- `.minas/process/general-plans/reports/visuals/`
+- `.minas/process/features/{feature}/references/`
+- `.minas/process/features/{feature}/reports/visuals/`
 
 Use `references/` for durable architecture or system artifacts. Use `reports/visuals/` for proof snapshots tied to execution or review.
 
@@ -142,7 +142,7 @@ bash .claude/skills/tech-graph/scripts/test-all-styles.sh
 
 Default batch proof output:
 
-- `process/general-plans/reports/visuals/tech-graph-test-output/`
+- `.minas/process/general-plans/reports/visuals/tech-graph-test-output/`
 
 Override the batch proof destination if needed:
 
@@ -164,11 +164,11 @@ TECH_GRAPH_TEST_OUTPUT_DIR=/absolute/output/path bash .claude/skills/tech-graph/
 ## Example Output Requests
 
 ```text
-Generate a Mem0 memory architecture diagram in style 1 and write it to process/general-plans/reports/visuals/mem0-architecture.svg
+Generate a Mem0 memory architecture diagram in style 1 and write it to .minas/process/general-plans/reports/visuals/mem0-architecture.svg
 ```
 
 ```text
-Draw a microservices architecture in style 3 and store the final artifact under process/general-plans/references/microservices-blueprint.svg
+Draw a microservices architecture in style 3 and store the final artifact under .minas/process/general-plans/references/microservices-blueprint.svg
 ```
 
 ```text

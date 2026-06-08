@@ -4,8 +4,8 @@
 
 Default active-plan locations:
 
-- `process/general-plans/active/`
-- `process/features/{feature}/active/`
+- `.minas/process/general-plans/active/`
+- `.minas/process/features/{feature}/active/`
 
 Default naming for new direct plan files:
 
@@ -22,14 +22,14 @@ New work should prefer direct `*_PLAN_*.md` files unless there is a deliberate r
 
 ## Feature Folder Routing
 
-Use `process/features/{feature}/` when:
+Use `.minas/process/features/{feature}/` when:
 
 - the feature folder already exists
 - the topic clearly belongs to an existing feature
 - the work is a new multi-phase project
 - the user frames it as a substantial product area
 
-Otherwise use `process/general-plans/`.
+Otherwise use `.minas/process/general-plans/`.
 
 If the work is a large multi-phase program, also apply `phase-programs.md`:
 
@@ -86,22 +86,22 @@ Use Markdown-structured sections, not a second machine-only schema.
 
 ## Reports and References
 
-- Cross-cutting reports go in `process/general-plans/reports/`.
-- Cross-cutting research goes in `process/general-plans/references/`.
+- Cross-cutting reports go in `.minas/process/general-plans/reports/`.
+- Cross-cutting research goes in `.minas/process/general-plans/references/`.
 - Feature-specific reports and references belong in the feature folder.
 
 ## Backlog
 
-- Cross-cutting deferred work belongs in `process/general-plans/backlog/`.
-- Feature-specific deferred work belongs in `process/features/{feature}/backlog/`.
+- Cross-cutting deferred work belongs in `.minas/process/general-plans/backlog/`.
+- Feature-specific deferred work belongs in `.minas/process/features/{feature}/backlog/`.
 - Use backlog for actionable follow-up work, not finished reports or durable reference material.
 - Use references for research outputs that inform future decisions.
 - Move an item from `active/` to backlog when it is intentionally deferred but still actionable.
 
 ## Archiving
 
-- Completed general plans move to `process/general-plans/completed/`.
-- Completed feature plans move to `process/features/{feature}/completed/`.
+- Completed general plans move to `.minas/process/general-plans/completed/`.
+- Completed feature plans move to `.minas/process/features/{feature}/completed/`.
 - Preserve historical artifacts unless the user explicitly asks for normalization or cleanup.
 
 ### Archive-Readiness Semantics
@@ -147,7 +147,7 @@ For validated phase work, also classify the commit checkpoint explicitly:
 
 - **Execution commit recommended before UPDATE PROCESS**
   - implementation or test changes from the selected phase are well-tested and ready for a logical code/test commit
-  - later UPDATE PROCESS edits are expected to touch `process/`, `.claude/`, or `.minas/CLAUDE.md` separately
+  - later UPDATE PROCESS edits are expected to touch `.minas/process/`, `.claude/`, or `.minas/CLAUDE.md` separately
 - **Process commit belongs after UPDATE PROCESS**
   - the remaining changes are primarily plan, report, context, or harness-governance artifacts
   - splitting execution and process commits will keep the history easier to review and resume

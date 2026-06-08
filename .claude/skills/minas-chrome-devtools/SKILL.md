@@ -1,5 +1,5 @@
 ---
-name: vc:chrome-devtools
+name: minas:chrome-devtools
 description: Automate browsers with Puppeteer CLI scripts and persistent sessions. Use for screenshots, performance analysis, network monitoring, web scraping, form automation, JavaScript debugging.
 license: Apache-2.0
 argument-hint: "[url or task]"
@@ -39,7 +39,7 @@ fi
 
 ## Project-Specific Setup
 
-For project-specific connection patterns and when to prefer chrome-devtools over agent-browser or docker exec, see `process/context/tests/all-tests.md` in the consuming repo. This skill file is a generic tool reference only.
+For project-specific connection patterns and when to prefer chrome-devtools over agent-browser or docker exec, see `.minas/process/context/tests/all-tests.md` in the consuming repo. This skill file is a generic tool reference only.
 
 ---
 

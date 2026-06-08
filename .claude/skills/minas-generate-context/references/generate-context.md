@@ -1,17 +1,17 @@
 # Generate Context Reference
 
-Generate and maintain the broad authoritative repository context file at `process/context/all-context.md`. Use `process/context/all-context.md` as the context router before selecting grouped docs to consult.
+Generate and maintain the broad authoritative repository context file at `.minas/process/context/all-context.md`. Use `.minas/process/context/all-context.md` as the context router before selecting grouped docs to consult.
 
 ## Behavior Modes
 
-- **Full Scan Mode**: use when `process/context/all-context.md` does not exist.
+- **Full Scan Mode**: use when `.minas/process/context/all-context.md` does not exist.
 - **Delta Update Mode**: use when the file exists; preserve stable content and update changed sections.
 
 ## Required Output
 
 Always produce exactly one file:
 
-- `process/context/all-context.md`
+- `.minas/process/context/all-context.md`
 
 Include:
 
@@ -22,20 +22,20 @@ Include:
 - Open Questions when anything is ambiguous.
 - References to source files used.
 
-Update only `process/context/all-context.md` in this workflow. Do not rewrite grouped context docs; if they are stale, missing from the router, or poorly organized, report that `audit-context` should be run.
+Update only `.minas/process/context/all-context.md` in this workflow. Do not rewrite grouped context docs; if they are stale, missing from the router, or poorly organized, report that `audit-context` should be run.
 
 ## Validation
 
-After updating `process/context/all-context.md`, run:
+After updating `.minas/process/context/all-context.md`, run:
 
 ```bash
-node .claude/skills/vc-generate-context/scripts/validate-all-context.mjs
+node .claude/skills/minas-generate-context/scripts/validate-all-context.mjs
 ```
 
 If the update changes context routing, group membership, or grouped docs, also run:
 
 ```bash
-node .claude/skills/vc-audit-context/scripts/validate-context-discovery.mjs
+node .claude/skills/minas-audit-context/scripts/validate-context-discovery.mjs
 ```
 
 Fix validation failures before presenting the context as refreshed. Treat warnings as freshness
@@ -52,11 +52,11 @@ Inspect as relevant:
 - API routers, database schema/client, validators, container services, and infra modules.
 - Tailwind and UI component setup.
 - `.env` usage patterns without exposing secrets.
-- `process/development-protocols/`, `.claude/agents/`, and `.claude/skills/` for workflow conventions.
-- `process/general-plans/active/*` and `process/features/*/active/*`.
-- `process/context/all-context.md` for context routing and group ownership.
-- Existing `process/context/**/*.md` files, loading only relevant grouped docs.
-- `process/development-protocols/references/example-complex-prd.md` for plan/PRD depth expectations.
+- `.minas/process/development-protocols/`, `.claude/agents/`, and `.claude/skills/` for workflow conventions.
+- `.minas/process/general-plans/active/*` and `.minas/process/features/*/active/*`.
+- `.minas/process/context/all-context.md` for context routing and group ownership.
+- Existing `.minas/process/context/**/*.md` files, loading only relevant grouped docs.
+- `.minas/process/development-protocols/references/example-complex-prd.md` for plan/PRD depth expectations.
 
 ## Full Scan Structure
 

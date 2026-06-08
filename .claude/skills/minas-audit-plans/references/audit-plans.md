@@ -1,6 +1,6 @@
 # Audit Plans
 
-Periodic maintenance skill — reviews all plans in `process/general-plans/active/` and `process/features/*/active/` for staleness, completion, and obsolescence. Run this when the plans folders feel cluttered, when UPDATE PROCESS was skipped, or after major architectural changes.
+Periodic maintenance skill — reviews all plans in `.minas/process/general-plans/active/` and `.minas/process/features/*/active/` for staleness, completion, and obsolescence. Run this when the plans folders feel cluttered, when UPDATE PROCESS was skipped, or after major architectural changes.
 
 ---
 
@@ -8,7 +8,7 @@ Periodic maintenance skill — reviews all plans in `process/general-plans/activ
 
 ### Step 1 — Inventory
 
-List all plans in `process/general-plans/active/` AND `process/features/*/active/`. For each plan, note:
+List all plans in `.minas/process/general-plans/active/` AND `.minas/process/features/*/active/`. For each plan, note:
 
 - Filename and date
 - Status markers (look for the status strip at the top)
@@ -17,7 +17,7 @@ List all plans in `process/general-plans/active/` AND `process/features/*/active
 Start with the deterministic inventory validator:
 
 ```bash
-node .claude/skills/vc-audit-plans/scripts/validate-plan-inventory.mjs
+node .claude/skills/minas-audit-plans/scripts/validate-plan-inventory.mjs
 ```
 
 Use default mode for maintenance audits so legacy drift appears as warnings. Use `--strict`
@@ -25,7 +25,7 @@ only when intentionally turning every naming, freshness, and structure warning i
 
 ### Step 1.5 — Stale Artifact Scan
 
-After inventorying plans, also list files in sibling `reports/` and `references/` directories for each location scanned (both `process/general-plans/` and `process/features/*/`).
+After inventorying plans, also list files in sibling `reports/` and `references/` directories for each location scanned (both `.minas/process/general-plans/` and `.minas/process/features/*/`).
 
 For each plan classified as **Completed** or **Obsolete** in Step 2:
 
@@ -61,7 +61,7 @@ Classify each plan:
 
 For each plan:
 
-- **Completed/Obsolete**: Move to the sibling `completed/` directory (e.g., `process/features/{feature}/active/{name}.md` → `process/features/{feature}/completed/{name}.md`, or `process/general-plans/active/{name}.md` → `process/general-plans/completed/{name}.md`)
+- **Completed/Obsolete**: Move to the sibling `completed/` directory (e.g., `.minas/process/features/{feature}/active/{name}.md` → `.minas/process/features/{feature}/completed/{name}.md`, or `.minas/process/general-plans/active/{name}.md` → `.minas/process/general-plans/completed/{name}.md`)
   - For obsolete plans, rename with prefix: `completed_obsolete_{name}.md`
 - **Partially Done**: Update the status strip markers to reflect current state
 - **Stale**: Present to user with recommendation (archive vs keep vs delete)
@@ -69,7 +69,7 @@ For each plan:
 After edits or moves, re-run:
 
 ```bash
-node .claude/skills/vc-audit-plans/scripts/validate-plan-inventory.mjs
+node .claude/skills/minas-audit-plans/scripts/validate-plan-inventory.mjs
 ```
 
 ### Step 4 — Report
@@ -96,4 +96,4 @@ Include:
 - After non-trivial EXECUTE work if UPDATE PROCESS was skipped and active-plan drift accumulated
 - After an architectural pivot (identify obsoleted plans)
 - Monthly maintenance
-- When total active plans across `process/general-plans/active/` and `process/features/*/active/` exceeds 10
+- When total active plans across `.minas/process/general-plans/active/` and `.minas/process/features/*/active/` exceeds 10

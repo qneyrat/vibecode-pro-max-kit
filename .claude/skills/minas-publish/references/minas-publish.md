@@ -1,21 +1,21 @@
-# vc-publish Reference
+# minas-publish Reference
 
-Detailed reference for the vc-publish skill.
+Detailed reference for the minas-publish skill.
 
-## .vc-publish-config
+## .minas-publish-config
 
-Create this file in the project root to tell vc-publish where the kit repo checkout lives:
+Create this file in the project root to tell minas-publish where the kit repo checkout lives:
 
 ```json
 {
-  "kitRepoPath": "/Users/you/vibecode-pro-max-kit"
+  "kitRepoPath": "/Users/you/minas-kit"
 }
 ```
 
-- The path must point to a git checkout of `github.com/withkynam/vibecode-pro-max-kit.git`
-- The checkout must have `vc-manifest.json` at its root
+- The path must point to a git checkout of `github.com/withkynam/minas-kit.git`
+- The checkout must have `minas-manifest.json` at its root
 - If missing, the skill asks the user for the path interactively
-- Add `.vc-publish-config` to `.gitignore` -- it contains a local machine path
+- Add `.minas-publish-config` to `.gitignore` -- it contains a local machine path
 
 ## Resolver-Driven Diffing
 
@@ -85,9 +85,9 @@ Maintain a harness-only `.minas/CLAUDE.md` directly in the kit repo as the canon
 
 | Error | When | Action |
 |-------|------|--------|
-| `.vc-publish-config` missing | Step 1 | Ask user for kit repo path interactively |
+| `.minas-publish-config` missing | Step 1 | Ask user for kit repo path interactively |
 | Kit repo path doesn't exist | Step 1 | Print error, stop |
-| Kit repo has no `vc-manifest.json` | Step 2 | Print "not a valid kit repo", stop |
+| Kit repo has no `minas-manifest.json` | Step 2 | Print "not a valid kit repo", stop |
 | Kit repo has uncommitted changes | Step 2 | Warn user, suggest stashing. Do not block. |
 | Resolver script missing or fails | Step 3 | Print error, suggest checking Node >= 22, stop |
 | No changes to publish | Step 5 | Report "nothing to publish", stop |
@@ -118,7 +118,7 @@ node <kitRepoPath>/resolve-manifest.mjs --root <kitRepoPath> --json
 Restrict the resolved `files` to:
 - `.claude/skills/**` matching `*.md`, `*.cjs`, `*.mjs`, `*.py`, `*.js`, `*.json`
 - `.claude/agents/**` matching `*.md`
-- `process/development-protocols/**`
+- `.minas/process/development-protocols/**`
 - plus `.minas/CLAUDE.md`
 
 Exclude binaries and `**/node_modules/**`.
@@ -144,13 +144,13 @@ gate flags itself):
 
 ### Check (b) -- non-portable context-path grep
 
-Any concrete backticked `process/context/...` file reference in the resolved text
+Any concrete backticked `.minas/process/context/...` file reference in the resolved text
 set, MINUS the shipped/seeded survivors, is a dangling-link leak (it would dangle on
 a clean install) → FAIL with file:line.
 
-Survivors (allowed): `process/context/all-context.md`,
-`process/context/tests/all-tests.md`. Portable directory references (e.g.
-`process/context/tests/`) and the `process/context/...` placeholder are fine.
+Survivors (allowed): `.minas/process/context/all-context.md`,
+`.minas/process/context/tests/all-tests.md`. Portable directory references (e.g.
+`.minas/process/context/tests/`) and the `.minas/process/context/...` placeholder are fine.
 
 ### Existing narrow .minas/CLAUDE.md grep (kept as-is)
 
@@ -177,20 +177,20 @@ Do not add `ck`/`ckignore` to any leak grep.
 
 If any check matches: print every match with file path and line number, revert the
 kit worktree (`git -C <kitRepoPath> checkout .`), and STOP before commit/push. The
-standing `validate-kit-portability.mjs` validator (run by `vc-audit-vc`) mirrors
+standing `validate-kit-portability.mjs` validator (run by `minas-audit-vc`) mirrors
 checks (a) and (b) for between-release drift.
 
 ## Diff Summary Output Format
 
 ```
-vc-publish diff: current repo -> kit repo (v2.1.0)
+minas-publish diff: current repo -> kit repo (v2.1.0)
 ================================================
 
 FILES:
-  [modified]  .claude/agents/vc-execute-agent.md  (+8 -3)
+  [modified]  .claude/agents/minas-execute-agent.md  (+8 -3)
   [modified]  .claude/hooks/lib/scout-checker.cjs  (+2 -1)
-  [new]       .claude/skills/vc-new-skill/SKILL.md
-  [new]       .claude/skills/vc-new-skill/references/new-skill.md
+  [new]       .claude/skills/minas-new-skill/SKILL.md
+  [new]       .claude/skills/minas-new-skill/references/new-skill.md
   [strip]     .minas/CLAUDE.md (needs content review)
   [unchanged] .claude/settings.json
   ... (350 more unchanged)
@@ -203,9 +203,9 @@ Publish v2.2.0? (patch/minor/major to change, abort to cancel)
 ## Publish Summary Output Format
 
 ```
-vc-publish complete: v2.1.0 -> v2.2.0
+minas-publish complete: v2.1.0 -> v2.2.0
 
-Published to: github.com/withkynam/vibecode-pro-max-kit.git
+Published to: github.com/withkynam/minas-kit.git
 Tag: v2.2.0
 Commit: abc1234
 

@@ -5,7 +5,6 @@ agent:
   - changed-files:
     - any-glob-to-any-file:
       - '.claude/agents/**'
-      - '.codex/agents/**'
 docs:
   - changed-files:
     - any-glob-to-any-file:
@@ -16,4 +15,4 @@ hook:
     - any-glob-to-any-file: '.claude/hooks/**'
 protocol:
   - changed-files:
-    - any-glob-to-any-file: 'process/development-protocols/**'
+    - any-glob-to-any-file: '.minas/process/development-protocols/**'

@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import { loadSkillInventory, normalizeSkillName, extractRelativeReferences, extractSkillMentions, loadRoutingPolicy, writeJsonFile, abs } from "./shared-skill-utils.mjs";
 
-const outputPath = "process/context/generated-skills-catalog.json";
+const outputPath = ".minas/process/context/generated-skills-catalog.json";
 const args = new Set(process.argv.slice(2));
 const shouldWrite = args.has("--write");
 const shouldCheck = args.has("--check");

@@ -28,7 +28,7 @@ function read(relPath) {
 
 function isActivePlanPath(relPath) {
   return (
-    relPath.startsWith("process/general-plans/active/") ||
+    relPath.startsWith(".minas/process/general-plans/active/") ||
     /^process\/features\/[^/]+\/active\//.test(relPath)
   );
 }
@@ -56,7 +56,7 @@ function validatePlan(relPath) {
   }
   if (!relPath.endsWith(".md")) fail(`${relPath} is not a markdown plan`);
   if (!isActivePlanPath(relPath)) {
-    fail(`${relPath} is not under process/general-plans/active/ or process/features/*/active/`);
+    fail(`${relPath} is not under .minas/process/general-plans/active/ or .minas/process/features/*/active/`);
   }
 
   const name = path.basename(relPath);
@@ -82,7 +82,7 @@ function validatePlan(relPath) {
     fail(`${relPath} missing explicit test or verification language`);
   }
   if (!/process\/context\/all-context\.md/.test(text)) {
-    warn(`${relPath} does not mention process/context/all-context.md`);
+    warn(`${relPath} does not mention .minas/process/context/all-context.md`);
   }
   if (!/process\/context\/tests\.md|tests\.md|Post-Phase Testing|Test Procedure/i.test(text)) {
     warn(`${relPath} does not mention testing context or post-phase testing`);

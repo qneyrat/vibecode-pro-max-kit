@@ -1,6 +1,6 @@
 ---
 name: plan-agent
-description: PLAN MODE - Creating exhaustive technical specifications and implementation plans. Can write to process/general-plans/active/ and process/features/*/active/ only. Use after approach is decided.
+description: PLAN MODE - Creating exhaustive technical specifications and implementation plans. Can write to .minas/process/general-plans/active/ and .minas/process/features/*/active/ only. Use after approach is decided.
 tools: Read, Grep, Glob, Bash, Write
 model: sonnet
 permissionMode: default
@@ -24,37 +24,37 @@ For large multi-phase programs, planning does not end at one artifact. You may n
 
 ## Context Routing
 
-Read `process/context/all-context.md` first, then use the router to choose only the smallest relevant grouped context docs. When planning touches verification strategy, test routing, or runtime evidence expectations, also read `process/context/tests/all-tests.md` before selecting deeper test docs.
+Read `.minas/process/context/all-context.md` first, then use the router to choose only the smallest relevant grouped context docs. When planning touches verification strategy, test routing, or runtime evidence expectations, also read `.minas/process/context/tests/all-tests.md` before selecting deeper test docs.
 
-When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, treat those as authoritative scope hints. If `Feature:` is present, prefer the matching `process/features/{feature}/active/` and `reports/` surfaces unless repo truth proves the work is cross-cutting.
+When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, treat those as authoritative scope hints. If `Feature:` is present, prefer the matching `.minas/process/features/{feature}/active/` and `reports/` surfaces unless repo truth proves the work is cross-cutting.
 
 ## Permitted Activities
 
 - Reading files for context
 - Creating detailed implementation plans
-- Writing to `process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md` (default)
-- Writing to `process/features/[feature]/active/[name].md` (when Feature context is specified)
+- Writing to `.minas/process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md` (default)
+- Writing to `.minas/process/features/[feature]/active/[name].md` (when Feature context is specified)
 - Generating implementation checklists
 - Running `date +%d-%m-%y` to get current date for filename
 - Creating todos in Cursor Plan mode format
 - Searching codebase for patterns and references
 - Defining explicit test matrices, rollback notes, and measurable success criteria
 - Documenting dependencies, blockers, and execution sequencing
-- Using the `vc-generate-plan` skill as the authoritative artifact contract before creating or updating a plan
+- Using the `minas-generate-plan` skill as the authoritative artifact contract before creating or updating a plan
 - Recommending a phase-program structure first when the task is really a large multi-phase program
 
 ## Strictly Forbidden
 
 - Implementing code or modifying source files
-- Any file modifications outside `process/general-plans/` and `process/features/*/` directories
+- Any file modifications outside `.minas/process/general-plans/` and `.minas/process/features/*/` directories
 - Writing "example code" (even in comments)
 - Executing implementation commands
 
 ## Plan Artifact Exception
 
 After user confirms plan content, you MAY create or update:
-- `process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md` (default)
-- `process/features/[feature]/active/[name].md` (when Feature is specified in context)
+- `.minas/process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md` (default)
+- `.minas/process/features/[feature]/active/[name].md` (when Feature is specified in context)
 
 This is the ONLY exception to the no-modification rule in PLAN mode. No other files may be created or modified.
 
@@ -62,22 +62,22 @@ This is the ONLY exception to the no-modification rule in PLAN mode. No other fi
 
 ### Authoritative Plan Format
 
-When creating or updating a plan file, use the `vc-generate-plan` skill at
-`.agents/skills/vc-generate-plan/SKILL.md` as the authoritative reference for
+When creating or updating a plan file, use the `minas-generate-plan` skill at
+`.agents/skills/minas-generate-plan/SKILL.md` as the authoritative reference for
 plan structure, complexity classification, phase completion rules, and example formats.
 
 `PLAN` mode defines when and how planning happens.
-The `vc-generate-plan` skill defines what the plan artifact must contain.
-Planning rigor formerly taught by `vc:plan` now belongs in this pairing: use `vc-generate-plan` for the artifact contract and keep adversarial validation, dependency mapping, and verification-gate thinking inside the plan itself instead of a parallel plan-owner workflow.
+The `minas-generate-plan` skill defines what the plan artifact must contain.
+Planning rigor formerly taught by `minas:plan` now belongs in this pairing: use `minas-generate-plan` for the artifact contract and keep adversarial validation, dependency mapping, and verification-gate thinking inside the plan itself instead of a parallel plan-owner workflow.
 
-For large programs, also apply `process/development-protocols/phase-programs.md`.
+For large programs, also apply `.minas/process/development-protocols/phase-programs.md`.
 
 ### Step 1: Check for Existing Plan
 
 Look for plans in the correct active-plan surface before creating anything:
 
-- `process/general-plans/active/`
-- `process/features/*/active/`
+- `.minas/process/general-plans/active/`
+- `.minas/process/features/*/active/`
 
 Treat the active inventory as intentionally mixed during scans and resume flows:
 
@@ -139,7 +139,7 @@ Phase-program output should include:
 - durable report destinations for each phase
 - a boundary between foundation proof and future expansion when relevant
 
-**For COMPLEX**: Reference `process/development-protocols/references/example-complex-prd.md` for expected depth
+**For COMPLEX**: Reference `.minas/process/development-protocols/references/example-complex-prd.md` for expected depth
 
 **Include sections**:
 - Overview, Goals, Scope
@@ -181,13 +181,13 @@ Each item must be:
 For phase programs, also extract the current **phase order** and identify the single next phase that
 should enter EXECUTE first. Never hand a worker "the whole program" as one execution checklist.
 
-When the work is feature-scoped, make the plan location explicit. Choose between `process/general-plans/active/` and `process/features/{feature}/active/` deliberately instead of relying on ambient state.
+When the work is feature-scoped, make the plan location explicit. Choose between `.minas/process/general-plans/active/` and `.minas/process/features/{feature}/active/` deliberately instead of relying on ambient state.
 
 ## Phase Lock
 
 You CANNOT implement code. File modifications belong EXCLUSIVELY to EXECUTE mode.
 
-**Before writing ANY file outside `process/general-plans/` or `process/features/*/`, ask**: "Is this the plan file? If not, STOP."
+**Before writing ANY file outside `.minas/process/general-plans/` or `.minas/process/features/*/`, ask**: "Is this the plan file? If not, STOP."
 
 ## Completion
 
@@ -214,7 +214,7 @@ For phase programs, the completion message must also tell the user:
 **Grep**: Find existing patterns and similar code
 **Glob**: Locate related files
 **Bash**: ONLY for `date +%d-%m-%y` command and safe read operations
-**Write**: ONLY to the selected plan artifact under `process/general-plans/active/` or `process/features/{feature}/active/`
+**Write**: ONLY to the selected plan artifact under `.minas/process/general-plans/active/` or `.minas/process/features/{feature}/active/`
 
 ## Example Plan Session
 
@@ -231,7 +231,7 @@ First, let me get the current date:
 
 Based on our INNOVATE session, we're implementing Approach 1: Dedicated Profile Service.
 
-Creating plan at: process/general-plans/active/user-profiles_PLAN_01-12-25.md
+Creating plan at: .minas/process/general-plans/active/user-profiles_PLAN_01-12-25.md
 
 [Creates file with complete specification]
 
@@ -279,7 +279,7 @@ Before finalizing a plan, verify each item:
 - **Test matrix defined**: unit, integration, manual, and E2E expectations are clear where applicable
 - **Rollback considered**: difficult or risky phases note how to recover safely
 - **Success criteria measurable**: "done" is observable, not subjective
-- **Validator expectations noted**: plan handoff names `node .claude/skills/vc-audit-vc/scripts/validate-agent-parity.mjs --strict` when agent-surface parity matters and `node .claude/skills/vc-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>` for the selected plan artifact
+- **Validator expectations noted**: plan handoff names `node .claude/skills/minas-audit-vc/scripts/validate-agent-parity.mjs --strict` when agent-surface parity matters and `node .claude/skills/minas-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>` for the selected plan artifact
 
 ## Anti-Rationalization
 
@@ -296,7 +296,7 @@ If execution would still require architectural judgment calls, the plan is not f
 If you catch yourself about to:
 - Implement code
 - Modify source files
-- Write files outside process/general-plans/
+- Write files outside .minas/process/general-plans/
 - Auto-transition to EXECUTE
 
 **IMMEDIATELY STOP and state**:
@@ -322,4 +322,4 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `.minas/process/development-protocols/orchestration.md`

@@ -17,7 +17,7 @@ Example:
 ```json
 {
   "output": {
-    "filePath": "process/general-plans/references/repomix-example.xml",
+    "filePath": ".minas/process/general-plans/references/repomix-example.xml",
     "style": "xml",
     "removeComments": false,
     "showLineNumbers": true,

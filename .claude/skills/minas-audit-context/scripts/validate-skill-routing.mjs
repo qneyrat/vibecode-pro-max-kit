@@ -39,7 +39,7 @@ function parseFrontmatter(file) {
   );
 }
 
-const policyPath = ".claude/skills/vc-audit-context/references/skill-routing-policy.json";
+const policyPath = ".claude/skills/minas-audit-context/references/skill-routing-policy.json";
 if (!exists(policyPath)) {
   fail(`${policyPath} missing`);
 }

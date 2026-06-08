@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { parseFrontmatter, listSkillDirs, exists, abs } from "../../vc-audit-context/scripts/shared-skill-utils.mjs";
+import { parseFrontmatter, listSkillDirs, exists, abs } from "../../minas-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -12,11 +12,11 @@ const intentionallyIgnored = new Set(["sync-from-riper5", "sync-to-riper5"]);
 const staleOwnershipPatterns = [
   "default workflow owner",
   "workflow owner",
-  "vc:plan",
-  "vc:cook",
-  "vc:fix",
-  "vc:research",
-  "vc:code-review",
+  "minas:plan",
+  "minas:cook",
+  "minas:fix",
+  "minas:research",
+  "minas:code-review",
 ];
 
 function fail(message) {
@@ -76,7 +76,7 @@ for (const skill of skillNames) {
     if (intentionallyIgnored.has(skill)) warn(`${message} but intentionally ignored`);
     else fail(message);
   }
-  if (fields.name && fields.name !== skill && !fields.name.startsWith("vc:")) {
+  if (fields.name && fields.name !== skill && !fields.name.startsWith("minas:")) {
     warn(`${file} frontmatter name ${fields.name} differs from folder ${skill}`);
   }
   if (fields.name && !/^[a-z0-9:-]+$/.test(fields.name)) {

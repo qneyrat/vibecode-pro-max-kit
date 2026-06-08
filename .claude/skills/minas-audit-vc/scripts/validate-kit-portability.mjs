@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Standing portability audit for the agent-harness kit.
 //
-// Mirrors the two checks the widened vc-publish Step 8 gate runs, but walks the
+// Mirrors the two checks the widened minas-publish Step 8 gate runs, but walks the
 // shipped text surface DIRECTLY (the dev repo lacks resolve-manifest.mjs -- it is
 // kitOnly), so this validator can run in CI where the resolver is absent.
 //
@@ -49,7 +49,7 @@ function walk(dir, predicate, out = []) {
   return out;
 }
 
-// Enumerated shipped TEXT surfaces (mirror of the vc-publish Step 8 resolved set,
+// Enumerated shipped TEXT surfaces (mirror of the minas-publish Step 8 resolved set,
 // minus the resolver). Excludes binaries and node_modules (via SKIP_DIR).
 const textFiles = [
   ".minas/CLAUDE.md",
@@ -66,8 +66,8 @@ const BRAND_RE = /flowser|CloakBrowser|OpenClaw|Supabase/i;
 // Bucket-4 line-content allowlist: lines that MUST keep a brand literal to
 // function. A brand hit on one of these lines is legitimate, not a leak.
 //   - `author: flowser`          -- maintainer frontmatter tag, not a project leak
-//   - isFlowserActivePlanPath    -- internal code identifier (vc-watzup scan)
-//   - this validator's + vc-publish's OWN brand-pattern lines (grep / regex strings)
+//   - isFlowserActivePlanPath    -- internal code identifier (minas-watzup scan)
+//   - this validator's + minas-publish's OWN brand-pattern lines (grep / regex strings)
 //     -- otherwise the gate flags itself. Matched via the BRAND_LITERAL_MARKER and
 //     the grep-invocation markers below.
 //   - the internal hook comment about plan-generation validation workflows in
@@ -130,7 +130,7 @@ function isConcreteContextFileRef(ref) {
 for (const file of textFiles) {
   const lines = fs.readFileSync(path.join(root, file), "utf8").split("\n");
   lines.forEach((line, index) => {
-    for (const match of line.matchAll(/`(process\/context\/[^`\s]+)`/g)) {
+    for (const match of line.matchAll(/`(\.minas\/process\/context\/[^`\s]+)`/g)) {
       const ref = match[1].replace(/[.,;:]+$/, "");
       if (!isConcreteContextFileRef(ref)) continue; // portable dir/glob/ellipsis ref
       if (CONTEXT_SURVIVORS.has(ref)) continue; // shipped/seeded survivor

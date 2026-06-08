@@ -49,7 +49,7 @@ export function parseFrontmatter(file) {
 }
 
 export function loadRoutingPolicy() {
-  const policyPath = ".claude/skills/vc-audit-context/references/skill-routing-policy.json";
+  const policyPath = ".claude/skills/minas-audit-context/references/skill-routing-policy.json";
   if (!exists(policyPath)) {
     return {
       path: policyPath,

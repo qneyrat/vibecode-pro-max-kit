@@ -29,7 +29,7 @@ function read(relPath) {
 function isActivePlanPath(relPath) {
   return (
     relPath.startsWith(".minas/process/general-plans/active/") ||
-    /^process\/features\/[^/]+\/active\//.test(relPath)
+    /^\.minas\/process\/features\/[^/]+\/active\//.test(relPath)
   );
 }
 
@@ -81,10 +81,10 @@ function validatePlan(relPath) {
   if (!/Test Procedure|Post-Phase Testing|Verification|Manual Test|Data Verification|Discovery Test/i.test(text)) {
     fail(`${relPath} missing explicit test or verification language`);
   }
-  if (!/process\/context\/all-context\.md/.test(text)) {
+  if (!/\.minas\/process\/context\/all-context\.md/.test(text)) {
     warn(`${relPath} does not mention .minas/process/context/all-context.md`);
   }
-  if (!/process\/context\/tests\.md|tests\.md|Post-Phase Testing|Test Procedure/i.test(text)) {
+  if (!/\.minas\/process\/context\/tests\.md|tests\.md|Post-Phase Testing|Test Procedure/i.test(text)) {
     warn(`${relPath} does not mention testing context or post-phase testing`);
   }
   if (/✅ VERIFIED/.test(text) && !/User Confirmation|user confirmed|user-confirmed|confirmed working|user says/i.test(text)) {
@@ -121,7 +121,7 @@ function validatePlan(relPath) {
 }
 
 if (planPaths.length === 0) {
-  fail("Usage: node .claude/skills/vc-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>");
+  fail("Usage: node .claude/skills/minas-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>");
 }
 
 const checkedPlans = [];

@@ -88,10 +88,6 @@ function parseFrontmatter(file) {
   );
 }
 
-function normalizeForParity(text) {
-  return text.replace(/\r\n/g, "\n").replace(/[ \t]+$/gm, "").trim();
-}
-
 const agentsSkills = path.join(root, ".agents/skills");
 if (!fs.existsSync(agentsSkills)) {
   fail(".agents/skills missing");
@@ -101,15 +97,15 @@ if (!fs.existsSync(agentsSkills)) {
   if (real !== expected) fail(".agents/skills does not resolve to .claude/skills");
 }
 
-for (const skill of ["vc-audit-context", "vc-audit-plans", "vc-generate-context", "vc-generate-plan"]) {
+for (const skill of ["minas-audit-context", "minas-audit-plans", "minas-generate-context", "minas-generate-plan"]) {
   const file = `.claude/skills/${skill}/SKILL.md`;
-  const codexPath = `.agents/skills/${skill}/SKILL.md`;
+  const mirrorPath = `.agents/skills/${skill}/SKILL.md`;
   if (!exists(file)) fail(`${file} missing`);
-  if (!exists(codexPath)) fail(`${codexPath} missing`);
+  if (!exists(mirrorPath)) fail(`${mirrorPath} missing`);
   if (exists(file)) {
     const fm = parseFrontmatter(file);
-    // YAML name uses colon (vc:audit-context), folder uses dash (vc-audit-context)
-    const expectedName = skill.replace("vc-", "vc:");
+    // YAML name uses colon (minas:audit-context), folder uses dash (minas-audit-context)
+    const expectedName = skill.replace("minas-", "minas:");
     if (fm.name !== skill && fm.name !== expectedName) fail(`${file} frontmatter name is ${fm.name || "missing"}, expected ${expectedName}`);
     if (!fm.description) fail(`${file} frontmatter description missing`);
   }
@@ -119,12 +115,12 @@ const skillDirs = listDirs(".claude/skills");
 let checkedSkills = 0;
 for (const skill of skillDirs) {
   const file = `.claude/skills/${skill}/SKILL.md`;
-  const codexPath = `.agents/skills/${skill}/SKILL.md`;
+  const mirrorPath = `.agents/skills/${skill}/SKILL.md`;
   if (!exists(file)) {
     fail(`${file} missing`);
     continue;
   }
-  if (!exists(codexPath)) fail(`${codexPath} missing`);
+  if (!exists(mirrorPath)) fail(`${mirrorPath} missing`);
   checkedSkills += 1;
 
   const fm = parseFrontmatter(file);
@@ -137,13 +133,6 @@ for (const skill of skillDirs) {
 }
 
 const claudeAgents = listFiles(".claude/agents", ".md");
-const codexAgents = listFiles(".codex/agents", ".toml");
-for (const agent of claudeAgents) {
-  if (!codexAgents.includes(agent)) fail(`.codex/agents/${agent}.toml missing`);
-}
-for (const agent of codexAgents) {
-  if (!claudeAgents.includes(agent)) fail(`.claude/agents/${agent}.md missing`);
-}
 
 const router = ".minas/process/context/all-context.md";
 if (!exists(router)) fail(`${router} missing`);
@@ -152,7 +141,7 @@ const routerText = exists(router) ? read(router) : "";
 const contextDocs = walk(".minas/process/context", (rel) => rel.endsWith(".md")).sort();
 for (const doc of contextDocs) {
   if (doc === router) continue;
-  const relFromContext = doc.replace(/^process\/context\//, "");
+  const relFromContext = doc.replace(/^\.minas\/process\/context\//, "");
   const group = relFromContext.split("/")[0];
   const groupEntrypoint = getGroupEntrypoint(group);
   const indexedByRouter = routerText.includes(relFromContext) || routerText.includes(doc);
@@ -166,9 +155,11 @@ for (const doc of contextDocs) {
   }
 }
 
-for (const dir of fs.readdirSync(path.join(root, ".minas/process/context"), { withFileTypes: true })) {
-  if (dir.isDirectory() && !getGroupEntrypoint(dir.name)) {
-    fail(`.minas/process/context/${dir.name}/ is missing all-${dir.name}.md`);
+if (exists(".minas/process/context")) {
+  for (const dir of fs.readdirSync(path.join(root, ".minas/process/context"), { withFileTypes: true })) {
+    if (dir.isDirectory() && !getGroupEntrypoint(dir.name)) {
+      fail(`.minas/process/context/${dir.name}/ is missing all-${dir.name}.md`);
+    }
   }
 }
 
@@ -179,30 +170,13 @@ for (const legacy of legacyEntrypoints) {
 }
 
 for (const file of [
-  "AGENTS.md",
-  "CLAUDE.md",
-  ".claude/agents/vc-update-process-agent.md",
-  ".codex/agents/vc-update-process-agent.toml",
-  ".claude/agents/vc-research-agent.md",
-  ".codex/agents/vc-research-agent.toml",
-  ".claude/skills/vc-generate-context/SKILL.md",
-  ".claude/skills/vc-generate-context/references/generate-context.md",
+  ".minas/CLAUDE.md",
+  ".claude/agents/minas-update-process-agent.md",
+  ".claude/agents/minas-research-agent.md",
+  ".claude/skills/minas-generate-context/SKILL.md",
+  ".claude/skills/minas-generate-context/references/generate-context.md",
 ]) {
   assertContains(file, ".minas/process/context/all-context.md");
-}
-
-const criticalHookParityPairs = [
-  [
-    ".claude/hooks/scout-block/broad-pattern-detector.cjs",
-    ".codex/hooks/scout-block/broad-pattern-detector.cjs",
-  ],
-];
-
-for (const [claudeFile, codexFile] of criticalHookParityPairs) {
-  if (!exists(claudeFile) || !exists(codexFile)) continue;
-  if (normalizeForParity(read(claudeFile)) !== normalizeForParity(read(codexFile))) {
-    fail(`${codexFile} has drift from ${claudeFile}`);
-  }
 }
 
 const staleWorkflowPatterns = [
@@ -213,21 +187,18 @@ const staleWorkflowPatterns = [
   { pattern: "validate-docs", reason: "use audit-context validator" },
   { pattern: ".minas/process/context/<group>", reason: "placeholder should not look like a concrete ref" },
   { pattern: ".claude/commands/", reason: "Claude command aliases are retired from the active shared workflow surface" },
-  { pattern: "vc:plan", reason: "planning ownership was absorbed into vc-generate-plan + plan-agent" },
-  { pattern: "vc:research", reason: "research ownership was absorbed into research-agent" },
-  { pattern: "vc:cook", reason: "execution ownership was absorbed into execute-agent" },
-  { pattern: "vc:fix", reason: "bug-fix ownership was absorbed into debugger + execute-agent" },
-  { pattern: "vc:code-review", reason: "review ownership was absorbed into code-reviewer" },
-  { pattern: "/vc:journal", reason: "journal handoff is not part of the surviving default workflow surface" },
+  { pattern: "minas:plan", reason: "planning ownership was absorbed into minas-generate-plan + plan-agent" },
+  { pattern: "minas:research", reason: "research ownership was absorbed into research-agent" },
+  { pattern: "minas:cook", reason: "execution ownership was absorbed into execute-agent" },
+  { pattern: "minas:fix", reason: "bug-fix ownership was absorbed into debugger + execute-agent" },
+  { pattern: "minas:code-review", reason: "review ownership was absorbed into code-reviewer" },
+  { pattern: "/minas:journal", reason: "journal handoff is not part of the surviving default workflow surface" },
 ];
 const staleWorkflowFiles = [
-  "AGENTS.md",
-  "CLAUDE.md",
+  ".minas/CLAUDE.md",
   ...walk(".claude/agents", (rel) => rel.endsWith(".md")),
-  ...walk(".codex/agents", (rel) => rel.endsWith(".toml")),
   ...walk(".claude/skills", (rel) => rel.endsWith(".md") && !rel.includes("/scripts/")),
   ...walk(".claude/hooks", (rel) => rel.endsWith(".cjs") || rel.endsWith(".json")),
-  ...walk(".codex/hooks", (rel) => rel.endsWith(".cjs") || rel.endsWith(".json")),
   ...walk(".minas/process/context", (rel) => rel.endsWith(".md")),
 ];
 
@@ -258,9 +229,8 @@ for (const file of staleWorkflowFiles) {
 }
 
 const filesWithRefs = [
-  "AGENTS.md",
+  ".minas/CLAUDE.md",
   ...walk(".claude", (rel) => rel.endsWith(".md") || rel.endsWith(".json")),
-  ...walk(".codex", (rel) => rel.endsWith(".toml") || rel.endsWith(".json")),
   ...walk(".minas/process/context", (rel) => rel.endsWith(".md")),
 ];
 
@@ -268,7 +238,7 @@ const concreteRefs = [];
 for (const file of filesWithRefs) {
   if (!exists(file)) continue;
   const text = read(file);
-  for (const match of text.matchAll(/`(process\/context\/[^`\s]+)`/g)) {
+  for (const match of text.matchAll(/`(\.minas\/process\/context\/[^`\s]+)`/g)) {
     const ref = match[1].replace(/[.,;:]$/, "");
     if (/[{}[*\]]/.test(ref)) continue;
     concreteRefs.push({ file, ref });
@@ -292,7 +262,6 @@ const result = {
   checkedConcreteRefs: concreteRefs.length,
   checkedSkills,
   checkedClaudeAgents: claudeAgents.length,
-  checkedCodexAgents: codexAgents.length,
   warnings,
   failures,
 };

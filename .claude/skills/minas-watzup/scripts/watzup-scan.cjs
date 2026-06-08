@@ -343,7 +343,7 @@ function planKindFromPath(planPath) {
 
 function extractFeature(planPath) {
   const normalized = planPath.split(path.sep).join('/');
-  const match = normalized.match(/^process\/features\/([^/]+)\//);
+  const match = normalized.match(/^\.minas\/process\/features\/([^/]+)\//);
   return match ? match[1] : null;
 }
 
@@ -375,7 +375,7 @@ function isFlowserActivePlanPath(filePath) {
 }
 
 function discoverFeatureActiveRoots(root) {
-  const featuresDir = path.join(root, 'process', 'features');
+  const featuresDir = path.join(root, '.minas', 'process', 'features');
   if (!fs.existsSync(featuresDir)) return [];
 
   return fs.readdirSync(featuresDir, { withFileTypes: true })
@@ -385,7 +385,7 @@ function discoverFeatureActiveRoots(root) {
 }
 
 function getFilesystemActivePlanFiles(root) {
-  const generalActive = path.join(root, 'process', 'general-plans', 'active');
+  const generalActive = path.join(root, '.minas', 'process', 'general-plans', 'active');
   const roots = [generalActive, ...discoverFeatureActiveRoots(root)].filter((dir) => fs.existsSync(dir));
   return roots.flatMap((dir) => walkFiles(dir)).filter((file) => isFlowserActivePlanPath(path.relative(root, file)));
 }

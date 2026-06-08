@@ -62,7 +62,7 @@ if (!fs.existsSync(seedsDir)) {
   // 4. Check for stale path references
   const stalePatterns = [
     { pattern: /\.claude\/CLAUDE\.md/g, label: ".claude/CLAUDE.md (moved to root)" },
-    { pattern: /\.claude\/skills\/(?!vc-)/g, label: "old skill path without vc- prefix" },
+    { pattern: /\.claude\/skills\/(?!minas-)/g, label: "old skill path without minas- prefix" },
   ];
 
   for (const file of textFiles) {

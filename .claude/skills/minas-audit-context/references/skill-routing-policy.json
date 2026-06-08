@@ -1,9 +1,8 @@
 {
   "canonicalRoutingSurfaces": [
-    "AGENTS.md",
-    "CLAUDE.md"
+    ".minas/CLAUDE.md"
   ],
   "allowlistedSkills": {
-    "vc-merge-worktree": "Operational utility intentionally surfaced only on explicit worktree merge/cleanup requests instead of default step-0 routing."
+    "minas-merge-worktree": "Operational utility intentionally surfaced only on explicit worktree merge/cleanup requests instead of default step-0 routing."
   }
 }

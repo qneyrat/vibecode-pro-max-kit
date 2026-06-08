@@ -68,7 +68,7 @@ if (exists(contextFile)) {
   }
 
   const concreteRefs = [];
-  for (const match of text.matchAll(/`((?:apps|packages|process|\.claude|\.codex|\.agents)\/[^`\s]+)`/g)) {
+  for (const match of text.matchAll(/`((?:apps|packages|process|\.claude|\.agents|\.minas)\/[^`\s]+)`/g)) {
     const ref = match[1].replace(/[.,;:]$/, "");
     if (/[{}[*\]]/.test(ref)) continue;
     concreteRefs.push(ref);

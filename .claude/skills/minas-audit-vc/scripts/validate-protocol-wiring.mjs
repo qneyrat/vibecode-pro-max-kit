@@ -51,7 +51,7 @@ if (fs.existsSync(agentsDir)) {
     checkedAgents.push(entry.name);
 
     // Find all .minas/process/development-protocols/ references in agent body
-    const refs = [...text.matchAll(/process\/development-protocols\/([a-z0-9_-]+\.md)/g)];
+    const refs = [...text.matchAll(/\.minas\/process\/development-protocols\/([a-z0-9_-]+\.md)/g)];
     for (const ref of refs) {
       const referencedFile = ref[1];
       if (!protocolFiles.includes(referencedFile)) {
@@ -78,7 +78,7 @@ if (exists(allProtocolsFile)) {
 
 // --- 4. Check update-process-agent.md Category 5b scan list ---
 
-const updateProcessAgent = ".claude/agents/vc-update-process-agent.md";
+const updateProcessAgent = ".claude/agents/minas-update-process-agent.md";
 if (exists(updateProcessAgent)) {
   const text = read(updateProcessAgent);
 

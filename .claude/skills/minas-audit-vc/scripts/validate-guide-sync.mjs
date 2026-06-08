@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { parseFrontmatter, listSkillDirs, exists, abs } from "../../vc-audit-context/scripts/shared-skill-utils.mjs";
+import { parseFrontmatter, listSkillDirs, exists, abs } from "../../minas-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -32,9 +32,12 @@ function listAgentNames(dir, extension) {
 }
 
 function extractTableAgents(text) {
-  // Match backtick-wrapped agent names in markdown table rows like: | `agent-name` | ... |
+  // Extract backtick-wrapped names from the README catalog. Names appear in two
+  // formats: emoji-prefixed markdown table cells (e.g. | 🔍 `minas-research-agent` | ... |)
+  // and inline, separator-delimited bullet lists (e.g. **Contract skills** — `a` · `b` · `c`).
+  // Match any backtick-wrapped lowercase/hyphen/colon token so both shapes are covered.
   const agents = new Set();
-  for (const match of text.matchAll(/\|\s*`([a-z0-9:-]+)`\s*\|/g)) {
+  for (const match of text.matchAll(/`([a-z0-9:-]+)`/g)) {
     agents.add(match[1]);
   }
   return agents;
@@ -46,8 +49,10 @@ if (!exists(guidePath)) {
 } else {
   const guideText = read(guidePath);
 
-  // Extract agents from README.md tables (Core + Specialists sections)
-  const agentsSectionMatch = guideText.match(/#{2,3} Agents\b[\s\S]*?(?=\n#{2,3} [^#]|\n---)/);
+  // Extract agents from README.md tables (Core + Specialists sections).
+  // The header line may carry a count/qualifier (e.g. "### 12 Agents"), so match
+  // any heading whose text ends in "Agents".
+  const agentsSectionMatch = guideText.match(/#{2,3} [^\n]*\bAgents\b[^\n]*[\s\S]*?(?=\n#{2,3} [^#]|\n---)/);
   const agentsSection = agentsSectionMatch ? agentsSectionMatch[0] : "";
   const guideAgents = extractTableAgents(agentsSection);
 
@@ -70,8 +75,10 @@ if (!exists(guidePath)) {
 
   // --- Skill sync ---
 
-  // Extract skills from all README.md skill catalog tables
-  const skillsSectionMatch = guideText.match(/#{2,3} Skills Catalog\b[\s\S]*?(?=\n#{2,3} [^#]|\n---\n\n#{2,3} )/);
+  // Extract skills from all README.md skill catalog tables. The header line may
+  // carry a count/qualifier (e.g. "### 31 Skills (auto-discovered)"), so match
+  // any heading whose text contains the word "Skills".
+  const skillsSectionMatch = guideText.match(/#{2,3} [^\n]*\bSkills\b[^\n]*[\s\S]*?(?=\n#{2,3} [^#]|\n---\n\n#{2,3} )/);
   const skillsSection = skillsSectionMatch ? skillsSectionMatch[0] : "";
   const guideSkills = extractTableAgents(skillsSection);
 
@@ -98,8 +105,8 @@ if (!exists(guidePath)) {
     const skillFile = `.claude/skills/${folder}/SKILL.md`;
     const parsed = parseFrontmatter(skillFile);
     const name = parsed?.fields?.name || folder;
-    // Strip vc: prefix for matching (README.md uses folder names, not vc:-prefixed names)
-    const nameWithoutPrefix = name.startsWith("vc:") ? name.slice(3) : name;
+    // Strip minas: prefix for matching (README.md uses folder names, not minas:-prefixed names)
+    const nameWithoutPrefix = name.startsWith("minas:") ? name.slice(6) : name;
     // Check if the skill folder name, frontmatter name, or stripped name appears in README.md
     if (!guideSkills.has(folder) && !guideSkills.has(name) && !guideSkills.has(nameWithoutPrefix)) {
       fail(`Skill ${folder} (name: ${name}) exists on disk but missing from README.md skill catalog`);
@@ -108,8 +115,8 @@ if (!exists(guidePath)) {
 
   // Check: every GUIDE.md skill should exist on disk
   for (const skill of guideSkills) {
-    // Also check vc:-prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
-    if (!diskSkillFolders.has(skill) && !diskSkills.has(skill) && !diskSkills.has(`vc:${skill}`)) {
+    // Also check minas:-prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
+    if (!diskSkillFolders.has(skill) && !diskSkills.has(skill) && !diskSkills.has(`minas:${skill}`)) {
       warn(`Skill ${skill} listed in README.md but not found on disk`);
     }
   }

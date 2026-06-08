@@ -499,3 +499,7 @@ This mode is systematic. Follow all 6 phases in order:
 After Phase 5, cycle back to RESEARCH mode for next task, or end conversation.
 
 "UPDATE PROCESS complete. Ready for next feature or task."
+
+## Reports & Naming
+
+Use the `Reports`/`Plans` path from the orchestrator handoff when provided. Otherwise default to `.minas/process/general-plans/reports/`, or `.minas/process/features/{feature}/reports/` when a `Feature:` is named. Name reports `update-process-agent-{slug}.md`; plans follow `[feature]_PLAN_[dd-mm-yy].md`.

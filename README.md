@@ -140,9 +140,9 @@ your-project/
 │   │   ├── minas-security/
 │   │   ├── minas-scout/
 │   │   └── ...
-│   ├── hooks/               # 🪝 3 lifecycle hooks
+│   ├── hooks/               # 🪝 2 lifecycle hooks
 │   │   ├── session-init.cjs
-│   │   ├── subagent-init.cjs
+│   │   ├── session-state.cjs
 │   │   └── ...
 │   └── settings.json        # ⚙️ permissions.deny + hooks (merged with yours)
 ├── .agents/
@@ -455,9 +455,9 @@ It researches your current auth code and how other codebases solved RBAC, writes
 <tr>
 <td align="center" width="50%" valign="top">
 <h1>🪝</h1>
-<h3>7</h3>
+<h3>2</h3>
 <strong>Lifecycle Hooks</strong><br>
-<sub>Pre/post execution guardrails and context injection</sub>
+<sub>Session protocol injection and statusline refresh</sub>
 </td>
 <td align="center" width="50%" valign="top">
 <h1>📜</h1>
@@ -1116,13 +1116,14 @@ When a topic accumulates 5+ artifacts, it gets its own **feature folder** — a 
 
 <br>
 
-### 🪝 3 Hooks
+### 🪝 2 Hooks
 
 | Hook | What it does |
 |------|-------------|
 | 🧠 **Session init** | Detects stack, injects env vars, dumps the slim protocol, recovers approval gates after compaction |
-| 💉 **Subagent context** | Injects ~200 token compact context block into every subagent |
 | 📊 **Statusline refresh** | Refreshes the statusline activity snapshot on edits |
+
+> 💉 **Subagent context** is no longer a hook — each agent definition carries its own protocol, self-resolves `all-context.md`, and the orchestrator passes the active plan/reports path in the handoff. Native subagents inherit that without a per-spawn ~200-token injection.
 
 > 🔐 **Privacy & path guardrails** are no longer hooks — they use Claude Code's native [`permissions.deny`](https://code.claude.com/docs/en/settings) in `settings.json` to block reads of `.env`, credentials, SSH keys, and noise dirs (`node_modules/`, `dist/`, …). Native rules mean zero per-command overhead and no false positives on Bash strings.
 
@@ -1135,7 +1136,7 @@ your-project/
 ├── .claude/
 │   ├── agents/              # 🤖 12 agent definitions (.md)
 │   ├── skills/              # ⚡ 31 skill modules (each a directory with SKILL.md)
-│   ├── hooks/               # 🪝 7 lifecycle hooks (.cjs)
+│   ├── hooks/               # 🪝 2 lifecycle hooks (.cjs)
 │   └── settings.json        # ⚙️ Merged with yours, never overwritten
 ├── .agents/
 │   └── skills -> ../.claude/skills   # 🔗 Symlink for other agent runtimes

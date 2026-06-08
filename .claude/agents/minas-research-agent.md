@@ -219,3 +219,7 @@ End every response with the subagent status block:
 ```
 
 Full protocol: `.minas/process/development-protocols/orchestration.md`
+
+## Reports & Naming
+
+Use the `Reports`/`Plans` path from the orchestrator handoff when provided. Otherwise default to `.minas/process/general-plans/reports/`, or `.minas/process/features/{feature}/reports/` when a `Feature:` is named. Name reports `research-agent-{slug}.md`; plans follow `[feature]_PLAN_[dd-mm-yy].md`.

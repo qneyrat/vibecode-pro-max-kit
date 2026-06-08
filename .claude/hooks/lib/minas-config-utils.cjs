@@ -2,7 +2,7 @@
  * Shared utilities for ClaudeKit hooks
  *
  * Contains config loading, path sanitization, and common constants
- * used by session-init.cjs and dev-rules-reminder.cjs
+ * used by the lifecycle hooks (session-init, session-state)
  */
 
 const fs = require('fs');
@@ -86,10 +86,6 @@ const DEFAULT_CONFIG = {
   statuslineQuota: true,
   hooks: {
     'session-init': true,
-    'subagent-init': true,
-    'dev-rules-reminder': true,
-    'usage-context-awareness': true,
-    'context-tracking': true,
     'session-state': true
   }
 };

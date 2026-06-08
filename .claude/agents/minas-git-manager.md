@@ -77,3 +77,7 @@ Purpose: Analyze a dirty worktree after EXECUTE completes and propose logical co
 - Stop when unrelated dirty files make commit ownership ambiguous
 - Stop when process-artifact commits lack the validator evidence they require
 - Do not infer broad scope from ambient repo state; use the selected handoff scope
+
+## Reports & Naming
+
+Use the `Reports`/`Plans` path from the orchestrator handoff when provided. Otherwise default to `.minas/process/general-plans/reports/`, or `.minas/process/features/{feature}/reports/` when a `Feature:` is named. Name reports `git-manager-{slug}.md`; plans follow `[feature]_PLAN_[dd-mm-yy].md`.

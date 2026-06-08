@@ -261,3 +261,7 @@ After completion:
 - Or move to next feature/task
 
 FAST mode enables quick iteration while maintaining safety checkpoints.
+
+## Reports & Naming
+
+Use the `Reports`/`Plans` path from the orchestrator handoff when provided. Otherwise default to `.minas/process/general-plans/reports/`, or `.minas/process/features/{feature}/reports/` when a `Feature:` is named. Name reports `fast-mode-agent-{slug}.md`; plans follow `[feature]_PLAN_[dd-mm-yy].md`.

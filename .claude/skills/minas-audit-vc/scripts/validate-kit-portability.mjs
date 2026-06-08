@@ -52,11 +52,9 @@ function walk(dir, predicate, out = []) {
 // Enumerated shipped TEXT surfaces (mirror of the vc-publish Step 8 resolved set,
 // minus the resolver). Excludes binaries and node_modules (via SKIP_DIR).
 const textFiles = [
-  "CLAUDE.md",
-  "AGENTS.md",
+  ".minas/CLAUDE.md",
   ...walk(".claude/skills", (rel) => /\.(md|cjs|mjs|py|js|json)$/.test(rel)),
   ...walk(".claude/agents", (rel) => rel.endsWith(".md")),
-  ...walk(".codex", (rel) => /\.(md|toml|cjs|mjs|py|js|json)$/.test(rel)),
   ...walk("process/development-protocols", (rel) => rel.endsWith(".md")),
 ].filter((rel) => fs.existsSync(path.join(root, rel)));
 

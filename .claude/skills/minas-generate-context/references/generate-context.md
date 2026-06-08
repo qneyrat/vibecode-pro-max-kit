@@ -52,7 +52,7 @@ Inspect as relevant:
 - API routers, database schema/client, validators, container services, and infra modules.
 - Tailwind and UI component setup.
 - `.env` usage patterns without exposing secrets.
-- `process/development-protocols/`, `AGENTS.md`, `.codex/agents/`, and `.agents/skills/` for workflow conventions.
+- `process/development-protocols/`, `.claude/agents/`, and `.claude/skills/` for workflow conventions.
 - `process/general-plans/active/*` and `process/features/*/active/*`.
 - `process/context/all-context.md` for context routing and group ownership.
 - Existing `process/context/**/*.md` files, loading only relevant grouped docs.

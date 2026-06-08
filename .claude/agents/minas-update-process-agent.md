@@ -37,15 +37,15 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 - Extract critical changes, user feedback, coding patterns, and style preferences
 - Identify areas where current rules could be enhanced
 - Review self-review output from EXECUTE mode for deviations
-- **Behavioral failure analysis:** Identify workflow or behavioral failures from this session (e.g., agents skipping context routing, missing operational procedures, failing to read deeper docs, ignoring routing tables). For each failure, note the root cause and which governance file should be fixed (CLAUDE.md, AGENTS.md, protocol docs, agent prompts, context files). These fixes belong in Phase 2 as protocol improvements, not just context edits.
+- **Behavioral failure analysis:** Identify workflow or behavioral failures from this session (e.g., agents skipping context routing, missing operational procedures, failing to read deeper docs, ignoring routing tables). For each failure, note the root cause and which governance file should be fixed (CLAUDE.md, protocol docs, agent prompts, context files). These fixes belong in Phase 2 as protocol improvements, not just context edits.
 
 ### Phase 2: Improvement Generation
 
 Categorize potential improvements by target rule file:
 - **Code Standards / Tech Stack** → `process/development-protocols/implementation-standards.md`
-- **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `CLAUDE.md` or `AGENTS.md` if adapter guidance must change
+- **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `.minas/CLAUDE.md` if adapter guidance must change
 - **Mode Orchestration** → `process/development-protocols/orchestration.md`
-- **Agents** → `.claude/agents/` and `.codex/agents/`
+- **Agents** → `.claude/agents/`
 - **Skills** → `.agents/skills/`
 
 Format each improvement as:
@@ -89,7 +89,7 @@ Location: [Where in file - section name or append location]
   - do NOT keep the old feature artificially "in progress" just because future adjacent work exists
 
 **3. Feature List Sync — ALWAYS CHECK THIS:**
-- Run `ls process/features/` and compare to the **Current features** list in `CLAUDE.md` and `AGENTS.md`
+- Run `ls process/features/` and compare to the **Current features** list in `CLAUDE.md`
 - If a new feature folder exists that isn't in the list → update the list
 - If a listed feature folder no longer exists → remove it from the list
 - If general artifacts (plans/reports/references) for a single topic have reached 5+ → flag for promotion and ask user
@@ -123,7 +123,7 @@ Location: [Where in file - section name or append location]
   - explicitly trigger or recommend the `vc-audit-context` skill before claiming the context layer is fully reconciled
 
 **5. Skill/Agent File Updates** (if workflow improvements discovered):
-- Check `.agents/skills/`, `.claude/agents/`, and `.codex/agents/` for files that should be updated
+- Check `.agents/skills/` and `.claude/agents/` for files that should be updated
 - Examples: new debugging patterns, improved agent prompts, workflow optimizations
 - Scan MEMORY.md for entries that have matured into stable patterns worth promoting to agent prompts, protocol files, or context docs
 - Explicitly check whether the task should trigger:
@@ -136,22 +136,19 @@ Location: [Where in file - section name or append location]
   - `vc-audit-plans` when stale active-plan reconciliation or session-close plan review is needed
 - If structural context changes happened, `vc-audit-context` is not optional housekeeping; it is the specialist validation step for the context layer.
 
-**5b. Mirror Discipline — ALWAYS CHECK THIS:**
+**5b. Surface Sync Discipline — ALWAYS CHECK THIS:**
 - If shared workflow behavior changed, explicitly review all of:
   - `process/development-protocols/`
-  - `AGENTS.md`
   - `README.md`
-  - `CLAUDE.md`
+  - `.minas/CLAUDE.md`
   - `.claude/agents/`
-  - `.codex/agents/`
   - `.agents/skills/` / `.claude/skills/`
 - For machine verification of harness sync, run `audit-vc` validators
-- You MUST state which surfaces required mirrored edits and which did not.
-- If `AGENTS.md` changes, verify whether `CLAUDE.md` must change too.
-- If `.claude/agents/*.md` changes, verify whether `.codex/agents/*.toml` must change too.
-- If a shared skill contract changes, verify whether Codex discovery guidance or agent prompts need updating too.
-- Do not treat one-surface edits as complete until cross-surface mirror review is done.
-- Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces mirror those sources rather than inventing parallel truth.
+- You MUST state which surfaces required edits and which did not.
+- If `.minas/CLAUDE.md` changes, verify whether agent prompts or protocol docs must change too.
+- If a shared skill contract changes, verify whether agent prompts need updating too.
+- Do not treat one-surface edits as complete until cross-surface review is done.
+- Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces reflect those sources rather than inventing parallel truth.
 
 **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
 - Scan the conversation for items that were **researched but intentionally skipped**, deferred, or marked "for later"
@@ -206,7 +203,6 @@ For each approved improvement:
 **Memory Storage**:
 - Store durable shared project knowledge in `process/context/`.
 - If the user explicitly asks to update Claude-specific project memory, write to `~/.claude/projects/[project-slug]/memory/` using the existing memory format.
-- Codex does not have a separate repo-local project-memory mirror.
 
 **Rule File Updates**:
 - Read target file
@@ -346,7 +342,6 @@ Provide summary of enhancement impact.
 
 **Required final checklist**:
 - Claude surface updated or explicitly unchanged with reason
-- Codex surface updated or explicitly unchanged with reason
 - `process/` docs updated or explicitly unchanged with reason
 - context files reviewed and outcome stated
 - validators run and results reported

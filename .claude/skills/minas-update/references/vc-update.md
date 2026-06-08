@@ -15,9 +15,7 @@ The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
     ".claude/skills/**/.??*",
     ".claude/hooks/**",
     ".claude/settings.json",
-    ".codex/**",
-    "CLAUDE.md",
-    "AGENTS.md",
+    ".minas/CLAUDE.md",
     "process/development-protocols/**",
     "process/_seeds/**",
     "process/_seeds/**/.gitkeep",
@@ -30,7 +28,6 @@ The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
     "process/general-plans/**",
     "**/.git/**",
     "**/.logs/**",
-    ".codex/statusline.cjs",
     ".claude/skills/vc-chrome-devtools/scripts/node_modules/**"
   ],
   "strip": [],
@@ -150,7 +147,7 @@ If the user has intentional local changes to a managed file:
 
 Files in the `merge` list are NEVER overwritten if they exist locally. The dry-run shows the diff so the user can manually reconcile. On fresh install (no existing file), the kit version is installed.
 
-`CLAUDE.md` and `AGENTS.md` are harness-only files — overwritten freely on update like any other managed file. Project-specific content (context groups, tech stack, features) belongs in `process/context/all-context.md`, which vc-update never touches.
+`.minas/CLAUDE.md` is a harness-only file — overwritten freely on update like any other managed file. Project-specific content (context groups, tech stack, features) belongs in `process/context/all-context.md`, which vc-update never touches.
 
 ### Copy-if-missing files (example PRDs)
 
@@ -186,11 +183,11 @@ With the glob-based manifest, adding a new skill directory to `.claude/skills/` 
 vc-update dry run: v2.0.4 -> v2.1.0
 
 FILES:
-  [modified]  CLAUDE.md  (+15 -8)
+  [modified]  .minas/CLAUDE.md  (+15 -8)
   [modified]  .claude/agents/vc-execute-agent.md  (+3 -1)
   [new]       .claude/hooks/lib/new-util.cjs
   [removed]   .claude/skills/deprecated-skill/SKILL.md
-  [unchanged] AGENTS.md
+  [unchanged] .claude/settings.json
   ... (42 more unchanged)
 
 MERGE (preserved, manual review needed):

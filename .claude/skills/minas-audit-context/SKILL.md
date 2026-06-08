@@ -1,6 +1,6 @@
 ---
 name: vc:audit-context
-description: Audit project context routing, shared-skill discoverability, and Claude/Codex wiring. Use when context docs or skill surfaces move, split, or drift.
+description: Audit project context routing, shared-skill discoverability, and agent context wiring. Use when context docs or skill surfaces move, split, or drift.
 metadata:
   author: flowser
   version: "1.0.0"
@@ -42,16 +42,15 @@ Optional input: a context group, agent, skill, or folder scope to prioritize dur
    relevant surface.
 9. Re-run the failed validators until they pass.
 
-For agent/skill harness validation (agent parity, skill frontmatter, README.md sync, protocol wiring), use the `audit-vc` skill.
+For agent/skill harness validation (agent definition consistency, skill frontmatter, README.md sync, protocol wiring), use the `audit-vc` skill.
 
 ## Rules
 
-- Treat `.claude/skills/` as canonical; `.agents/skills/` is the Codex discovery symlink.
+- Treat `.claude/skills/` as canonical; `.agents/skills/` is the OpenCode discovery symlink.
 - Treat `.claude/skills/vc-audit-context/references/skill-routing-policy.json` as the explicit allowlist for intentionally non-routed shared skills.
 - Do not move large context files without updating `process/context/all-context.md`.
 - Do not delete compatibility wrappers unless no current reference points to them.
 - Keep context groups durable-domain based, not one group per temporary feature.
-- When updating agents, mirror Claude markdown and Codex TOML surfaces together.
 - Treat validator warnings as audit findings unless the user asks for a strict cleanup.
 - Prefer validator-backed routing truth over adding more soft prose.
 - Treat process/context/generated-skills-catalog.json as the machine-readable catalog owned by `audit-context`.

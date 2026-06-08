@@ -10,9 +10,8 @@ Check:
 - Group entrypoints: `process/context/*/all-*.md`
 - Current context docs: `process/context/**/*.md`
 - Claude agents: `.claude/agents/*.md`
-- Codex agents: `.codex/agents/*.toml`
 - Shared skills: `.claude/skills/*/SKILL.md`
-- Codex discovery path: `.agents/skills`
+- Skill discovery path: `.agents/skills`
 - Context validator scripts under `.claude/skills/vc-audit-context/scripts/`
 
 ## Classification
@@ -26,12 +25,10 @@ Classify findings as:
 - **Agent routing gap**: Critical agent still bypasses `process/context/all-context.md`.
 - **Skill discovery gap**: Skill exists in `.claude/skills` but is not reachable through `.agents/skills`.
 - **Skill routing gap**: Skill exists but is neither routed from canonical surfaces nor explicitly allowlisted.
-- **Skill schema warning**: Skill frontmatter contains non-Codex system keys or discovery metadata drift.
+- **Skill schema warning**: Skill frontmatter contains unexpected system keys or discovery metadata drift.
 - **Skill cross-ref failure**: Skill references a missing local `references/`, `scripts/`, `templates/`, or `assets/` path.
 - **Skill dependency warning**: Skill references another skill in a way that creates avoidable cycles or confusing dependency chains.
 - **Confusable skill warning**: Two skill names are close enough to confuse routing or discovery.
-- **Agent parity gap**: Claude and Codex agent definitions do not have matching names.
-- **Agent content drift**: Claude and Codex agent definitions exist but their normalized instructions differ.
 - **Stale workflow alias**: Old documentation-manager, plan-manager, root-docs, or legacy docs-validation routes remain in active agent/skill instructions.
 - **Migration risk**: File is large or heavily referenced and should use wrapper-based migration.
 
@@ -43,18 +40,14 @@ Classify findings as:
    - `.agents/skills/vc-audit-context/SKILL.md`
 3. Confirm `process/context/all-context.md` indexes every current context `.md` file.
 4. Confirm each context group directory has a canonical `all-{group}.md` entrypoint.
-5. Confirm critical Claude/Codex surfaces mention `process/context/all-context.md`:
-   - `AGENTS.md`
-   - `CLAUDE.md`
+5. Confirm critical Claude surfaces mention `process/context/all-context.md`:
+   - `.minas/CLAUDE.md`
    - `.claude/agents/vc-update-process-agent.md`
-   - `.codex/agents/update-process-agent.toml`
    - `.claude/agents/vc-research-agent.md`
-   - `.codex/agents/research-agent.toml`
 6. Confirm concrete backticked `process/context/...` references exist.
 7. Confirm every skill folder is reachable through `.agents/skills`.
-8. Confirm Claude and Codex agent names are mirrored.
-9. Confirm active workflow instructions do not route to stale documentation-manager, plan-manager, root-docs, or legacy docs-validation flows.
-10. Confirm every kept shared skill is either routed from the canonical surfaces in `skill-routing-policy.json` or explicitly allowlisted there with a reason.
+8. Confirm active workflow instructions do not route to stale documentation-manager, plan-manager, root-docs, or legacy docs-validation flows.
+9. Confirm every kept shared skill is either routed from the canonical surfaces in `skill-routing-policy.json` or explicitly allowlisted there with a reason.
 
 ## Validators
 
@@ -69,7 +62,7 @@ node .claude/skills/vc-audit-context/scripts/validate-confusable-skills.mjs
 node .claude/skills/vc-audit-context/scripts/generate-skills-catalog.mjs --check
 ```
 
-For agent/skill harness validators (agent parity, skill frontmatter, README.md sync, protocol wiring), see the `audit-vc` skill:
+For agent/skill harness validators (agent definition consistency, skill frontmatter, README.md sync, protocol wiring), see the `audit-vc` skill:
 
 ```bash
 node .claude/skills/vc-audit-vc/scripts/validate-agent-parity.mjs
@@ -99,9 +92,8 @@ Return:
 | Router exists | PASS/FAIL | ... |
 | Context files indexed | PASS/FAIL | ... |
 | Group entrypoints | PASS/FAIL | ... |
-| Claude/Codex wiring | PASS/FAIL | ... |
+| Agent context wiring | PASS/FAIL | ... |
 | Skill discovery | PASS/FAIL | ... |
-| Agent parity | PASS/FAIL | ... |
 | Broken refs | PASS/FAIL | ... |
 
 ### Actions Taken

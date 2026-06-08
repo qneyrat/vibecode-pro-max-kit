@@ -31,7 +31,7 @@ When creating a new feature folder:
 mkdir -p process/features/{name}/{active,completed,backlog,reports,references}
 ```
 
-Then update both `AGENTS.md` and `CLAUDE.md` so the current-features list stays in sync.
+Then update `.minas/CLAUDE.md` so the current-features list stays in sync.
 
 ## Subagent Status Protocol
 
@@ -216,7 +216,7 @@ Rules:
 
 After building the closeout packet, score the UPDATE PROCESS urgency:
 
-- Count: (a) total files touched, (b) any `.claude/`, `.codex/`, `README.md`, `AGENTS.md`, or `process/development-protocols/` changes, (c) session involved 3+ memory-worthy observations
+- Count: (a) total files touched, (b) any `.claude/`, `.minas/CLAUDE.md`, `README.md`, or `process/development-protocols/` changes, (c) session involved 3+ memory-worthy observations
 - LOW (0-1 signals): include "UPDATE PROCESS available if you want." in closeout
 - MEDIUM (2 signals): include "Recommend UPDATE PROCESS -- significant changes detected."
 - HIGH (3+ signals): include "Strongly recommend UPDATE PROCESS -- harness/protocol files touched."

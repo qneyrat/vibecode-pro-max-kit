@@ -44,9 +44,9 @@ The `--json` output provides all metadata needed for diffing:
 
 **Key change from v1.0:** The publish step no longer needs to update `managed`/`managedDirs` arrays in the manifest. Glob patterns are stable -- new files are automatically included. The only manifest edit at publish time is the version bump.
 
-## CLAUDE.md / AGENTS.md Content Stripping
+## .minas/CLAUDE.md Content Stripping
 
-When publishing, CLAUDE.md and AGENTS.md must be harness-only.
+When publishing, `.minas/CLAUDE.md` must be harness-only.
 
 ### Sections to KEEP (harness methodology)
 
@@ -75,11 +75,11 @@ When publishing, CLAUDE.md and AGENTS.md must be harness-only.
 
 ### Strategy
 
-Maintain harness-only CLAUDE.md and AGENTS.md directly in the kit repo as canonical versions. When publishing:
+Maintain a harness-only `.minas/CLAUDE.md` directly in the kit repo as the canonical version. When publishing:
 
 1. Compare methodology sections between dev repo and kit repo
 2. If dev repo has newer methodology (new agents, skills, routing), apply to kit repo's harness-only version
-3. Never blindly copy dev repo's CLAUDE.md/AGENTS.md to kit repo
+3. Never blindly copy dev repo's `.minas/CLAUDE.md` to kit repo
 
 ## Error Handling
 
@@ -106,7 +106,7 @@ Maintain harness-only CLAUDE.md and AGENTS.md directly in the kit repo as canoni
 ## Leak Detection Patterns
 
 Step 8 is a **resolved-set, two-check** gate. It scans the full shipped TEXT
-surface (not just `CLAUDE.md`/`AGENTS.md`) so brand leaks in skill/agent prose and
+surface (not just `.minas/CLAUDE.md`) so brand leaks in skill/agent prose and
 dangling context-doc references are caught at publish time.
 
 **Resolve the shipped set** via the kit resolver, then keep only TEXT surfaces:
@@ -118,9 +118,8 @@ node <kitRepoPath>/resolve-manifest.mjs --root <kitRepoPath> --json
 Restrict the resolved `files` to:
 - `.claude/skills/**` matching `*.md`, `*.cjs`, `*.mjs`, `*.py`, `*.js`, `*.json`
 - `.claude/agents/**` matching `*.md`
-- `.codex/**`
 - `process/development-protocols/**`
-- plus `CLAUDE.md`, `AGENTS.md`
+- plus `.minas/CLAUDE.md`
 
 Exclude binaries and `**/node_modules/**`.
 
@@ -153,23 +152,23 @@ Survivors (allowed): `process/context/all-context.md`,
 `process/context/tests/all-tests.md`. Portable directory references (e.g.
 `process/context/tests/`) and the `process/context/...` placeholder are fine.
 
-### Existing narrow CLAUDE.md/AGENTS.md grep (kept as-is)
+### Existing narrow .minas/CLAUDE.md grep (kept as-is)
 
-This narrow grep stays on just those two files; `tRPC`/`Prisma` plus the
+This narrow grep stays on just that file; `tRPC`/`Prisma` plus the
 hosted-database product name all REMAIN here, as shown in the pattern below:
 
 ```bash
 # Project-specific product names
-grep -ri "flowser\|tRPC\|Prisma\|Supabase\|CloakBrowser\|OpenClaw" CLAUDE.md AGENTS.md
+grep -ri "flowser\|tRPC\|Prisma\|Supabase\|CloakBrowser\|OpenClaw" .minas/CLAUDE.md
 
 # Absolute paths
 grep -r "/Users/" .
 
 # Machine-specific config
-grep -r "localhost:[0-9]" CLAUDE.md AGENTS.md
+grep -r "localhost:[0-9]" .minas/CLAUDE.md
 
 # Specific service URLs
-grep -ri "supabase\.co\|vercel\.app\|clerk\.dev" CLAUDE.md AGENTS.md
+grep -ri "supabase\.co\|vercel\.app\|clerk\.dev" .minas/CLAUDE.md
 ```
 
 The brand grep matches product names ONLY. It does NOT match `.ck.json`/`.ckignore`
@@ -192,8 +191,7 @@ FILES:
   [modified]  .claude/hooks/lib/scout-checker.cjs  (+2 -1)
   [new]       .claude/skills/vc-new-skill/SKILL.md
   [new]       .claude/skills/vc-new-skill/references/new-skill.md
-  [strip]     CLAUDE.md (needs content review)
-  [strip]     AGENTS.md (needs content review)
+  [strip]     .minas/CLAUDE.md (needs content review)
   [unchanged] .claude/settings.json
   ... (350 more unchanged)
 

@@ -147,7 +147,7 @@ For validated phase work, also classify the commit checkpoint explicitly:
 
 - **Execution commit recommended before UPDATE PROCESS**
   - implementation or test changes from the selected phase are well-tested and ready for a logical code/test commit
-  - later UPDATE PROCESS edits are expected to touch `process/`, `.claude/`, `.codex/`, or `AGENTS.md` separately
+  - later UPDATE PROCESS edits are expected to touch `process/`, `.claude/`, or `.minas/CLAUDE.md` separately
 - **Process commit belongs after UPDATE PROCESS**
   - the remaining changes are primarily plan, report, context, or harness-governance artifacts
   - splitting execution and process commits will keep the history easier to review and resume

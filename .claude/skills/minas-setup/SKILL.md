@@ -16,7 +16,7 @@ The skill adapts its flow based on what it finds:
 
 In both cases, the skill asks questions and waits for approval at every major step. It never silently reorganizes files or overwrites good content.
 
-CLAUDE.md and AGENTS.md are managed protocol files (orchestrator, RIPER-5 methodology, routing). They contain zero project-specific content and should NOT be adapted. Project-specific information lives in `process/context/all-context.md`, which is populated during the STUDY phase.
+`.minas/CLAUDE.md` is a managed protocol file (orchestrator, RIPER-5 methodology, routing). It contains zero project-specific content and should NOT be adapted. Project-specific information lives in `process/context/all-context.md`, which is populated during the STUDY phase.
 
 ## Prerequisites
 
@@ -29,7 +29,7 @@ Read `references/vc-setup.md` for detailed phase instructions, detection heurist
 
 ### Phase 0: BOOTSTRAP (handled by install.sh)
 
-The `install.sh` script handles fetching and installing harness files before vc-setup runs. For existing projects, it backs up old `.claude/`, `.codex/`, `.agents/` to `.vibecode-backup/`, then does a clean install of all kit files. User's `.claude/settings.json` is restored after install. The `process/` directory is never touched by install.sh -- layout migration happens in vc-setup's SCAFFOLD phase.
+The `install.sh` script handles fetching and installing harness files before vc-setup runs. For existing projects, it backs up old `.claude/`, `.agents/` to `.minas-backup/`, then does a clean install of all kit files. User's `.claude/settings.json` is restored after install. The `process/` directory is never touched by install.sh -- layout migration happens in vc-setup's SCAFFOLD phase.
 
 **If harness files are already present** (`.claude/agents/` and `.claude/skills/` exist with 12+ agents and 20+ skills), skip Phase 0 and proceed directly to Phase 1 DETECT.
 
@@ -211,17 +211,16 @@ See `references/vc-setup.md` for the full STUDY phase checklist, parallel subage
 Verify the setup is complete, correct, and populated with real content.
 
 1. Check all expected directories exist under `process/`.
-2. Verify agent parity: agent names in `.claude/agents/` should match `.codex/agents/`.
-3. Check that `.agents/skills` symlink exists and resolves.
-4. Verify STUDY phase output quality:
+2. Check that `.agents/skills` symlink exists and resolves.
+3. Verify STUDY phase output quality:
    - `all-context.md` has no remaining `{{placeholder}}` text (except `{{project_name}}` if seed was just created)
    - `all-context.md` has a populated Repository Structure section with real directory tree
    - `all-context.md` has a populated Technology Stack section with specific versions
    - `all-tests.md` has actual test commands (not placeholder text)
    - Context groups created have corresponding entries in the routing tables
    - Feature folders created have `_GUIDE.md` files with real scope descriptions
-5. Report any issues found.
-6. Suggest running validation scripts if they exist in the target repo:
+4. Report any issues found.
+5. Suggest running validation scripts if they exist in the target repo:
    - `node .claude/skills/vc-generate-context/scripts/validate-all-context.mjs`
    - `node .claude/skills/vc-audit-context/scripts/validate-context-discovery.mjs`
 
@@ -241,7 +240,7 @@ These principles apply throughout the entire setup flow:
 
 ## Rules
 
-- CLAUDE.md and AGENTS.md are managed protocol files. Do NOT adapt or modify them.
+- `.minas/CLAUDE.md` is a managed protocol file. Do NOT adapt or modify it.
 - Do not modify RIPER-5 methodology sections, phase transition rules, or key principles.
 - Do not modify tool restriction lists in agent prompts.
 - Do not modify the status reporting format (DONE, DONE_WITH_CONCERNS, BLOCKED, NEEDS_CONTEXT).

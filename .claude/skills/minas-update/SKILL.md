@@ -124,7 +124,6 @@ COPY-IF-MISSING (skipped, already present):
 
 SYMLINKS:
   [ok]        .agents/skills -> ../.claude/skills
-  [will fix]  .codex/hooks -> ../.claude/hooks
 
 Summary: 5 modified, 2 new, 1 removal, 1 merge skipped, 45 unchanged
 ```
@@ -194,7 +193,7 @@ Version written to .vc-version: {remoteVersion}
 - Always show the dry-run diff before applying. Never apply without user confirmation.
 - Clean up the temp clone directory even on error or abort.
 - If `.vc-version` is missing, treat as version `0.0.0` (first update, apply everything).
-- `CLAUDE.md` and `AGENTS.md` are harness-only files — overwritten freely on update. Project-specific content belongs in `process/context/all-context.md`, not in these files.
+- `.minas/CLAUDE.md` is a harness-only file — overwritten freely on update. Project-specific content belongs in `process/context/all-context.md`, not in this file.
 - Files in the `merge` list (e.g. `.claude/settings.json`) are never overwritten if they exist locally. Show the diff for manual review.
 - Files in the `copyIfMissing` list are only installed if they don't already exist locally.
 - Removals are detected by comparing the local `.vc-installed-files` snapshot against the new resolved file list.

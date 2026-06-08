@@ -50,95 +50,28 @@ function parseClaudeAgent(file) {
   };
 }
 
-function parseCodexAgent(file) {
-  const text = read(file);
-  const description =
-    text.match(/^description\s*=\s*'''([\s\S]*?)'''/m)?.[1] ||
-    text.match(/^description\s*=\s*"""([\s\S]*?)"""/m)?.[1] ||
-    text.match(/^description\s*=\s*"([^"]*)"/m)?.[1] ||
-    text.match(/^description\s*=\s*'([^']*)'/m)?.[1] ||
-    "";
-  const body =
-    text.match(/developer_instructions\s*=\s*'''([\s\S]*?)'''/m)?.[1] ||
-    text.match(/developer_instructions\s*=\s*"""([\s\S]*?)"""/m)?.[1] ||
-    "";
-  return { description, body: body.trim() };
-}
-
-function modeOf(text) {
-  return text.match(/\[MODE:\s*([A-Z -]+)\]/)?.[1] || "";
-}
-
-function normalizeDescription(text) {
-  return text.replace(/''/g, "'").replace(/\s+/g, " ").trim();
-}
-
-function normalize(text) {
-  return text
-    .replace(/\r\n/g, "\n")
-    .replace(/\.claude\/CLAUDE\.md|CLAUDE\.md|AGENTS\.md/g, "{TOP_LEVEL_INSTRUCTIONS}")
-    .replace(/\.claude\/skills\/|\.agents\/skills\//g, "{SKILLS}/")
-    .replace(/\.claude\/agents\/|\.codex\/agents\//g, "{AGENTS}/")
-    .replace(/`\{SKILLS\}\/`, `\{AGENTS\}\/`, and `\{AGENTS\}\/`/g, "`{SKILLS}/` and `{AGENTS}/`")
-    .replace(/`\{AGENTS\}\/` and `\{AGENTS\}\/`/g, "`{AGENTS}/`")
-    .replace(/\{AGENTS\}\/ and \{AGENTS\}\//g, "{AGENTS}/")
-    .replace(/[ \t]+$/gm, "")
-    .trim();
+if (!exists(".claude/agents")) {
+  fail(".claude/agents directory missing");
 }
 
 const claudeAgents = listAgentNames(".claude/agents", ".md");
-const codexAgents = listAgentNames(".codex/agents", ".toml");
+const checked = [];
 
 for (const agent of claudeAgents) {
-  if (!codexAgents.includes(agent)) fail(`.codex/agents/${agent}.toml missing`);
-}
-for (const agent of codexAgents) {
-  if (!claudeAgents.includes(agent)) fail(`.claude/agents/${agent}.md missing`);
-}
-
-const compared = [];
-for (const agent of claudeAgents.filter((name) => codexAgents.includes(name))) {
   const claudeFile = `.claude/agents/${agent}.md`;
-  const codexFile = `.codex/agents/${agent}.toml`;
   const claude = parseClaudeAgent(claudeFile);
-  const codex = parseCodexAgent(codexFile);
-  const claudeMode = modeOf(claude.body);
-  const codexMode = modeOf(codex.body);
 
   if (!claude.description) fail(`${claudeFile} description missing`);
-  if (!codex.description) fail(`${codexFile} description missing`);
-  if (
-    claude.description &&
-    codex.description &&
-    normalizeDescription(claude.description) !== normalizeDescription(codex.description)
-  ) {
-    warn(`${agent} descriptions differ between Claude and Codex`);
-  }
-  if (claudeMode !== codexMode) {
-    fail(`${agent} mode mismatch: Claude=${claudeMode || "missing"} Codex=${codexMode || "missing"}`);
-  }
   if (!claude.body.includes("process/context/all-context.md") && !["git-manager", "innovate-agent"].includes(agent)) {
     warn(`${claudeFile} does not mention process/context/all-context.md`);
   }
-  if (!codex.body.includes("process/context/all-context.md") && !["git-manager", "innovate-agent"].includes(agent)) {
-    warn(`${codexFile} does not mention process/context/all-context.md`);
-  }
 
-  const normalizedClaude = normalize(claude.body);
-  const normalizedCodex = normalize(codex.body);
-  if (normalizedClaude !== normalizedCodex) {
-    const lengthDelta = Math.abs(normalizedClaude.length - normalizedCodex.length);
-    const larger = Math.max(normalizedClaude.length, normalizedCodex.length) || 1;
-    warn(`${agent} normalized body differs (${Math.round((lengthDelta / larger) * 100)}% length delta)`);
-  }
-
-  compared.push(agent);
+  checked.push(agent);
 }
 
 const result = {
   checkedClaudeAgents: claudeAgents.length,
-  checkedCodexAgents: codexAgents.length,
-  comparedAgents: compared.length,
+  comparedAgents: checked.length,
   warnings,
   failures,
   strict,

@@ -12,7 +12,7 @@ After running DETECT, classify the project before choosing a flow:
 | Has `process/` directory with any content | **Existing project** -- use Flow B |
 | Has `all-context.md` with real (non-placeholder) content | **Existing project** -- use Flow B |
 | Has CLAUDE.md with project-specific sections (beyond managed protocol) | **Existing project** -- use Flow B |
-| Has `.vibecode-backup/` (just ran install.sh over an existing setup) | **Existing project** -- use Flow B |
+| Has `.minas-backup/` (just ran install.sh over an existing setup) | **Existing project** -- use Flow B |
 
 When in doubt, treat as existing. It is always safer to study first and ask before changing things.
 
@@ -226,7 +226,7 @@ Check for:
 - `docs/` directory (existing documentation)
 - `.github/` directory (CI/CD)
 - `README.md` content (project description)
-- `.vibecode-backup/` (indicates install.sh just ran over an existing setup)
+- `.minas-backup/` (indicates install.sh just ran over an existing setup)
 
 ### Detection Summary Format
 
@@ -259,7 +259,7 @@ Proceed? (y/n)
 
 ### Managed vs User Files
 
-CLAUDE.md, AGENTS.md, and agent prompts are **managed protocol files**. They are copied as-is from the harness source and should NOT be adapted per-project. They contain zero project-specific content.
+`.minas/CLAUDE.md` and agent prompts are **managed protocol files**. They are copied as-is from the harness source and should NOT be adapted per-project. They contain zero project-specific content.
 
 Project-specific information lives in `process/context/all-context.md`, populated during the STUDY phase.
 
@@ -626,16 +626,6 @@ Verify the STUDY phase produced real content:
 5. **Context group routing**: Every context group directory under `process/context/` has a corresponding entry in the "Current Context Groups" table in `all-context.md`
 6. **Feature folder guides**: Every feature folder under `process/features/` (excluding the root `_GUIDE.md`) has a `_GUIDE.md` file with a real scope description
 7. **User input incorporated**: If the user provided project description or conventions in the ASK step, verify they appear in the relevant sections of all-context.md
-
-### Agent Parity Check
-
-Verify that agent names match between Claude and Codex surfaces:
-
-```bash
-ls .claude/agents/*.md | sed 's|.claude/agents/||;s|\.md$||' | sort > /tmp/claude-agents.txt
-ls .codex/agents/*.toml | sed 's|.codex/agents/||;s|\.toml$||' | sort > /tmp/codex-agents.txt
-diff /tmp/claude-agents.txt /tmp/codex-agents.txt
-```
 
 ### Skill Discovery Check
 

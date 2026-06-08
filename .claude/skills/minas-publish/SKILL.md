@@ -65,7 +65,7 @@ If this file is missing, ask the user for the kit repo checkout path and offer t
    - Files in dev `files` but NOT in kit `files`: **new** (will be added to kit).
    - Files in kit `files` but NOT in dev `files`: **removed** (will be removed from kit).
    - Files in both: compare content via `diff`. Classify as **modified** or **unchanged**.
-   - `merge` files (CLAUDE.md, AGENTS.md): always flag for content review regardless of diff status.
+   - `merge` files (`.minas/CLAUDE.md`): always flag for content review regardless of diff status.
 
 ### Step 5: Print Diff Summary
 
@@ -79,8 +79,7 @@ FILES:
   [modified]  .claude/agents/vc-execute-agent.md  (+8 -3)
   [modified]  .claude/hooks/lib/scout-checker.cjs  (+2 -1)
   [new]       .claude/skills/vc-new-skill/SKILL.md
-  [merge]     CLAUDE.md (needs content review)
-  [merge]     AGENTS.md (needs content review)
+  [merge]     .minas/CLAUDE.md (needs content review)
   [unchanged] .claude/settings.json
   ... (350 more unchanged)
 
@@ -105,8 +104,8 @@ Version bump semantics:
 12. On confirm:
     - Copy all **modified** and **new** managed files from current repo to kit repo checkout.
     - For each **removed** file: delete it from the kit repo checkout.
-    - **CLAUDE.md and AGENTS.md stripping**: Do NOT copy the current repo's project-specific versions directly. Instead:
-      1. Read the current repo's CLAUDE.md/AGENTS.md.
+    - **`.minas/CLAUDE.md` stripping**: Do NOT copy the current repo's project-specific version directly. Instead:
+      1. Read the current repo's `.minas/CLAUDE.md`.
       2. Read the kit repo's existing harness-only version as base.
       3. Apply only methodology/structural changes from the dev repo to the kit's harness-only version.
       4. Strip all project-specific content:
@@ -126,7 +125,7 @@ Version bump semantics:
 
 13. Verify no project-specific content leaked into the kit repo. This is a
     **resolved-set, two-check** gate that scans the full shipped TEXT surface, not
-    just `CLAUDE.md`/`AGENTS.md`.
+    just `.minas/CLAUDE.md`.
 
     **Resolve the shipped set** via the kit's resolver, then restrict to TEXT
     surfaces:
@@ -138,9 +137,8 @@ Version bump semantics:
     Take the resolved `files` and keep only TEXT surfaces:
     - `.claude/skills/**` matching `*.md`, `*.cjs`, `*.mjs`, `*.py`, `*.js`, `*.json`
     - `.claude/agents/**` matching `*.md`
-    - `.codex/**`
     - `process/development-protocols/**`
-    - plus `CLAUDE.md`, `AGENTS.md`
+    - plus `.minas/CLAUDE.md`
 
     Exclude binaries and `**/node_modules/**`.
 
@@ -166,13 +164,13 @@ Version bump semantics:
     `process/context/tests/all-tests.md`. Portable directory refs (e.g.
     `process/context/tests/`) and the `process/context/...` placeholder are fine.
 
-    **Keep the existing narrow `CLAUDE.md`/`AGENTS.md` grep** (this stays as-is on
-    just those two files; `tRPC`/`Prisma` plus the hosted-database product name all
+    **Keep the existing narrow `.minas/CLAUDE.md` grep** (this stays as-is on
+    just that file; `tRPC`/`Prisma` plus the hosted-database product name all
     REMAIN here, as shown in the pattern below):
 
     ```bash
     # Must return empty -- any matches indicate leaked content
-    grep -ri "flowser\|tRPC\|Prisma\|Supabase\|CloakBrowser\|OpenClaw" CLAUDE.md AGENTS.md
+    grep -ri "flowser\|tRPC\|Prisma\|Supabase\|CloakBrowser\|OpenClaw" .minas/CLAUDE.md
 
     # Must return empty -- no absolute paths
     grep -r "/Users/" .
@@ -254,10 +252,10 @@ Release:       https://github.com/<owner>/<repo>/releases/tag/v2.2.0
 - **NEVER** copy project-specific files: `process/context/all-context.md` (with real content), `process/features/*`, `process/general-plans/*` (with real plans)
 - **ALWAYS** verify no project-specific content leaked before committing (Step 8)
 - **ALWAYS** show the diff summary before publishing (Step 5-6)
-- CLAUDE.md and AGENTS.md require special handling -- never copy the development repo's project-specific versions directly
+- `.minas/CLAUDE.md` requires special handling -- never copy the development repo's project-specific version directly
 - Kit repo checkout path is stored in `.vc-publish-config` (add to `.gitignore`)
 - The only manifest edit at publish time is the version bump -- glob patterns are stable
 
 ## Reference
 
-See `references/vc-publish.md` for the detailed algorithm, CLAUDE.md/AGENTS.md stripping rules, error handling, and example outputs.
+See `references/vc-publish.md` for the detailed algorithm, `.minas/CLAUDE.md` stripping rules, error handling, and example outputs.

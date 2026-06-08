@@ -24,7 +24,7 @@ try {
     normalizePath,
     extractTaskListId,
     isHookEnabled
-  } = require('./lib/vc-config-utils.cjs');
+  } = require('./lib/minas-config-utils.cjs');
   const { resolveSkillsVenv } = require('./lib/context-builder.cjs');
   const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
 

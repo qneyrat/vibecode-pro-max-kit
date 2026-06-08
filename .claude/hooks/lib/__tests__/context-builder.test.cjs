@@ -4,7 +4,7 @@
  * Run: node --test .claude/hooks/lib/__tests__/context-builder.test.cjs
  *
  * Canonical path order:
- * - process/development-protocols/
+ * - .minas/process/development-protocols/
  * - .claude/workflows/
  * - ~/.claude/rules/
  * Key scenarios:
@@ -80,14 +80,14 @@ describe('context-builder.cjs', () => {
       assert.strictEqual(result, null, 'Should return null when file does not exist');
     });
 
-    it('finds file in process/development-protocols/ directory (canonical location)', () => {
-      tempDir = createTempDir(['process/development-protocols']);
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'implementation-standards.md');
+    it('finds file in .minas/process/development-protocols/ directory (canonical location)', () => {
+      tempDir = createTempDir(['.minas/process/development-protocols']);
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'implementation-standards.md');
       process.chdir(tempDir);
 
       const result = contextBuilder.resolveRulesPath('implementation-standards.md');
-      assert.strictEqual(result, 'process/development-protocols/implementation-standards.md',
-        'Should find file in process/development-protocols/');
+      assert.strictEqual(result, '.minas/process/development-protocols/implementation-standards.md',
+        'Should find file in .minas/process/development-protocols/');
     });
 
     it('falls back to workflows/ when canonical protocol file does not exist', () => {
@@ -101,19 +101,19 @@ describe('context-builder.cjs', () => {
         'Should fall back to workflows/ directory');
     });
 
-    it('prefers process/development-protocols/ over workflows/', () => {
-      tempDir = createTempDir(['process/development-protocols', '.claude/workflows']);
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'implementation-standards.md', '# Protocol version\n');
+    it('prefers .minas/process/development-protocols/ over workflows/', () => {
+      tempDir = createTempDir(['.minas/process/development-protocols', '.claude/workflows']);
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'implementation-standards.md', '# Protocol version\n');
       createTestFile(path.join(tempDir, '.claude/workflows'), 'development-rules.md', '# Workflows version\n');
       process.chdir(tempDir);
 
       const result = contextBuilder.resolveRulesPath('development-rules.md');
-      assert.strictEqual(result, 'process/development-protocols/implementation-standards.md',
+      assert.strictEqual(result, '.minas/process/development-protocols/implementation-standards.md',
         'Should prefer canonical protocol path');
     });
 
     it('finds file in workflows/ when canonical path does not provide the file', () => {
-      tempDir = createTempDir(['process/development-protocols', '.claude/workflows']);
+      tempDir = createTempDir(['.minas/process/development-protocols', '.claude/workflows']);
       createTestFile(path.join(tempDir, '.claude/workflows'), 'legacy-file.md');
       process.chdir(tempDir);
 
@@ -147,8 +147,8 @@ describe('context-builder.cjs', () => {
     });
 
     it('resolveWorkflowPath works identically to resolveRulesPath', () => {
-      const tempDir = createTempDir(['process/development-protocols']);
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'test.md');
+      const tempDir = createTempDir(['.minas/process/development-protocols']);
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'test.md');
       const originalCwd = process.cwd();
       process.chdir(tempDir);
 
@@ -212,8 +212,8 @@ describe('context-builder.cjs', () => {
     });
 
     it('returns content, lines, and sections', () => {
-      tempDir = createTempDir(['process/development-protocols']);
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'implementation-standards.md');
+      tempDir = createTempDir(['.minas/process/development-protocols']);
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'implementation-standards.md');
       process.chdir(tempDir);
 
       const result = contextBuilder.buildReminderContext({});
@@ -224,13 +224,13 @@ describe('context-builder.cjs', () => {
     });
 
     it('includes devRulesPath when canonical protocol file exists', () => {
-      tempDir = createTempDir(['process/development-protocols']);
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'implementation-standards.md');
+      tempDir = createTempDir(['.minas/process/development-protocols']);
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'implementation-standards.md');
       process.chdir(tempDir);
 
       const result = contextBuilder.buildReminderContext({});
 
-      assert.ok(result.content.includes('process/development-protocols/implementation-standards.md') ||
+      assert.ok(result.content.includes('.minas/process/development-protocols/implementation-standards.md') ||
                 result.content.includes('implementation-standards'),
         'Should reference dev rules file');
     });
@@ -312,7 +312,7 @@ describe('context-builder.cjs', () => {
 
   describe('Session-scoped dedup markers', () => {
     const sessionId = `context-builder-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-    const sessionStatePath = path.join(os.tmpdir(), `vc-session-${sessionId}.json`);
+    const sessionStatePath = path.join(os.tmpdir(), `minas-session-${sessionId}.json`);
 
     after(() => {
       fs.rmSync(sessionStatePath, { force: true });
@@ -527,16 +527,16 @@ describe('context-builder.cjs', () => {
     });
 
     it('resolves canonical protocol filenames and legacy aliases correctly', () => {
-      tempDir = createTempDir(['process/development-protocols']);
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'implementation-standards.md');
-      createTestFile(path.join(tempDir, 'process/development-protocols'), 'orchestration.md');
+      tempDir = createTempDir(['.minas/process/development-protocols']);
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'implementation-standards.md');
+      createTestFile(path.join(tempDir, '.minas/process/development-protocols'), 'orchestration.md');
       process.chdir(tempDir);
 
       const expected = {
-        'implementation-standards.md': 'process/development-protocols/implementation-standards.md',
-        'development-rules.md': 'process/development-protocols/implementation-standards.md',
-        'orchestration.md': 'process/development-protocols/orchestration.md',
-        'orchestration-protocol.md': 'process/development-protocols/orchestration.md'
+        'implementation-standards.md': '.minas/process/development-protocols/implementation-standards.md',
+        'development-rules.md': '.minas/process/development-protocols/implementation-standards.md',
+        'orchestration.md': '.minas/process/development-protocols/orchestration.md',
+        'orchestration-protocol.md': '.minas/process/development-protocols/orchestration.md'
       };
 
       for (const [file, expectedPath] of Object.entries(expected)) {

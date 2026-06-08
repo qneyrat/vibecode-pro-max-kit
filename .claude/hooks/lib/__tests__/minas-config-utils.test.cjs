@@ -1,6 +1,6 @@
 /**
- * Tests for vc-config-utils edge case handling
- * Run: node .claude/hooks/lib/__tests__/vc-config-utils.test.cjs
+ * Tests for minas-config-utils edge case handling
+ * Run: node .claude/hooks/lib/__tests__/minas-config-utils.test.cjs
  */
 
 const path = require('path');
@@ -22,7 +22,7 @@ const {
   writeSessionState,
   readSessionState,
   getSessionTempPath
-} = require('../vc-config-utils.cjs');
+} = require('../minas-config-utils.cjs');
 
 let passed = 0;
 let failed = 0;

@@ -5,7 +5,7 @@ const { spawnSync } = require('node:child_process');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
-const { readSessionState } = require('../../../hooks/lib/vc-config-utils.cjs');
+const { readSessionState } = require('../../../hooks/lib/minas-config-utils.cjs');
 
 const DEFAULTS = {
   maxBranches: 12,
@@ -370,8 +370,8 @@ function readPlan(content, planPath, source) {
 function isFlowserActivePlanPath(filePath) {
   const normalized = filePath.split(path.sep).join('/');
   if (!normalized.endsWith('.md')) return false;
-  if (normalized.startsWith('process/general-plans/active/')) return true;
-  return /^process\/features\/[^/]+\/active\//.test(normalized);
+  if (normalized.startsWith('.minas/process/general-plans/active/')) return true;
+  return /^\.minas\/process\/features\/[^/]+\/active\//.test(normalized);
 }
 
 function discoverFeatureActiveRoots(root) {
@@ -418,7 +418,7 @@ function scanTrackedPlans(root, refs, warnings) {
   const plans = [];
 
   for (const ref of refs) {
-    const listed = tryGit(['ls-tree', '-r', '--name-only', ref.refname, '--', 'process/general-plans/active', 'process/features'], root);
+    const listed = tryGit(['ls-tree', '-r', '--name-only', ref.refname, '--', '.minas/process/general-plans/active', '.minas/process/features'], root);
     if (!listed.ok || !listed.stdout) continue;
 
     const planPaths = listed.stdout.split('\n').filter((file) => isFlowserActivePlanPath(file));
@@ -521,7 +521,7 @@ function buildWarnings(payload) {
     warnings.push('Remote branches reflect local refs only. Use --fetch to refresh before treating them as current.');
   }
   if (payload.plans.total === 0) {
-    warnings.push('No active plan files were found under process/general-plans/active/ or process/features/*/active/.');
+    warnings.push('No active plan files were found under .minas/process/general-plans/active/ or .minas/process/features/*/active/.');
   }
   if (!payload.selectedPlanHint && payload.plans.localPrimaryCount > 1) {
     warnings.push('Multiple primary active plans exist locally; no selected-plan hint is being assumed.');

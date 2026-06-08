@@ -26,7 +26,7 @@ try {
     resolveNamingPattern,
     extractTaskListId,
     isHookEnabled
-  } = require('./lib/vc-config-utils.cjs');
+  } = require('./lib/minas-config-utils.cjs');
   const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
   const { loadState, refreshStatuslineSnapshot } = require('./lib/session-state-manager.cjs');
   const { createEmptyActivitySnapshot } = require('./lib/statusline-session-cache.cjs');
@@ -284,6 +284,17 @@ async function main() {
     }
 
     console.log(`Session ${source}. ${buildContextOutput(config, detections, resolved, staticEnv.gitRoot)}`);
+
+    // Inject .minas/CLAUDE.md protocol content into session context
+    const minasProtocolPath = path.join(process.cwd(), '.minas', 'CLAUDE.md');
+    if (fs.existsSync(minasProtocolPath)) {
+      try {
+        const protocolContent = fs.readFileSync(minasProtocolPath, 'utf-8');
+        console.log('\n' + protocolContent);
+      } catch (e) {
+        process.stderr.write(`[session-init] Warning: failed to read .minas/CLAUDE.md: ${e.message}\n`);
+      }
+    }
 
     const hasCleanup =
       shadowedCleanup.restored.length > 0 ||

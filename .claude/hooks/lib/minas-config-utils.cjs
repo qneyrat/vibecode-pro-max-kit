@@ -162,7 +162,7 @@ function loadConfigFromPath(configPath) {
  * @returns {string} Path to session temp file
  */
 function getSessionTempPath(sessionId) {
-  return path.join(os.tmpdir(), `vc-session-${sessionId}.json`);
+  return path.join(os.tmpdir(), `minas-session-${sessionId}.json`);
 }
 
 /**
